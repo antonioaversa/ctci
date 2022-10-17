@@ -1,4 +1,7 @@
-﻿namespace CTCI.Tests;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading.Tasks.Dataflow;
+
+namespace CTCI.Tests;
 
 [TestClass]
 public class Exercises11Tests
