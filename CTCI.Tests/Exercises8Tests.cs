@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Markup;
 
@@ -213,8 +214,13 @@ public class Exercises8Tests
     [TestMethod]
     public void Ex8_NQueens()
     {
-        var permutations = Exercises8.Ex8_NQueens(3);
-        Trace.WriteLine(string.Join("\n", permutations.Select(
-            permutation => string.Join(" ", permutation.Select(t => $"({t.Item1},{t.Item2})")))));
+        var n = 8;
+        var permutations = Exercises8.Ex8_NQueens(n);
+        Assert.IsTrue(permutations.All(p => p.Count == n));
+        Assert.IsTrue(permutations.All(p => 
+            p.Select(c => c.Item1).Distinct().Count() == n &&
+            p.Select(c => c.Item2).Distinct().Count() == n &&
+            p.All(c1 => p.All(c2 => c1 == c2 || c1.Item1 - c1.Item2 != c2.Item1 - c2.Item2) &&
+            p.All(c1 => p.All(c2 => c1 == c2 || c2.Item1 + c2.Item2 != c1.Item1 + c1.Item2)))));
     }
 }
