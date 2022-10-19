@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,6 +54,47 @@ public static class DynamicProgramming
             foreach (var s in GenerateParenthesis(opened + 1, closed))
                 yield return '(' + s;
         }
+    }
+
+    public static bool Ex36_ValidSudoku(char[][] board)
+    {
+        var n = board.Length;
+        var m = (int)Math.Sqrt(n);
+        for (var i = 0; i < n; i++)
+        {
+            var foundInRow = new bool[n];
+            var foundInCol = new bool[n];
+            var foundInSquare = new bool[n];
+
+            for (var j = 0; j < n; j++)
+            {
+                if (board[i][j] != '.')
+                {
+                    var value = board[i][j] - '1';
+                    if (value < 0 || value >= n || foundInRow[value])
+                        return false;
+                    foundInRow[value] = true;
+                }
+                if (board[j][i] != '.')
+                {
+                    var value = board[j][i] - '1';
+                    if (value < 0 || value >= n || foundInCol[value])
+                        return false;
+                    foundInCol[value] = true;
+                }
+
+                var k = (i / m) * m + j / m;
+                var l = (i % m) * m + j % m;
+                if (board[k][l] != '.')
+                {
+                    var value = board[k][l] - '1';
+                    if (value < 0 || value >= n || foundInSquare[value])
+                        return false;
+                    foundInSquare[value] = true;
+                }
+            }
+        }
+        return true;
     }
 
     public static int Ex45_Jump(int[] nums)
@@ -122,5 +164,87 @@ public static class DynamicProgramming
         }
 
         return breath;
+    }
+
+    public static int Ex53_MaximumSubarray_Quadratic(int[] nums)
+    {
+        var csums = new int[nums.Length + 1];
+        var sum = 0;
+        for (var i = 0; i < nums.Length; i++)
+        {
+            csums[i] = sum;
+            sum += nums[i];
+        }
+        csums[^1] = sum;
+
+        var result = int.MinValue;
+        for (var i = 0; i < nums.Length; i++)
+        {
+            for (var j = i; j < nums.Length; j++)
+            {
+                sum = csums[j + 1] - csums[i];
+                result = Math.Max(result, sum);
+            }
+        }
+
+        return result;
+    }
+
+    public static long Ex53_MaximumSubarray_Kadane(int[] nums)
+    {
+        long max = long.MinValue;
+        long maxSum = 0;
+        long currentSum = 0;
+
+        for (var i = 0; i < nums.Length; i++)
+        {
+            currentSum = Math.Max(0, currentSum + nums[i]);
+            maxSum = Math.Max(maxSum, currentSum);
+            max = Math.Max(max, nums[i]);
+        }
+
+        return max > 0 ? maxSum : max;
+    }
+
+    public static IList<IList<string>> Ex131_PalindromePartition(string s)
+    {
+        var solutions = new IList<IList<string>>[s.Length];
+        return PalindromePartition(0).ToList();
+        
+        bool IsPalindrome(string s, int i, int j)
+        {
+            if (j <= i) return true;
+            while (i < j)
+                if (s[i++] != s[j--]) 
+                    return false;
+            return true;
+        }
+
+        IList<IList<string>> PalindromePartition(int i)
+        {
+            if (i == s.Length)
+                return new List<IList<string>> { new List<string> { } };
+
+            if (i == s.Length - 1)
+                return new List<IList<string>> { new List<string> { s[^1].ToString() } };
+
+            if (solutions[i] != null)
+                return solutions[i];
+
+            var solution = new List<IList<string>>();
+            for (var j = i; j < s.Length; j++)
+            {
+                if (IsPalindrome(s, i, j))
+                {
+                    foreach (var partition in PalindromePartition(j + 1))
+                    {
+                        solution.Add(partition.Prepend(s[i..(j + 1)]).ToList());
+                    }
+                }
+            }
+
+            solutions[i] = solution;
+            return solution;
+        }
     }
 }
