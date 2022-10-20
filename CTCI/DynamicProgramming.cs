@@ -247,4 +247,384 @@ public static class DynamicProgramming
             return solution;
         }
     }
+
+    public static bool Ex207_CanFinish_EdgeList(int numCourses, int[][] prerequisites)
+    {
+        var visited = new HashSet<int> { };
+        for (var course = 0; course < numCourses; course++)
+        {
+            if (visited.Contains(course)) continue;
+            if (Dfs(course, new HashSet<int> { })) return false;
+        }
+
+        return true;
+
+        IEnumerable<int> Adj(int c)
+        {
+            foreach (var prerequisite in prerequisites)
+                if (prerequisite[1] == c)
+                    yield return prerequisite[0];
+        }
+
+        bool Dfs(int c, ISet<int> path)
+        {
+            path.Add(c);
+
+            foreach (var n in Adj(c))
+                if (path.Contains(n) || Dfs(n, path))
+                    return true;
+
+            path.Remove(c);
+
+            return false;
+        }
+    }
+
+    public static bool Ex207_CanFinish_AdjList(int numCourses, int[][] prerequisites)
+    {
+        var adjs = new ISet<int>[numCourses];
+        foreach (var prerequisite in prerequisites)
+        {
+            if (adjs[prerequisite[1]] == null)
+                adjs[prerequisite[1]] = new HashSet<int> { prerequisite[0] };
+            else
+                adjs[prerequisite[1]].Add(prerequisite[0]);
+        }
+
+        var visited = new HashSet<int> { };
+        for (var course = 0; course < numCourses; course++)
+        {
+            if (visited.Contains(course)) continue;
+            if (Dfs(course, new HashSet<int> { })) return false;
+        }
+
+        return true;
+
+        bool Dfs(int c, ISet<int> path)
+        {
+            if (path.Contains(c))
+                return true;
+
+            if (visited.Contains(c))
+                return false;
+
+            visited.Add(c);
+            path.Add(c);
+
+            if (adjs[c] != null)
+                foreach (var n in adjs[c])
+                    if (Dfs(n, path))
+                        return true;
+
+            path.Remove(c);
+
+            return false;
+        }
+    }
+
+    public static int[] Ex210_FindOrder(int numCourses, int[][] prerequisites)
+    {
+        // Result is order[topoOrder] = vertexId
+        var currentOrder = numCourses - 1;
+        var order = new int[numCourses];
+
+        // Transform edge list representation into adj list representation
+        var adjs = BuildAdjs();
+
+        // DFS on the entire graph 
+        var visited = new HashSet<int> { };
+        for (var i = 0; i < numCourses; i++)
+        {
+            if (visited.Contains(i)) continue;
+            if (Dfs(i, new HashSet<int> { })) return Array.Empty<int>();
+        }
+        return order;
+
+        ISet<int>[] BuildAdjs()
+        {
+            var adjs = new ISet<int>[numCourses];
+            foreach (var prerequisite in prerequisites)
+            {
+                if (adjs[prerequisite[1]] == null)
+                    adjs[prerequisite[1]] = new HashSet<int> { prerequisite[0] };
+                else
+                    adjs[prerequisite[1]].Add(prerequisite[0]);
+            }
+            return adjs;
+        }
+
+        bool Dfs(int v, ISet<int> path)
+        {
+            if (path.Contains(v)) return true;
+            if (visited.Contains(v)) return false;
+
+            visited.Add(v);
+            path.Add(v);
+
+            if (adjs[v] != null)
+            {
+                foreach (var n in adjs[v])
+                {
+                    if (Dfs(n, path))
+                        return true;
+                }
+            }
+
+            path.Remove(v);
+
+            order[currentOrder--] = v;
+
+            return false;
+        }
+    }
+
+    public static IList<int> Ex310_FindMinHeightTrees_BfsOnly(int n, int[][] edges)
+    {
+        var adjs = BuildAdjs();
+
+        var heights = new int[n];
+        for (var i = 0; i < n; i++)
+            heights[i] = Bfs(i);
+
+        var minHeight = heights.Min();
+        return heights.Select((h, i) => (h, i)).Where(c => c.h == minHeight).Select(c => c.i).ToList();
+
+        ISet<int>[] BuildAdjs()
+        {
+            var adjs = new ISet<int>[n];
+            foreach (var edge in edges)
+            {
+                if (adjs[edge[0]] == null)
+                    adjs[edge[0]] = new HashSet<int> { edge[1] };
+                else
+                    adjs[edge[0]].Add(edge[1]);
+
+                if (adjs[edge[1]] == null)
+                    adjs[edge[1]] = new HashSet<int> { edge[0] };
+                else
+                    adjs[edge[1]].Add(edge[0]);
+            }
+            return adjs;
+        }
+
+        int Bfs(int v)
+        {
+            var visited = new HashSet<int> { };
+            var maxHeight = 0;
+
+            var queue = new Queue<(int, int)>();
+            queue.Enqueue((v, 0));
+
+            while (queue.Count > 0)
+            {
+                var (j, hj) = queue.Dequeue();
+
+                visited.Add(j);
+                maxHeight = Math.Max(maxHeight, hj);
+                
+                if (adjs[j] != null)
+                    foreach (var n in adjs[j])
+                        if (!visited.Contains(n))
+                            queue.Enqueue((n, hj + 1));
+            }
+
+            return maxHeight;
+        }
+    }
+
+    public static IList<int> Ex310_FindMinHeightTrees_BfsOnlyOptimized(int n, int[][] edges)
+    {
+        var adjs = BuildAdjs();
+
+        var heights = new int[n];
+        var minHeight = int.MaxValue;
+        var results = new List<int> { };
+        for (var i = 0; i < n; i++)
+        {
+            heights[i] = Bfs(i, minHeight);
+
+            if (heights[i] < minHeight)
+            {
+                minHeight = heights[i];
+                results.Clear();
+            }
+            if (heights[i] <= minHeight)
+            {
+                results.Add(i);
+            }
+        }
+
+        return results;
+
+        ISet<int>[] BuildAdjs()
+        {
+            var adjs = new ISet<int>[n];
+            foreach (var edge in edges)
+            {
+                if (adjs[edge[0]] == null)
+                    adjs[edge[0]] = new HashSet<int> { edge[1] };
+                else
+                    adjs[edge[0]].Add(edge[1]);
+
+                if (adjs[edge[1]] == null)
+                    adjs[edge[1]] = new HashSet<int> { edge[0] };
+                else
+                    adjs[edge[1]].Add(edge[0]);
+            }
+            return adjs;
+        }
+
+        int Bfs(int v, int minHeight)
+        {
+            var visited = new HashSet<int> { };
+            var maxHeight = 0;
+
+            var queue = new Queue<(int, int)>();
+            queue.Enqueue((v, 0));
+
+            while (queue.Count > 0)
+            {
+                var (j, hj) = queue.Dequeue();
+                if (hj > minHeight)
+                    return minHeight + 1;
+
+                visited.Add(j);
+                maxHeight = Math.Max(maxHeight, hj);
+                if (adjs[j] != null)
+                    foreach (var n in adjs[j])
+                        if (!visited.Contains(n))
+                            queue.Enqueue((n, hj + 1));
+            }
+
+            return maxHeight;
+        }
+    }
+
+    public static IList<int> Ex310_FindMinHeightTrees_DfsUndirectedTopoSort(int n, int[][] edges)
+    {
+        var adjs = BuildAdjs();
+        var remaining = new HashSet<int>(Enumerable.Range(0, n));
+        while (remaining.Count > 2)
+        {
+            var i = remaining.First();
+            if (remaining.Contains(i))
+                Dfs(i, new HashSet<int> { });
+        }
+        return remaining.ToList();
+
+        ISet<int>[] BuildAdjs()
+        {
+            var adjs = new ISet<int>[n];
+            foreach (var edge in edges)
+            {
+                if (adjs[edge[0]] == null)
+                    adjs[edge[0]] = new HashSet<int> { edge[1] };
+                else
+                    adjs[edge[0]].Add(edge[1]);
+
+                if (adjs[edge[1]] == null)
+                    adjs[edge[1]] = new HashSet<int> { edge[0] };
+                else
+                    adjs[edge[1]].Add(edge[0]);
+            }
+            return adjs;
+        }
+
+        void Dfs(int v, ISet<int> visited)
+        {
+            if (visited.Contains(v))
+                return;
+            visited.Add(v);
+
+            var leaf = adjs[v].Count == 1;
+
+            foreach (var n in adjs[v])
+                Dfs(n, visited);
+
+            if (leaf)
+            {
+                adjs[adjs[v].First()].Remove(v);
+                adjs[v].Clear();
+                remaining.Remove(v);
+            }
+        }
+    }
+
+    public static IList<int> Ex310_FindMinHeightTrees_DfsUndirectedTopoSortWithQueue(int n, int[][] edges)
+    {
+        if (n == 1) return new List<int>();
+
+        var adjs = BuildAdjs();
+
+        var queue = new Queue<int>();
+
+        var levels = new int[n];
+        for (var v = 0; v < n; v++)
+            if (adjs[v].Count == 1)
+            {
+                levels[v] = 0;
+                queue.Enqueue(v);
+            }
+
+        var lastTwo = new Queue<int>();
+        while (queue.Count > 0)
+        {
+            var v = queue.Dequeue();
+            
+            lastTwo.Enqueue(v);
+            if (lastTwo.Count > 2)
+                lastTwo.Dequeue();
+
+            var w = adjs[v].SingleOrDefault(-1);
+            if (w < 0)
+                continue;
+
+            adjs[v].Clear();
+            adjs[w].Remove(v);
+
+            if (adjs[w].Count == 1)
+            {
+                queue.Enqueue(w);
+                levels[w] = levels[v] + 1;
+            }
+        }
+
+        var result = lastTwo.ToList();
+        if (result.Count < 2 || levels[result[0]] == levels[result[1]]) 
+            return result;
+        return new List<int> { result[1] };
+
+        ISet<int>[] BuildAdjs()
+        {
+            var adjs = new ISet<int>[n];
+            foreach (var edge in edges)
+            {
+                if (adjs[edge[0]] == null)
+                    adjs[edge[0]] = new HashSet<int> { edge[1] };
+                else
+                    adjs[edge[0]].Add(edge[1]);
+
+                if (adjs[edge[1]] == null)
+                    adjs[edge[1]] = new HashSet<int> { edge[0] };
+                else
+                    adjs[edge[1]].Add(edge[0]);
+            }
+            return adjs;
+        }
+    }
+
+    public static int Ex494_FindTargetSumWays(int[] nums, int target)
+    {
+        var solutions = new Dictionary<(int, int), int> { };
+        return FindTargetSumWays(target, 0);
+
+        int FindTargetSumWays(int target, int i)
+        {
+            if (i == nums.Length) return target == 0 ? 1 : 0;
+            if (solutions.TryGetValue((target, i), out var solution)) return solution;
+            var c1 = FindTargetSumWays(target - nums[i], i + 1);
+            var c2 = FindTargetSumWays(target + nums[i], i + 1);
+            return solutions[(target, i)] = c1 + c2;
+        }
+    }
 }
