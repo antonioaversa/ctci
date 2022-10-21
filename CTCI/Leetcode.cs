@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CTCI;
 
-public static class DynamicProgramming
+public static class Leetcode
 {
     public static string Ex5_LongestPalindrome(string s)
     {
@@ -552,7 +552,7 @@ public static class DynamicProgramming
 
     public static IList<int> Ex310_FindMinHeightTrees_DfsUndirectedTopoSortWithQueue(int n, int[][] edges)
     {
-        if (n == 1) return new List<int>();
+        if (n == 1) return new List<int> { 0 };
 
         var adjs = BuildAdjs();
 
@@ -613,6 +613,175 @@ public static class DynamicProgramming
         }
     }
 
+    public static int Ex329_LongestIncreasingPath(int[][] matrix)
+    {
+        var m = matrix.Length;
+        var n = matrix[0].Length;
+        var solutions = new int[m, n];
+
+        var result = 0;
+        for (var i = 0; i < m; i++)
+            for (var j = 0; j < n; j++)
+                result = Math.Max(LongestIncreasingPath(i, j), result);
+        return result;
+
+        int LongestIncreasingPath(int i, int j)
+        {
+            if (solutions[i, j] > 0) return solutions[i, j];
+
+            var result = 0;
+            if (j + 1 < n && matrix[i][j] < matrix[i][j + 1])
+                result = Math.Max(result, LongestIncreasingPath(i, j + 1));
+            if (j - 1 >= 0 && matrix[i][j] < matrix[i][j - 1])
+                result = Math.Max(result, LongestIncreasingPath(i, j - 1));
+            if (i + 1 < m && matrix[i][j] < matrix[i + 1][j])
+                result = Math.Max(result, LongestIncreasingPath(i + 1, j));
+            if (i - 1 >= 0 && matrix[i][j] < matrix[i - 1][j])
+                result = Math.Max(result, LongestIncreasingPath(i - 1, j));
+            return solutions[i, j] = 1 + result;
+        }
+    }
+
+    public static double[] Ex399_CalcEquation_Dfs(IList<IList<string>> equations, double[] values, IList<IList<string>> queries)
+    {
+        var adjs = new Dictionary<string, ISet<string>> { };
+        var ws = new Dictionary<(string, string), double> { };
+        for (var i = 0; i < equations.Count; i++)
+        {
+            var equation = equations[i];
+            var w = values[i];
+
+            if (adjs.ContainsKey(equation[0]))
+                adjs[equation[0]].Add(equation[1]);
+            else
+                adjs[equation[0]] = new HashSet<string> { equation[1] };
+
+            if (adjs.ContainsKey(equation[1]))
+                adjs[equation[1]].Add(equation[0]);
+            else
+                adjs[equation[1]] = new HashSet<string> { equation[0] };
+
+            ws[(equation[0], equation[1])] = w;
+            ws[(equation[1], equation[0])] = 1 / w;
+        }
+
+        var results = new double[queries.Count];
+        for (var i = 0; i < queries.Count; i++)
+        {
+            var query = queries[i];
+            results[i] = Dfs(query[0], query[1], new HashSet<string> { });
+        }
+
+        return results;
+
+        double Dfs(string s, string e, ISet<string> visited)
+        {
+            if (visited.Contains(s)) return -1;
+            visited.Add(s);
+
+            if (adjs.TryGetValue(s, out var adj))
+            {
+                if (s == e) return 1;
+
+                foreach (var n in adj)
+                {
+                    var v = Dfs(n, e, visited);
+                    if (v != -1)
+                        return ws[(s, n)] * v;
+                }
+            }
+
+            return -1;
+        }
+    }
+
+    public static double[] Ex399_CalcEquation_DisjointSets(IList<IList<string>> equations, double[] values, IList<IList<string>> queries)
+    {
+        var parents = new Dictionary<string, string> { };
+        var ws = new Dictionary<(string, string), double> { };
+
+        for (var i = 0; i < equations.Count; i++)
+        {
+            var equation = equations[i];
+            var value = values[i];
+            ws[(equation[0], equation[1])] = value;
+            ws[(equation[1], equation[0])] = 1 / value;
+        }
+
+        for (var i = 0; i < equations.Count; i++)
+            Connect(equations[i][0], equations[i][1], values[i]);
+
+        (string, double) Root(string s, bool pathCompression = true)
+        {
+            var root = s;
+            var value = 1.0;
+
+            if (parents.TryGetValue(root, out var parent) && parent != root)
+            {
+                var (parentRoot, parentValue) = Root(parent, pathCompression);
+
+                value = ws[(parent, s)] * parentValue;
+                root = parentRoot;
+            }
+
+            if (pathCompression)
+            {
+                parents[s] = root;
+                ws[(root, s)] = value;
+            }
+
+            return (root, value);
+        }
+
+        void Connect(string s1, string s2, double v)
+        {
+            var c = s1.CompareTo(s2);
+
+            if (c == 0)
+                return;
+
+            if (c > 0)
+            {
+                Connect(s2, s1, 1 / v);
+                return;
+            }
+
+            var (r1, v1) = Root(s1);
+            var (r2, v2) = Root(s2);
+            if (r1 == r2) return;
+
+            // TODO: merge by rank?
+            if (r1.CompareTo(r2) < 0)
+            {
+                parents[r2] = r1;
+                ws[(r1, r2)] = v * v1 / v2;
+            }
+            else
+            {
+                parents[r1] = r2;
+                ws[(r2, r1)] = v1 * v2 / v;
+            }
+        }
+
+        var results = new double[queries.Count];
+        for (var i = 0; i < queries.Count; i++)
+        {
+            var query = queries[i];
+
+            if (!parents.ContainsKey(query[0]) && !parents.ContainsValue(query[0]))
+            {
+                results[i] = -1;
+                continue;
+            }
+
+            var (r1, v1) = Root(query[0], false);
+            var (r2, v2) = Root(query[1], false);
+            results[i] = r1 == r2 ? v2 / v1 : -1;
+        }
+
+        return results;
+    }
+
     public static int Ex494_FindTargetSumWays(int[] nums, int target)
     {
         var solutions = new Dictionary<(int, int), int> { };
@@ -626,5 +795,150 @@ public static class DynamicProgramming
             var c2 = FindTargetSumWays(target + nums[i], i + 1);
             return solutions[(target, i)] = c1 + c2;
         }
+    }
+
+    public static int Ex547_FindCircleNum(int[][] isConnected)
+    {
+        var n = isConnected.Length;
+        var parents = new int[n];
+        var ranks = new int[n];
+
+        for (var i = 0; i < n; i++)
+            parents[i] = i;
+
+        for (var i = 1; i < n; i++)
+            for (var j = 0; j < i; j++)
+                if (isConnected[i][j] == 1)
+                    Connect(i, j);
+
+        var roots = 0;
+        for (var i = 0; i < n; i++)
+            if (parents[i] == i)
+                roots++;
+
+        return roots;
+
+        int Root(int i)
+        {
+            var r = i;
+            if (parents[r] != r)
+                r = Root(parents[r]);
+
+            parents[i] = r;
+            return r;
+        }
+
+        void Connect(int i, int j)
+        {
+            var ri = Root(i);
+            var rj = Root(j);
+            if (ri == rj) return;
+            if (ranks[ri] >= ranks[rj])
+            {
+                parents[ri] = rj;
+                ranks[ri] = Math.Max(rj, ri + 1);
+            }
+            else
+            {
+                parents[rj] = ri;
+                ranks[rj] = Math.Max(rj + 1, ri);
+            }
+        }
+    }
+
+    public static int Ex2359_ClosestMeetingNode_TwoSimplifiedBfs(int[] edges, int node1, int node2)
+    {
+        var node1Distances = Bfs(node1);
+        var node2Distances = Bfs(node2);
+        var reachableNodes = new HashSet<int>(node1Distances.Keys).Intersect(node2Distances.Keys);
+
+        var meetingNode = -1;
+        var meetingNodeMaxDistance = int.MaxValue;
+
+        foreach (var n in reachableNodes)
+        {
+            var d = Math.Max(node1Distances[n], node2Distances[n]);
+            if (d < meetingNodeMaxDistance || (d == meetingNodeMaxDistance && n < meetingNode))
+            {
+                meetingNode = n;
+                meetingNodeMaxDistance = d;
+            }
+        }
+        return meetingNode;
+
+        IDictionary<int, int> Bfs(int v)
+        {
+            var visited = new HashSet<int> { v };
+            var distances = new Dictionary<int, int> { [v] = 0 };
+            var u = edges[v];
+            var d = 1;
+            while (u >= 0 && !visited.Contains(u))
+            {
+                visited.Add(u);
+                distances[u] = d++;
+                u = edges[u];
+            }
+
+            return distances;
+        }
+    }
+
+    public static int Ex2359_ClosestMeetingNode_OptimizedWalking(int[] edges, int node1, int node2)
+    {
+        var distances = new int[edges.Length];
+        for (var i = 0; i < distances.Length; i++)
+            distances[i] = int.MaxValue;
+
+        var visited = new HashSet<int> { };
+        var u = node1;
+        var d = 0;
+        while (u >= 0 && !visited.Contains(u))
+        {
+            visited.Add(u);
+            distances[u] = d++;
+            u = edges[u];
+        }
+
+        Console.WriteLine(string.Join(" ", distances.Select(d => d.ToString())));
+
+        var meetingNode = -1;
+        var meetingNodeMaxDistance = int.MaxValue;
+
+        visited.Clear();
+        u = node2;
+        d = 0;
+        while (u >= 0 && !visited.Contains(u))
+        {
+            visited.Add(u);
+            distances[u] = Math.Max(distances[u], d++);
+
+            if (distances[u] < meetingNodeMaxDistance || (distances[u] == meetingNodeMaxDistance && u < meetingNode))
+            {
+                meetingNode = u;
+                meetingNodeMaxDistance = distances[u];
+            }
+
+            u = edges[u];
+        }
+
+        return meetingNode;
+    }
+
+    public static int Ex2374_EdgeScore(int[] edges)
+    {
+        var scores = new long[edges.Length];
+        for (var i = 0; i < edges.Length; i++)
+            scores[edges[i]] += i;
+
+        long maxScore = long.MinValue;
+        var maxScoreNode = -1;
+        for (var i = 0; i < scores.Length; i++)
+            if (scores[i] > maxScore)
+            {
+                maxScore = scores[i];
+                maxScoreNode = i;
+            }
+
+        return maxScoreNode;
     }
 }
