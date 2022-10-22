@@ -642,6 +642,70 @@ public static class Leetcode
         }
     }
 
+    public static int[] Ex347_TopKFrequent(int[] nums, int k)
+    {
+        var counts = new Dictionary<int, int> { };
+        for (var i = 0; i < nums.Length; i++)
+            if (counts.TryGetValue(nums[i], out var c))
+                counts[nums[i]] = c + 1;
+            else
+                counts[nums[i]] = 1;
+
+        var indexedCounts = counts.OrderBy(kvp => -kvp.Value).ToList();
+
+        var results = new int[k];
+        for (var i = 0; i < k; i++)
+            results[i] = indexedCounts[i].Key;
+        return results;
+    }
+
+    public static int[] Ex347_TopKFrequent_PartialSort(int[] nums, int k)
+    {
+        var counts = new Dictionary<int, int> { };
+        for (var i = 0; i < nums.Length; i++)
+            if (counts.TryGetValue(nums[i], out var c))
+                counts[nums[i]] = c + 1;
+            else
+                counts[nums[i]] = 1;
+
+        var indexedCounts = counts.ToArray();
+        SortFirstK(indexedCounts, k, 0, indexedCounts.Length - 1);
+
+        var results = new int[k];
+        for (var i = 0; i < k; i++)
+            results[i] = indexedCounts[i].Key;
+        return results;
+
+        void SortFirstK(KeyValuePair<int, int>[] values, int k, int s, int e)
+        {
+            if (e - s <= 0) return;
+
+            var pivot = Partition(values, s, e);
+            SortFirstK(values, k, s, pivot - 1);
+            if (pivot < k - 1)
+                SortFirstK(values, k, pivot + 1, e);
+        }
+
+        int Partition(KeyValuePair<int, int>[] values, int s, int e)
+        {
+            var pivot = values[e];
+            var i = s - 1;
+            for (var j = s; j < e; j++)
+            {
+                if (values[j].Value >= pivot.Value)
+                {
+                    i++;
+                    (values[i], values[j]) = (values[j], values[i]);
+                }
+            }
+
+            i++;
+            (values[i], values[e]) = (values[e], values[i]);
+
+            return i;
+        }
+    }
+
     public static double[] Ex399_CalcEquation_Dfs(IList<IList<string>> equations, double[] values, IList<IList<string>> queries)
     {
         var adjs = new Dictionary<string, ISet<string>> { };
@@ -782,6 +846,37 @@ public static class Leetcode
         return results;
     }
 
+    public static string Ex451_FrequencySort(string s)
+    {
+        var frequences = new Dictionary<char, int> { };
+        foreach (var c in s)
+            if (frequences.TryGetValue(c, out var f))
+                frequences[c] = f + 1;
+            else
+                frequences[c] = 1;
+
+        var stringBuilder = new StringBuilder();
+        foreach (var kvp in frequences.OrderByDescending(kvp => kvp.Value))
+            stringBuilder.Append(kvp.Key, kvp.Value);
+
+        return stringBuilder.ToString();
+    }
+
+    public static string Ex451_FrequencySort_WithArray(string s)
+    {
+        var frequencies = new int[75];
+        foreach (var c in s)
+            frequencies[c - '0']++;
+
+        var stringBuilder = new StringBuilder();
+        var frequenciesArray = Enumerable.Range(0, 75).ToArray();
+        Array.Sort(frequenciesArray, (i, j) => frequencies[j] - frequencies[i]);
+        foreach (var i in frequenciesArray)
+            stringBuilder.Append((char)('0' + i), frequencies[i]);
+
+        return stringBuilder.ToString();
+    }
+
     public static int Ex494_FindTargetSumWays(int[] nums, int target)
     {
         var solutions = new Dictionary<(int, int), int> { };
@@ -843,6 +938,401 @@ public static class Leetcode
                 parents[rj] = ri;
                 ranks[rj] = Math.Max(rj + 1, ri);
             }
+        }
+    }
+
+    public static int Ex1423_MaxScore_DP(int[] cardPoints, int k)
+    {
+        var n = cardPoints.Length;
+        if (n <= k)
+            return cardPoints.Sum();
+
+        var solutions = new Dictionary<(int, int, int), int> { };
+        return MaxScore(0, n - 1, k);
+
+        int MaxScore(int i, int j, int k)
+        {
+            if (i > j) return 0;
+            if (k == 0) return 0;
+            if (solutions.TryGetValue((i, j, k), out var solution)) return solution;
+
+            var c1 = cardPoints[i] + MaxScore(i + 1, j, k - 1);
+            var c2 = cardPoints[j] + MaxScore(i, j - 1, k - 1);
+            solution = Math.Max(c1, c2);
+            solutions[(i, j, k)] = solution;
+            return solution;
+        }
+    }
+
+    public static int Ex1423_MaxScore_Window(int[] cardPoints, int k)
+    {
+        var n = cardPoints.Length;
+        var partial = 0;
+        for (var i = 0; i < n - k; i++)
+            partial += cardPoints[i];
+
+        var min = partial;
+        var total = partial;
+        for (var i = 0; i < k; i++)
+        {
+            partial += cardPoints[n - k + i] - cardPoints[i];
+            total += cardPoints[n - k + i];
+            min = Math.Min(min, partial);
+        }
+        return total - min;
+    }
+
+    public static int[] Ex1834_GetOrder(int[][] tasks)
+    {
+        var waitingTasks = new PriorityQueue<int, (int enqueueTime, int taskId)>();
+        var readyTasks = new PriorityQueue<int, (int processingTime, int taskId)>();
+
+        for (var i = 0; i < tasks.Length; ++i)
+        {
+            var task = tasks[i];
+            waitingTasks.Enqueue(i, (task[0], i));
+        }
+
+        var schedule = new int[tasks.Length];
+        var k = 0;
+        var time = 0;
+        while (k < schedule.Length)
+        {
+            while (waitingTasks.Count > 0 && tasks[waitingTasks.Peek()][0] <= time)
+            {
+                var waitingTaskId = waitingTasks.Dequeue();
+                readyTasks.Enqueue((waitingTaskId), (tasks[waitingTaskId][1], waitingTaskId));
+            }
+
+            if (readyTasks.Count == 0)
+            {
+                time = tasks[waitingTasks.Peek()][0];
+                continue;
+            }
+
+            var nextTaskId = readyTasks.Dequeue();
+            schedule[k++] = nextTaskId;
+            time += tasks[nextTaskId][1];
+        }
+
+        return schedule;
+    }
+
+    public static int[] Ex1882_AssignTasks_SingleQueue(int[] servers, int[] tasks)
+    {
+        var serversQueue = new PriorityQueue<(int serverId, int freeTime), (int freeTime, int weight, int serverId)>();
+
+        for (var i = 0; i < servers.Length; ++i)
+            serversQueue.Enqueue((i, 0), (0, servers[i], i));
+
+        var ans = new int[tasks.Length];
+        for (var taskId = 0; taskId < tasks.Length; ++taskId)
+        {
+            var (nextAvailableServerId, nextAvailableServerFreeTime) = serversQueue.Dequeue();
+            while (nextAvailableServerFreeTime < taskId)
+            {
+                serversQueue.Enqueue((nextAvailableServerId, taskId), (taskId, servers[nextAvailableServerId], nextAvailableServerId));
+                (nextAvailableServerId, nextAvailableServerFreeTime) = serversQueue.Dequeue();
+            }
+
+            var startTime = Math.Max(taskId, nextAvailableServerFreeTime);
+            var endTime = startTime + tasks[taskId];
+
+            ans[taskId] = nextAvailableServerId;
+
+            serversQueue.Enqueue(
+                (nextAvailableServerId, startTime + tasks[taskId]),
+                (endTime, servers[nextAvailableServerId], nextAvailableServerId));
+        }
+
+        return ans;
+    }
+
+    public static int[] Ex1882_AssignTasks_TwoQueues(int[] servers, int[] tasks)
+    {
+        var freeServers = new PriorityQueue<int, (int weight, int serverId)>();
+        var busyServers = new PriorityQueue<(int serverId, int freeTime), (int freeTime, int weight, int serverId)>();
+
+        for (var i = 0; i < servers.Length; ++i)
+            freeServers.Enqueue(i, (servers[i], i));
+
+        var ans = new int[tasks.Length];
+        for (var taskId = 0; taskId < tasks.Length; ++taskId)
+        {
+            while (busyServers.Count > 0 && busyServers.Peek().freeTime <= taskId)
+            {
+                var (busyServerId, busyServerFreeTime) = busyServers.Dequeue();
+                freeServers.Enqueue(busyServerId, (servers[busyServerId], busyServerId));
+            }
+
+            var (nextAvailableServerId, nextAvailableServerFreeTime) =
+                freeServers.Count > 0 ? (freeServers.Dequeue(), taskId) : busyServers.Dequeue();
+
+            var startTime = Math.Max(taskId, nextAvailableServerFreeTime);
+            var endTime = startTime + tasks[taskId];
+
+            ans[taskId] = nextAvailableServerId;
+
+            busyServers.Enqueue(
+                (nextAvailableServerId, startTime + tasks[taskId]),
+                (endTime, servers[nextAvailableServerId], nextAvailableServerId));
+        }
+
+        return ans;
+    }
+
+    public static int Ex2050_MinimumTime_ShortestPathViaTopoSort(int n, int[][] relations, int[] time)
+    {
+        // Vertices: 0 = start, 1..n = begin of courses, n+1..2n = end of courses
+        var v = 2 * n + 1;
+        var adjs = new ISet<int>[v];
+        var ws = new Dictionary<(int, int), int> { };
+
+        SetupDependencies();
+        SetupTimes();
+
+        var currentTopoSortValue = v - 1;
+        var topoSort = new int[v];
+        TopoSort(0, new HashSet<int> { });
+
+        var bestEstimates = ShortestPathOnDag();
+        var min = int.MaxValue;
+        for (var i = n + 1; i <= 2 * n; i++)
+            min = Math.Min(min, bestEstimates[i].Item1);
+        return -min;
+
+        // Setup dependencies: start node to all start courses, end of previous course -> start of next course
+        void SetupDependencies()
+        {
+            adjs[0] = new HashSet<int> { };
+            for (var i = 1; i <= n; i++)
+            {
+                adjs[0].Add(i);
+                ws[(0, i)] = 0;
+            }
+
+            for (var i = 0; i < relations.Length; i++)
+            {
+                var relation = relations[i];
+                if (adjs[relation[0] + n] != null)
+                    adjs[relation[0] + n].Add(relation[1]);
+                else
+                    adjs[relation[0] + n] = new HashSet<int> { relation[1] };
+                ws[(relation[0] + n, relation[1])] = 0;
+            }
+        }
+
+        // Setup times: start of course -> end of course
+        void SetupTimes()
+        {
+            for (var i = 1; i <= time.Length; i++)
+            {
+                if (adjs[i] != null)
+                    adjs[i].Add(i + n);
+                else
+                    adjs[i] = new HashSet<int> { i + n };
+                ws[(i, i + n)] = -time[i - 1];
+            }
+        }
+
+        // Find topological sort of the DAG
+        void TopoSort(int i, ISet<int> visited)
+        {
+            if (visited.Contains(i)) return;
+            visited.Add(i);
+
+            if (adjs[i] != null)
+                foreach (var j in adjs[i])
+                    TopoSort(j, visited);
+
+            topoSort[currentTopoSortValue--] = i;
+        }
+
+        // Edge relaxation in toposort to find shortest distance
+        IDictionary<int, (int, int)> ShortestPathOnDag()
+        {
+            var bestEstimates = new Dictionary<int, (int, int)>
+            {
+                [0] = (0, -1),
+            };
+            for (var i = 0; i < topoSort.Length; i++)
+            {
+                if (bestEstimates.TryGetValue(topoSort[i], out var d1) && adjs[topoSort[i]] != null)
+                {
+                    foreach (var j in adjs[topoSort[i]])
+                    {
+                        var edgeWeigth = ws[(topoSort[i], j)];
+                        if (!bestEstimates.TryGetValue(j, out var d2) || d1.Item1 + edgeWeigth < d2.Item1)
+                            bestEstimates[j] = (d1.Item1 + edgeWeigth, topoSort[i]);
+                    }
+                }
+            }
+
+            return bestEstimates;
+        }
+    }
+
+    public static int Ex2050_MinimumTime_ShortestPathViaDfs(int n, int[][] relations, int[] time)
+    {
+        // Vertices: 0 = start, 1..n = begin of courses, n+1..2n = end of courses
+        var v = 2 * n + 1;
+        var adjs = new ISet<int>[v];
+        var ws = new Dictionary<(int, int), int> { };
+
+        SetupDependencies();
+        SetupTimes();
+
+        var longestPaths = new int[v];
+        for (var i = 0; i < v; ++i)
+            longestPaths[i] = -1;
+        return Dfs(0, longestPaths);
+
+        // Setup dependencies: end of previous course -> start of next course
+        void SetupDependencies()
+        {
+            adjs[0] = new HashSet<int> { };
+            for (var i = 1; i <= n; ++i)
+            {
+                adjs[0].Add(i);
+                ws[(0, i)] = 0;
+            }
+
+            for (var i = 0; i < relations.Length; ++i)
+            {
+                var relation = relations[i];
+                if (adjs[relation[0] + n] != null)
+                    adjs[relation[0] + n].Add(relation[1]);
+                else
+                    adjs[relation[0] + n] = new HashSet<int> { relation[1] };
+                ws[(relation[0] + n, relation[1])] = 0;
+            }
+        }
+
+        // Setup times: start of course -> end of course
+        void SetupTimes()
+        {
+            for (var i = 1; i <= time.Length; ++i)
+            {
+                if (adjs[i] != null)
+                    adjs[i].Add(i + n);
+                else
+                    adjs[i] = new HashSet<int> { i + n };
+                ws[(i, i + n)] = time[i - 1];
+            }
+        }
+
+        int Dfs(int i, int[] longestPaths)
+        {
+            if (longestPaths[i] >= 0) return longestPaths[i];
+
+            var max = 0;
+
+            if (adjs[i] != null)
+            {
+                foreach (var j in adjs[i])
+                    max = Math.Max(max, ws[(i, j)] + Dfs(j, longestPaths));
+            }
+
+            longestPaths[i] = max;
+            return max;
+        }
+    }
+
+    public static int Ex2050_MinimumTime_AllPairsLongestPathViaTopoSort(int n, int[][] relations, int[] time)
+    {
+        // Vertices: 0 = start, 1..n = begin of courses, n+1..2n = end of courses
+        var v = 2 * n + 1;
+        var adjs = new ISet<int>[v];
+        var ws = new Dictionary<(int, int), int> { };
+
+        SetupDependencies();
+        SetupTimes();
+
+        var currentTopoSortValue = v - 1;
+        var topoSort = new int[v];
+        TopoSort(0, new HashSet<int> { });
+
+        var longestPaths = LongestPathOnDag();
+        var max = int.MinValue;
+        for (var i = n + 1; i <= 2 * n; i++)
+            max = Math.Max(max, longestPaths[0, i]);
+        return max;
+
+        // Setup dependencies: start node to all start courses, end of previous course -> start of next course
+        void SetupDependencies()
+        {
+            adjs[0] = new HashSet<int> { };
+            for (var i = 1; i <= n; i++)
+            {
+                adjs[0].Add(i);
+                ws[(0, i)] = 0;
+            }
+
+            for (var i = 0; i < relations.Length; i++)
+            {
+                var relation = relations[i];
+                if (adjs[relation[0] + n] != null)
+                    adjs[relation[0] + n].Add(relation[1]);
+                else
+                    adjs[relation[0] + n] = new HashSet<int> { relation[1] };
+                ws[(relation[0] + n, relation[1])] = 0;
+            }
+        }
+
+        // Setup times: start of course -> end of course
+        void SetupTimes()
+        {
+            for (var i = 1; i <= time.Length; i++)
+            {
+                if (adjs[i] != null)
+                    adjs[i].Add(i + n);
+                else
+                    adjs[i] = new HashSet<int> { i + n };
+                ws[(i, i + n)] = time[i - 1];
+            }
+        }
+
+        // Find topological sort of the DAG
+        void TopoSort(int i, ISet<int> visited)
+        {
+            if (visited.Contains(i)) return;
+            visited.Add(i);
+
+            if (adjs[i] != null)
+                foreach (var j in adjs[i])
+                    TopoSort(j, visited);
+
+            topoSort[currentTopoSortValue--] = i;
+        }
+
+        // Edge maximization in reverse toposort to find longest distance
+        int[,] LongestPathOnDag()
+        {
+            var longestPaths = new int[v, v];
+            for (var i = 0; i < v; i++)
+                for (var j = 0; j < v; j++)
+                    longestPaths[i, j] = i != j ? int.MaxValue : 0; // In a DAG every vertex reaches itself with 0 max distance
+
+            for (var vertexSortId = v - 1; vertexSortId >= 0; vertexSortId--)
+            {
+                var vertex = topoSort[vertexSortId];
+
+                if (adjs[vertex] == null) continue;
+
+                foreach (var neighbor in adjs[vertex])
+                {
+                    for (var otherVertexSort = vertexSortId + 1; otherVertexSort < v; otherVertexSort++)
+                    {
+                        var otherVertex = topoSort[otherVertexSort];
+                        if (longestPaths[neighbor, otherVertex] != int.MaxValue)
+                            longestPaths[vertex, otherVertex] = Math.Max(
+                                longestPaths[vertex, otherVertex] == int.MaxValue ? int.MinValue : longestPaths[vertex, otherVertex], 
+                                ws[(vertex, neighbor)] + longestPaths[neighbor, otherVertex]);
+                    }
+                }
+            }
+
+            return longestPaths;
         }
     }
 

@@ -252,6 +252,23 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex347_TopKFrequent()
+    {
+        Assert.IsTrue(Array.Empty<int>().SequenceEqual(Leetcode.Ex347_TopKFrequent(new[] { 1, 1, 1, 1, 2, 3, 4, 4, 4 }, 0)));
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(Leetcode.Ex347_TopKFrequent(new[] { 1, 1, 1, 1, 2, 3, 4, 4, 4 }, 1)));
+        Assert.IsTrue(new[] { 1, 4 }.SequenceEqual(Leetcode.Ex347_TopKFrequent(new[] { 1, 1, 1, 2, 2, 3, 4, 4, 4 }, 2)));
+    }
+
+    [TestMethod]
+    public void Ex347_TopKFrequent_PartialSort()
+    {
+        Assert.IsTrue(Array.Empty<int>().SequenceEqual(Leetcode.Ex347_TopKFrequent_PartialSort(new[] { 1, 1, 1, 1, 2, 3, 4, 4, 4 }, 0)));
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(Leetcode.Ex347_TopKFrequent_PartialSort(new[] { 1, 1, 1, 1, 2, 3, 4, 4, 4 }, 1)));
+        Assert.IsTrue(new[] { 1, 4 }.SequenceEqual(Leetcode.Ex347_TopKFrequent_PartialSort(new[] { 1, 1, 1, 2, 2, 3, 4, 4, 4 }, 2)));
+        Assert.IsTrue(new[] { 1, 2, 3 }.SequenceEqual(Leetcode.Ex347_TopKFrequent_PartialSort(new[] { 1, 1, 1, 2, 2, 2, 3, 3, 3 }, 3)));
+    }
+
+    [TestMethod]
     public void Ex399_CalcEquation_Dfs()
     {
         new[] { 6.00000, 0.50000, 1.20000, 1.00000, -1.00000, 0.50000 }
@@ -290,6 +307,22 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex451_FrequencySort()
+    {
+        Assert.AreEqual("eeerrt", Leetcode.Ex451_FrequencySort("trreee"));
+        Assert.AreEqual("rrreet", Leetcode.Ex451_FrequencySort("treerr"));
+        Assert.AreEqual("sssssssffffff44444aaaa55522", Leetcode.Ex451_FrequencySort("2a554442f544asfasssffffasss"));
+    }
+
+    [TestMethod]
+    public void Ex451_FrequencySort_WithArray()
+    {
+        Assert.AreEqual("eeerrt", Leetcode.Ex451_FrequencySort_WithArray("trreee"));
+        Assert.AreEqual("rrreet", Leetcode.Ex451_FrequencySort_WithArray("treerr"));
+        Assert.AreEqual("sssssssffffff44444aaaa55522", Leetcode.Ex451_FrequencySort_WithArray("2a554442f544asfasssffffasss"));
+    }
+
+    [TestMethod]
     public void Ex494_FindTargetSumWays()
     {
         Assert.AreEqual(0, Leetcode.Ex494_FindTargetSumWays(new[] { 1, 1, 1, 1, 1, 4, 0, 6 }, 8));
@@ -305,6 +338,66 @@ public class LeetcodeTests
     {
         Assert.AreEqual(2, Leetcode.Ex547_FindCircleNum(new[] {new[] {1, 1, 0},new[] {1, 1, 0},new[] {0, 0, 1}}));
         Assert.AreEqual(3, Leetcode.Ex547_FindCircleNum(new[] { new[] { 1, 0, 0 }, new[] { 0, 1, 0 }, new[] { 0, 0, 1 } }));
+    }
+
+    [TestMethod]
+    public void Ex1423_MaxScore_DP()
+    {
+        Assert.AreEqual(12, Leetcode.Ex1423_MaxScore_DP(new[] { 1, 2, 3, 4, 5, 6, 1 }, 3));
+        Assert.AreEqual(4, Leetcode.Ex1423_MaxScore_DP(new[] { 2, 2, 2 }, 2));
+        Assert.AreEqual(55, Leetcode.Ex1423_MaxScore_DP(new[] { 9, 7, 7, 9, 7, 7, 9 }, 7));
+    }
+
+    [TestMethod]
+    public void Ex1423_MaxScore_Window()
+    {
+        Assert.AreEqual(12, Leetcode.Ex1423_MaxScore_Window(new[] { 1, 2, 3, 4, 5, 6, 1 }, 3));
+        Assert.AreEqual(4, Leetcode.Ex1423_MaxScore_Window(new[] { 2, 2, 2 }, 2));
+        Assert.AreEqual(55, Leetcode.Ex1423_MaxScore_Window(new[] { 9, 7, 7, 9, 7, 7, 9 }, 7));
+    }
+
+    [TestMethod]
+    public void Ex1834_GetOrder()
+    {
+        Assert.IsTrue(new[] { 0, 2, 3, 1 }.SequenceEqual(Leetcode.Ex1834_GetOrder(
+            new[] { new[] { 1, 2 }, new[] { 2, 4 }, new[] { 3, 2 }, new[] { 4, 1 } })));
+        Assert.IsTrue(new[] { 4, 3, 2, 0, 1 }.SequenceEqual(Leetcode.Ex1834_GetOrder(
+            new[] { new[] { 7, 10 }, new[] { 7, 12 }, new[] { 7, 5 }, new[] { 7, 4 }, new[] { 7, 2 } })));
+    }
+
+    [TestMethod]
+    public void Ex1882_AssignTasks_SingleQueue()
+    {
+        Assert.IsTrue(new[] { 2, 2, 0, 2, 1, 2 }.SequenceEqual(Leetcode.Ex1882_AssignTasks_SingleQueue
+            (new[] { 3, 3, 2 }, new[] { 1, 2, 3, 2, 1, 2 })));
+    }
+
+    [TestMethod]
+    public void Ex1882_AssignTasks_TwoQueues()
+    {
+        Assert.IsTrue(new[] { 2, 2, 0, 2, 1, 2 }.SequenceEqual(Leetcode.Ex1882_AssignTasks_TwoQueues
+            (new[] { 3, 3, 2 }, new[] { 1, 2, 3, 2, 1, 2 })));
+    }
+
+    [TestMethod]
+    public void Ex2050_MinimumTime_ShortestPathViaTopoSort()
+    {
+        Assert.AreEqual(8, Leetcode.Ex2050_MinimumTime_ShortestPathViaTopoSort(
+            3, new[] { new[] { 1, 3 }, new[] { 2, 3 } }, new[] { 3, 2, 5 }));
+    }
+
+    [TestMethod]
+    public void Ex2050_MinimumTime_LongestPathViaTopoSort()
+    {
+        Assert.AreEqual(8, Leetcode.Ex2050_MinimumTime_AllPairsLongestPathViaTopoSort(
+            3, new[] { new[] { 1, 3 }, new[] { 2, 3 } }, new[] { 3, 2, 5 }));
+    }
+
+    [TestMethod]
+    public void Ex2050_MinimumTime_ShortestPathViaDfs()
+    {
+        Assert.AreEqual(8, Leetcode.Ex2050_MinimumTime_ShortestPathViaDfs(
+            3, new[] { new[] { 1, 3 }, new[] { 2, 3 } }, new[] { 3, 2, 5 }));
     }
 
     [TestMethod]
