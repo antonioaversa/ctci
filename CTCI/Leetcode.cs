@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -95,6 +96,27 @@ public static class Leetcode
             }
         }
         return true;
+    }
+
+    public static int Ex41_FirstMissingPositive(int[] nums)
+    {
+        for (var i = 0; i < nums.Length; i++)
+        {
+            var v = nums[i] - 1;
+
+            while (v >= 0 && v < nums.Length && nums[v] != v + 1)
+            {
+                var t = nums[v] - 1;
+                nums[v] = v + 1;
+                v = t;
+            }
+        }
+
+        for (var i = 0; i < nums.Length; i++)
+            if (nums[i] != i + 1)
+                return i + 1;
+
+        return nums.Length + 1;
     }
 
     public static int Ex45_Jump(int[] nums)
@@ -204,6 +226,25 @@ public static class Leetcode
         }
 
         return max > 0 ? maxSum : max;
+    }
+
+    public static int Ex69_MySqrt(int x)
+    {
+        if (x <= 1) return x;
+        var low = 1;
+        var hi = x / 2;
+        while (low <= hi)
+        {
+            var middle = low + (hi - low) / 2;
+            var middleSquare = (long)middle * middle;
+            if (middleSquare == x) return middle;
+            if (middleSquare < x)
+                low = middle + 1;
+            else
+                hi = middle - 1;
+        }
+
+        return hi;
     }
 
     public static IList<IList<string>> Ex131_PalindromePartition(string s)
@@ -376,6 +417,29 @@ public static class Leetcode
 
             return false;
         }
+    }
+
+    public class TreeNode
+    {
+        public int val;
+        public TreeNode left;
+        public TreeNode right;
+
+        public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
+        {
+             this.val = val;
+             this.left = left;
+             this.right = right;
+        }
+    }
+
+    public static TreeNode Ex226_InvertTree(TreeNode root)
+    {
+        if (root == null) return null;
+
+        var left = Ex226_InvertTree(root.left);
+        var right = Ex226_InvertTree(root.right);
+        return new TreeNode(root.val, right, left);
     }
 
     public static IList<int> Ex310_FindMinHeightTrees_BfsOnly(int n, int[][] edges)
@@ -941,6 +1005,111 @@ public static class Leetcode
         }
     }
 
+    public static string Ex727_MinWindow(string s, string t)
+    {
+        var n = s.Length;
+        var m = t.Length;
+        var solutions = new Dictionary<(int, int), int> { };
+
+        var minLength = int.MaxValue;
+        var minIndex = -1;
+        for (var i = 0; i < n; i++)
+        {
+            var length = MinWindow(i, 0);
+            if (length >= 0 && length < minLength)
+            {
+                minLength = length;
+                minIndex = i;
+            }
+        }
+
+        return minIndex >= 0 ? s[minIndex..(minIndex + minLength)] : string.Empty;
+
+        int MinWindow(int i, int j)
+        {
+            if (j >= m) return 0;
+            if (i >= n) return -1;
+            if (solutions.TryGetValue((i, j), out var solution)) return solution;
+
+            if (s[i] == t[j])
+                solution = MinWindow(i + 1, j + 1);
+            else
+                solution = MinWindow(i + 1, j);
+
+            solution = solution >= 0 ? solution + 1 : -1;
+            solutions[(i, j)] = solution;
+            return solution;
+        }
+    }
+
+    public static string Ex1138_AlphabetBoardPath(string target)
+    {
+        var moves = new StringBuilder();
+        var currI = 0; var currJ = 0;
+        foreach (var c in target)
+        {
+            var (targetI, targetJ) = TargetPosition(c);
+            IssueMoves(moves, (currI, currJ), (targetI, targetJ));
+            moves.Append('!');
+            (currI, currJ) = (targetI, targetJ);
+        }
+        return moves.ToString();
+
+        static (int, int) TargetPosition(char c) => ((c - 'a') / 5, (c - 'a') % 5);
+
+        static void IssueMoves(StringBuilder moves, (int i, int j) initial, (int i, int j) final)
+        {
+            if (initial == final) return;
+            if (initial == (5, 0))
+            {
+                moves.Append('U');
+                IssueMoves(moves, (4, 0), final);
+                return;
+            }
+
+            if (final == (5, 0))
+            {
+                IssueMoves(moves, initial, (4, 0));
+                moves.Append('D');
+                return;
+            }
+
+            var horintalMove = initial.i < final.i ? 'D' : 'U';
+            for (var i = 0; i < Math.Abs(final.i - initial.i); i++)
+                moves.Append(horintalMove);
+
+            var verticalMove = initial.j < final.j ? 'R' : 'L';
+            for (var i = 0; i < Math.Abs(final.j - initial.j); i++)
+                moves.Append(verticalMove);
+
+        }
+    }
+
+    public static bool Ex1153_CanConvert(string s1, string s2, int alphabetSize = 26)
+    {
+        var n = s1.Length;
+        if (n != s2.Length) return false;
+        if (s1 == s2) return true;
+
+        var distinctChars1 = new HashSet<char>(s1);
+        var distinctChars2 = new HashSet<char>(s2);
+
+        if (distinctChars1.Count >= alphabetSize && distinctChars2.Count >= alphabetSize)
+            return false;
+        if (distinctChars2.Count > distinctChars1.Count)
+            return false;
+
+        var mapping = new Dictionary<char, char> { };
+        for (var i = 0; i < n; i++)
+        {
+            if (mapping.TryGetValue(s1[i], out var c) && c != s2[i])
+                return false;
+            mapping[s1[i]] = s2[i];
+        }
+
+        return true;
+    }
+
     public static int Ex1423_MaxScore_DP(int[] cardPoints, int k)
     {
         var n = cardPoints.Length;
@@ -980,6 +1149,102 @@ public static class Leetcode
             min = Math.Min(min, partial);
         }
         return total - min;
+    }
+
+    public static int Ex1499_FindMaxValueOfEquation(int[][] points, int k)
+    {
+        var n = points.Length;
+        var max = int.MinValue;
+        for (var i = 0; i < n - 1; i++)
+        {
+            for (var j = i + 1; j < n; j++)
+            {
+                var d = points[j][0] - points[i][0];
+                if (d > k) break;
+                max = Math.Max(max, d + points[j][1] + points[i][1]);
+            }
+        }
+
+        return max;
+    }
+
+    public static int Ex1499_FindMaxValueOfEquation_WithHeap(int[][] points, int k)
+    {
+        var X = 0;
+        var Y = 1;
+        var n = points.Length;
+        var queue = new PriorityQueue<int, int>();
+
+        var max = int.MinValue;
+        for (var j = 1; j < n; j++)
+        {
+            queue.Enqueue(j - 1, points[j - 1][X] - points[j - 1][Y]);
+
+            while (queue.Count > 0 && points[j][X] - points[queue.Peek()][X] > k)
+                queue.Dequeue();
+
+            if (queue.Count == 0) continue;
+
+            var i = queue.Peek();
+            max = Math.Max(max, points[j][X] + points[j][Y] + points[i][Y] - points[i][X]);
+        }
+        return max;
+    }
+
+    public static string[] Ex1548_MostSimilarPath(
+        int n, IList<IList<int>> roads, string[] names, string[] targetPath)
+    {
+        if (n <= 0 || targetPath.Length == 0) return Array.Empty<string>();
+
+        var namesToIds = names.Select((name, index) => (name, index)).ToDictionary(c => c.name, c => c.index);
+        var targetPathIds = targetPath.Select(name => namesToIds[name]).ToArray();
+
+        var adjs = new ISet<int>[n];
+        for (var i = 0; i < roads.Count; i++)
+        {
+            var city1 = roads[i][0];
+            var city2 = roads[i][1];
+            if (adjs[city1] == null)
+                adjs[city1] = new HashSet<int> { city2 };
+            else
+                adjs[city1].Add(city2);
+            if (adjs[city2] == null)
+                adjs[city2] = new HashSet<int> { city1 };
+            else
+                adjs[city2].Add(city1);
+        }
+
+        var solutions = new Dictionary<(int, int), (int, int[])> { };
+        return MostSimilarPath(targetPathIds[0], 0).path!.Select(v => names[v]).ToArray();
+
+        (int editDistance, int[] path) MostSimilarPath(int vertex, int j)
+        {
+            var nextTargetVertex = vertex != targetPathIds[j] ? 1 : 0;
+            if (j == targetPath.Length - 1) 
+                return (nextTargetVertex, new[] { vertex });
+
+            if (solutions.TryGetValue((vertex, j), out var solution)) return solution;
+
+            int minEditDistance = int.MaxValue;
+            int[] minPath = Array.Empty<int>();
+            foreach (var neighbor in adjs[vertex].OrderBy(i => i))
+            {
+                var (editDistance, path) = MostSimilarPath(neighbor, j + 1);
+
+                if (minEditDistance > editDistance)
+                {
+                    minEditDistance = editDistance;
+                    minPath = path;
+                }
+            }
+
+            solution = minEditDistance == int.MaxValue
+                ? (minEditDistance, minPath)
+                : (minEditDistance + nextTargetVertex, minPath.Prepend(vertex).ToArray());
+
+            solutions[(vertex, j)] = solution;
+            return solution;
+        }
     }
 
     public static int[] Ex1834_GetOrder(int[][] tasks)

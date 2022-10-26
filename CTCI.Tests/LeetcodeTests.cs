@@ -54,6 +54,18 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex41_FirstMissingPositive()
+    {
+        Assert.AreEqual(3, Leetcode.Ex41_FirstMissingPositive(new[] { 1, 2 }));
+        Assert.AreEqual(3, Leetcode.Ex41_FirstMissingPositive(new[] { 1, 2, 4 }));
+        Assert.AreEqual(3, Leetcode.Ex41_FirstMissingPositive(new[] { 1, 2, -1 }));
+        Assert.AreEqual(4, Leetcode.Ex41_FirstMissingPositive(new[] { 1, 2, 0, -1, 3 }));
+        Assert.AreEqual(4, Leetcode.Ex41_FirstMissingPositive(new[] { 1, 2, 1, 3, 3 }));
+        Assert.AreEqual(3, Leetcode.Ex41_FirstMissingPositive(new[] { 1, 2, 4, 4, 5, 1, 0, -1 }));
+        Assert.AreEqual(7, Leetcode.Ex41_FirstMissingPositive(new[] { 1, 2, 6, 3, 5, 4 }));
+    }
+
+    [TestMethod]
     public void Ex45_Jump()
     {
         Assert.AreEqual(2, Leetcode.Ex45_Jump(new int[] { 2, 3, 1, 9, 4 }));
@@ -103,6 +115,12 @@ public class LeetcodeTests
             new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4, -1, -10, -2, 8, -6, 6 }));
         Assert.AreEqual(-1, Leetcode.Ex53_MaximumSubarray_Kadane(new int[] { -2, -1 }));
         Assert.AreEqual(-1, Leetcode.Ex53_MaximumSubarray_Kadane(new int[] { -1, -2 }));
+    }
+
+    [TestMethod]
+    public void Ex69_MySqrt()
+    {
+        Assert.AreEqual(46339, Leetcode.Ex69_MySqrt(2147395599));
     }
 
     [TestMethod]
@@ -188,6 +206,36 @@ public class LeetcodeTests
             Leetcode.Ex210_FindOrder(3, new[] { new[] { 0, 1 }, new[] { 2, 1 }, new[] { 2, 0 } })));
         Assert.IsTrue(Array.Empty<int>().SequenceEqual(
             Leetcode.Ex210_FindOrder(3, new[] { new[] { 0, 1 }, new[] { 2, 1 }, new[] { 1, 2 } })));
+    }
+
+    [TestMethod]
+    public void Ex226_InvertTree()
+    {
+        var input = ArrayToTree(new[] { 4, 2, 7, 1, 3, 6, 9 }, 0);
+        Assert.IsTrue(new[] { 4, 7, 2, 9, 6, 3, 1 }.SequenceEqual(TreeToArray(Leetcode.Ex226_InvertTree(input))));
+
+        TreeNode? ArrayToTree(int[] vals, int i)
+        {
+            if (i >= vals.Length) return null;
+            var left = ArrayToTree(vals, 2 * i + 1);
+            var right = ArrayToTree(vals, 2 * i + 2);
+            return new TreeNode(vals[i], left, right);
+        }
+
+        IEnumerable<int> TreeToArray(TreeNode node)
+        {
+            if (node == null) yield break;
+
+            var queue = new Queue<TreeNode>();
+            queue.Enqueue(node);
+            while (queue.Count > 0)
+            {
+                var n = queue.Dequeue();
+                yield return n.val;
+                if (n.left != null) queue.Enqueue(n.left);
+                if (n.right != null) queue.Enqueue(n.right);
+            }
+        }
     }
 
     [TestMethod]
@@ -341,6 +389,51 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex727_MinWindow()
+    {
+        Assert.AreEqual("xyz", Leetcode.Ex727_MinWindow("xxyxyz", "xyz"));
+        Assert.AreEqual("xaybbz", Leetcode.Ex727_MinWindow("xaybbzxaaybz", "xyz"));
+        Assert.AreEqual("xaaybz", Leetcode.Ex727_MinWindow("xaaybbzxaaybz", "xyz"));
+        Assert.AreEqual("xyabcz", Leetcode.Ex727_MinWindow("xaayxaaaybxyabcz", "xyz"));
+        Assert.AreEqual("", Leetcode.Ex727_MinWindow("yxz", "xyz"));
+        Assert.AreEqual("", Leetcode.Ex727_MinWindow("yzx", "xyz"));
+        Assert.AreEqual("xayyyyybz", Leetcode.Ex727_MinWindow("xxxxxxxayyyyybzzzzzz", "xyz"));
+    }
+
+    [TestMethod]
+    public void Ex1138_AlphabetBoardPath()
+    {
+        Assert.AreEqual("DDR!UURRR!!DDD!", Leetcode.Ex1138_AlphabetBoardPath("leet"));
+        Assert.AreEqual("RR!DDRR!UUL!R!", Leetcode.Ex1138_AlphabetBoardPath("code"));
+        Assert.AreEqual("DDDDD!UURRRR!UUU!DDDDLLLLD!UURRR!R!DLLLLD!", Leetcode.Ex1138_AlphabetBoardPath("ztezstz"));
+    }
+
+    [TestMethod]
+    public void Ex1153_CanConvert()
+    {
+        Assert.IsTrue(Leetcode.Ex1153_CanConvert("ab", "ba", 3));
+        Assert.IsTrue(Leetcode.Ex1153_CanConvert("ab", "bb", 3));
+        Assert.IsTrue(Leetcode.Ex1153_CanConvert("ab", "aa", 3));
+        
+        Assert.IsFalse(Leetcode.Ex1153_CanConvert("ab", "ba", 2));
+        Assert.IsTrue(Leetcode.Ex1153_CanConvert("ab", "aa", 2));
+        Assert.IsTrue(Leetcode.Ex1153_CanConvert("ab", "bb", 2));
+
+        Assert.IsTrue(Leetcode.Ex1153_CanConvert("aba", "bab", 3));
+        Assert.IsFalse(Leetcode.Ex1153_CanConvert("aba", "abc", 3));
+        Assert.IsTrue(Leetcode.Ex1153_CanConvert("aba", "cac", 3));
+
+        Assert.IsTrue(Leetcode.Ex1153_CanConvert("abcd", "aaaa", 4));
+        Assert.IsTrue(Leetcode.Ex1153_CanConvert("abcd", "abbb", 4));
+        Assert.IsTrue(Leetcode.Ex1153_CanConvert("abcd", "dcaa", 4));
+        Assert.IsTrue(Leetcode.Ex1153_CanConvert("abcd", "abba", 4));
+        Assert.IsTrue(Leetcode.Ex1153_CanConvert("abba", "baab", 3));
+
+        Assert.IsTrue(Leetcode.Ex1153_CanConvert("aabcc", "ccdee", 26));
+        Assert.IsFalse(Leetcode.Ex1153_CanConvert("leetcode", "codeleet", 26));
+    }
+
+    [TestMethod]
     public void Ex1423_MaxScore_DP()
     {
         Assert.AreEqual(12, Leetcode.Ex1423_MaxScore_DP(new[] { 1, 2, 3, 4, 5, 6, 1 }, 3));
@@ -354,6 +447,51 @@ public class LeetcodeTests
         Assert.AreEqual(12, Leetcode.Ex1423_MaxScore_Window(new[] { 1, 2, 3, 4, 5, 6, 1 }, 3));
         Assert.AreEqual(4, Leetcode.Ex1423_MaxScore_Window(new[] { 2, 2, 2 }, 2));
         Assert.AreEqual(55, Leetcode.Ex1423_MaxScore_Window(new[] { 9, 7, 7, 9, 7, 7, 9 }, 7));
+    }
+
+    [TestMethod]
+    public void Ex1499_FindMaxValueOfEquation()
+    {
+        Assert.AreEqual(4, Leetcode.Ex1499_FindMaxValueOfEquation(
+            new[] { new[] { 1, 3 }, new[] { 2, 0 }, new[] { 5, 10 }, new[] { 6, -10 } }, 1));
+        Assert.AreEqual(3, Leetcode.Ex1499_FindMaxValueOfEquation(
+            new[] { new[] { 0, 0 }, new[] { 3, 0 }, new[] { 9, 2 } }, 3));
+    }
+
+    [TestMethod]
+    public void Ex1499_FindMaxValueOfEquation_WithHeap()
+    {
+        Assert.AreEqual(4, Leetcode.Ex1499_FindMaxValueOfEquation_WithHeap(
+            new[] { new[] { 1, 3 }, new[] { 2, 0 }, new[] { 5, 10 }, new[] { 6, -10 } }, 1));
+        Assert.AreEqual(3, Leetcode.Ex1499_FindMaxValueOfEquation_WithHeap(
+            new[] { new[] { 0, 0 }, new[] { 3, 0 }, new[] { 9, 2 } }, 3));
+    }
+
+    [TestMethod]
+    public void Ex1548_MostSimilarPath()
+    {
+        var names = new[] { "A", "B", "C", "D", "E", "F" };
+        var n = names.Length;
+        var namesToIds = names.Select((n, i) => (n, i)).ToDictionary(c => c.n, c => c.i);
+        IList<IList<int>> ToRoads(string roads) => roads
+            .Split(';')
+            .Select(road => road
+                .Split(',')
+                .Select(c => namesToIds[c])
+                .ToList() as IList<int>)
+            .ToList();
+        string[] ToPath(string pathStr) => pathStr.Select(c => c.ToString()).ToArray();
+
+        Assert.AreEqual("ABC",
+            string.Join("", Leetcode.Ex1548_MostSimilarPath(n, ToRoads("A,B;B,C"), names, ToPath("ABC"))));
+        Assert.AreEqual("ABA",
+            string.Join("", Leetcode.Ex1548_MostSimilarPath(n, ToRoads("A,B"), names, ToPath("ABC"))));
+        Assert.AreEqual("ACAC",
+            string.Join("", Leetcode.Ex1548_MostSimilarPath(n, ToRoads("A,C;C,D"), names, ToPath("ABCC"))));
+        Assert.AreEqual("ACDE",
+            string.Join("", Leetcode.Ex1548_MostSimilarPath(n, ToRoads("A,C;C,D;D,E"), names, ToPath("ACDE"))));
+        Assert.AreEqual("ACACA",
+            string.Join("", Leetcode.Ex1548_MostSimilarPath(n, ToRoads("A,C;C,D;D,E"), names, ToPath("ABCDE"))));
     }
 
     [TestMethod]
