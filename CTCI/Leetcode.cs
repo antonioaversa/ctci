@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Globalization;
-using System.Linq;
+﻿using System.Data;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CTCI;
 
@@ -1039,6 +1034,74 @@ public static class Leetcode
             solution = solution >= 0 ? solution + 1 : -1;
             solutions[(i, j)] = solution;
             return solution;
+        }
+    }
+
+    public interface Ex843_IMaster
+    {
+        public abstract int Guess(string word);
+    }
+
+    public static void Ex843_FindSecretWord(string[] words, Ex843_IMaster master)
+    {
+        var W = words.Length; // number of words => indexed by w
+        var P = words[0].Length; // number of char positions in each word (6) => indexed by p
+        var C = ('z' - 'a') + 1; // number of possible chars values (26) => indexed by c
+
+        // Build:
+        // - frequencies matrix: char c and position p => frequency of c at position p across all words
+        // - distinctChars array of sets: position p => distinct chars at position p across all words
+        var frequencies = new float[C, P];
+        var distinctChars = new ISet<char>[P];
+        for (var p = 0; p < P; p++)
+        {
+            distinctChars[p] = new HashSet<char> { };
+
+            for (var w = 0; w < W; w++)
+            {
+                var word = words[w];
+                var c = word[p] - 'a';
+                frequencies[c, p]++;
+                distinctChars[p].Add(word[p]);
+            }
+        }
+
+        Console.WriteLine("FREQUENCIES:");
+        Console.WriteLine(string.Join("\n", Enumerable
+            .Range(0, frequencies.GetLength(0))
+            .Select(c => $"c = {(char)('a' + c)} => " + string.Join(" ", Enumerable
+                .Range(0, frequencies.GetLength(1))
+                .Select(p => frequencies[c, p])))));
+
+        Console.WriteLine("DISTINCT CHARS:");
+        Console.WriteLine(string.Join("\n", Enumerable
+            .Range(0, distinctChars.Length)
+            .Select((c, i) => $"p = {i} => " + string.Join(" ", distinctChars[c]))));
+
+        // Transform frequencies into scores for deviation from the best case 
+        var scores = new float[C, P];
+        for (var p = 0; p < P; p++)
+        {
+            for (var c = 0; c < C; c++)
+            {
+                scores[c, p] = (float)Math.Pow(W / 2.0 - frequencies[c, p], 2);
+            }
+        }
+
+        var ws = new HashSet<string>(words);
+
+        while (true)
+        {
+            var word = ws.MinBy(w => w.Select((c, i) => scores[c - 'a', i]).Sum());
+            var charsInCommon = master.Guess(word);
+            if (charsInCommon == word.Length)
+                return;
+            var wordsToRemove = ws.Where(w => w.Zip(word).Count(c => c.First == c.Second) != charsInCommon);
+            foreach (var wordToRemove in wordsToRemove)
+                ws.Remove(wordToRemove);
+            ws.Remove(word);
+
+            Console.WriteLine($"Remaining {ws.Count} words");
         }
     }
 
