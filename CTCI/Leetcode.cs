@@ -1,10 +1,36 @@
 ﻿using System.Data;
+using System.Diagnostics.Metrics;
 using System.Text;
 
 namespace CTCI;
 
 public static class Leetcode
 {
+    public static int Ex3_LengthOfLongestSubstring(string s)
+    {
+        if (s.Length <= 1) return s.Length;
+
+        var i = 0; var j = 0; var max = 1;
+        var charsInWindow = new HashSet<char> { s[0] };
+
+        while (j < s.Length - 1)
+        {
+            if (!charsInWindow.Contains(s[j + 1]))
+            {
+                charsInWindow.Add(s[j + 1]);
+                j++;
+                max = Math.Max(max, charsInWindow.Count);
+            }
+            else if (i <= j)
+            {
+                charsInWindow.Remove(s[i]);
+                i++;
+            }
+        }
+
+        return max;
+    }
+
     public static string Ex5_LongestPalindrome(string s)
     {
         var solutions = new Dictionary<(int, int), (int, int)> { };
@@ -284,6 +310,92 @@ public static class Leetcode
         }
     }
 
+    public static int Ex149_MaxPoints(int[][] points)
+    {
+        var X = 0;
+        var Y = 1;
+
+        var n = points.GetLength(0);
+        if (n <= 1) return n;
+
+        var lines = new Dictionary<(double slope, double yIntercept), ISet<(int, int)>> { };
+        var max = int.MinValue;
+        for (var i = 0; i < n; i++)
+        {
+            for (var j = i + 1; j < n; j++)
+            {
+                var line = LineThough(points[i], points[j]);
+
+                if (lines.TryGetValue(line, out var pointsOnLine))
+                {
+                    pointsOnLine.Add((points[i][X], points[i][Y]));
+                    pointsOnLine.Add((points[j][X], points[j][Y]));
+                }
+                else
+                {
+                    pointsOnLine = new HashSet<(int, int)>
+                    {
+                        (points[i][X], points[i][Y]),
+                        (points[j][X], points[j][Y])
+                    };
+                    lines[(line)] = pointsOnLine;
+                }
+
+                Console.WriteLine($"Lines: {string.Join("\n", lines.Select(kvp => $"{kvp.Key} => {string.Join(" ", kvp.Value)}"))}");
+
+                max = Math.Max(max, pointsOnLine.Count);
+            }
+        }
+
+        return max;
+
+        (double slope, double yIntercept) LineThough(int[] p1, int[] p2, int digitsPrecision = 8)
+        {
+            if (p1[X] == p2[X]) return (int.MaxValue, p1[X]);
+            var slope = ((double)p1[Y] - p2[Y]) / (p1[X] - p2[X]);
+            var yIntercept = p1[Y] - slope * p1[X];
+            return (Math.Round(slope, digitsPrecision), Math.Round(yIntercept, digitsPrecision));
+        }
+    }
+
+    public static int Ex149_MaxPoints_Fixing1stPoint(int[][] points)
+    {
+        var X = 0;
+        var Y = 1;
+
+        var n = points.GetLength(0);
+        if (n <= 1) return n;
+
+        var max = int.MinValue;
+        for (var i = 0; i < n; i++)
+        {
+            var lines = new Dictionary<double, int> { };
+
+            for (var j = i + 1; j < n; j++)
+            {
+                var slope = SlopeThrough(points[i], points[j]);
+
+                if (lines.ContainsKey(slope))
+                    lines[slope]++;
+                else
+                    lines[slope] = 2;
+
+                Console.WriteLine($"Lines: {string.Join("\n", lines.Select(kvp => $"{kvp.Key} => {kvp.Value}"))}");
+
+                max = Math.Max(max, lines[slope]);
+            }
+        }
+
+        return max;
+
+        double SlopeThrough(int[] p1, int[] p2, int digitsPrecision = 8)
+        {
+            if (p1[X] == p2[X]) return int.MaxValue;
+            var slope = ((double)p1[Y] - p2[Y]) / (p1[X] - p2[X]);
+            return Math.Round(slope, digitsPrecision);
+        }
+    }
+
     public static bool Ex207_CanFinish_EdgeList(int numCourses, int[][] prerequisites)
     {
         var visited = new HashSet<int> { };
@@ -435,6 +547,34 @@ public static class Leetcode
         var left = Ex226_InvertTree(root.left);
         var right = Ex226_InvertTree(root.right);
         return new TreeNode(root.val, right, left);
+    }
+
+    public static string Ex299_GetHint(string secret, string guess)
+    {
+        var n = secret.Length;
+        var potentialCowsInSecret = new int[10];
+        var potentialCowsInGuess = new int[10];
+
+        var bulls = 0;
+        for (var i = 0; i < n; i++)
+        {
+            if (secret[i] == guess[i])
+            {
+                bulls++;
+                continue;
+            }
+
+            potentialCowsInSecret[secret[i] - '0']++;
+            potentialCowsInGuess[guess[i] - '0']++;
+        }
+
+        var cows = 0;
+        for (var i = 0; i < 10; i++)
+        {
+            cows += Math.Min(potentialCowsInSecret[i], potentialCowsInGuess[i]);
+        }
+
+        return $"{bulls}A{cows}B";
     }
 
     public static IList<int> Ex310_FindMinHeightTrees_BfsOnly(int n, int[][] edges)
@@ -1105,6 +1245,68 @@ public static class Leetcode
         }
     }
 
+    public static int Ex992_SubarraysWithKDistinct_Quadratic(int[] nums, int k)
+    {
+        var n = nums.Length;
+        var result = 0;
+        for (var windowLength = k; windowLength <= n; windowLength++)
+        {
+            var counts = new Dictionary<int, int>();
+            for (var i = 0; i < windowLength; i++)
+            {
+                if (counts.TryGetValue(nums[i], out var count))
+                    counts[nums[i]] = count + 1;
+                else
+                    counts[nums[i]] = 1;
+            }
+
+            for (var windowStart = 0; windowStart <= n - windowLength; windowStart++)
+            {
+                if (counts.Count == k)
+                {
+                    Console.WriteLine(string.Join(" ", nums[windowStart..(windowStart + windowLength)]));
+                    result++;
+                }
+
+                counts[nums[windowStart]]--;
+                if (counts[nums[windowStart]] == 0)
+                    counts.Remove(nums[windowStart]);
+
+                if (windowStart + windowLength < n)
+                {
+                    if (counts.TryGetValue(nums[windowStart + windowLength], out var count))
+                        counts[nums[windowStart + windowLength]] = count + 1;
+                    else
+                        counts[nums[windowStart + windowLength]] = 1;
+                }
+            }
+        }
+        return result;
+    }
+
+    public static int Ex992_SubarraysWithKDistinct_ForAndWhile(int[] nums, int k)
+    {
+        var n = nums.Length;
+        var result = 0;
+
+        if (nums.Length == 0) return 0;
+
+        for (var i = 0; i <= n - k; i++)
+        {
+            var distinctValues = new HashSet<int> { };
+
+            var j = i;
+            while (j < n && distinctValues.Count <= k)
+            {
+                distinctValues.Add(nums[j]);
+                if (distinctValues.Count == k)
+                    result++;
+                j++;
+            }
+        }
+
+        return result;
+    }
     public static string Ex1138_AlphabetBoardPath(string target)
     {
         var moves = new StringBuilder();

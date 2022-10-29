@@ -10,6 +10,16 @@ using static CTCI.Leetcode;
 public class LeetcodeTests
 {
     [TestMethod]
+    public void Ex3_LengthOfLongestSubstring()
+    {
+        Assert.AreEqual(4, Leetcode.Ex3_LengthOfLongestSubstring("abcabcbbcdeecddef"));
+        Assert.AreEqual(3, Leetcode.Ex3_LengthOfLongestSubstring("abcabcbb"));
+        Assert.AreEqual(0, Leetcode.Ex3_LengthOfLongestSubstring(""));
+        Assert.AreEqual(1, Leetcode.Ex3_LengthOfLongestSubstring("a"));
+        Assert.AreEqual(1, Leetcode.Ex3_LengthOfLongestSubstring("aaaaaaaaa"));
+    }
+
+    [TestMethod]
     public void Ex5_LongestPalindrome()
     {
         Assert.AreEqual("bbb", Leetcode.Ex5_LongestPalindrome("bbb"));
@@ -143,6 +153,48 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex149_MaxPoints()
+    {
+        Assert.AreEqual(0, Leetcode.Ex149_MaxPoints(
+            Array.Empty<int[]>()));
+        Assert.AreEqual(1, Leetcode.Ex149_MaxPoints(
+            new[] { new[] { 1, 1 }}));
+        Assert.AreEqual(2, Leetcode.Ex149_MaxPoints(
+            new[] { new[] { 1, 1 }, new[] { 1, 2 }, new[] { 2, 1 }, new[] { 2, 2 } }));
+        Assert.AreEqual(3, Leetcode.Ex149_MaxPoints(
+            new[] { new[] { 1, 1 }, new[] { 1, 2 }, new[] { 2, 1 }, new[] { 2, 2 }, new[] { 2, 3} }));
+        Assert.AreEqual(3, Leetcode.Ex149_MaxPoints(
+            new[] { new[] { 1, 1 }, new[] { 2, 2 }, new[] { 3, 3 } }));
+        Assert.AreEqual(4, Leetcode.Ex149_MaxPoints(
+            new[] { new[] { 1, 1 }, new[] { 3, 2 }, new[] { 5, 3 }, new[] { 4, 1 }, new[] { 2, 3 }, new[] { 1, 4 } }));
+        Assert.AreEqual(2, Leetcode.Ex149_MaxPoints(
+            new[] { new[] { 5151, 5150 },new[] { 0, 0 },new[] { 5152, 5151 } }));
+        Assert.AreEqual(2, Leetcode.Ex149_MaxPoints(
+           new[] { new[] { 1, 1 }, new[] { 2, 2 }, new[] { 2, 1 }, new[] { 3, 2 } }));
+    }
+
+    [TestMethod]
+    public void Ex149_MaxPoints_Fixing1stPoint()
+    {
+        Assert.AreEqual(0, Leetcode.Ex149_MaxPoints_Fixing1stPoint(
+            Array.Empty<int[]>()));
+        Assert.AreEqual(1, Leetcode.Ex149_MaxPoints_Fixing1stPoint(
+            new[] { new[] { 1, 1 } }));
+        Assert.AreEqual(2, Leetcode.Ex149_MaxPoints_Fixing1stPoint(
+            new[] { new[] { 1, 1 }, new[] { 1, 2 }, new[] { 2, 1 }, new[] { 2, 2 } }));
+        Assert.AreEqual(3, Leetcode.Ex149_MaxPoints_Fixing1stPoint(
+            new[] { new[] { 1, 1 }, new[] { 1, 2 }, new[] { 2, 1 }, new[] { 2, 2 }, new[] { 2, 3 } }));
+        Assert.AreEqual(3, Leetcode.Ex149_MaxPoints_Fixing1stPoint(
+            new[] { new[] { 1, 1 }, new[] { 2, 2 }, new[] { 3, 3 } }));
+        Assert.AreEqual(4, Leetcode.Ex149_MaxPoints_Fixing1stPoint(
+            new[] { new[] { 1, 1 }, new[] { 3, 2 }, new[] { 5, 3 }, new[] { 4, 1 }, new[] { 2, 3 }, new[] { 1, 4 } }));
+        Assert.AreEqual(2, Leetcode.Ex149_MaxPoints_Fixing1stPoint(
+            new[] { new[] { 5151, 5150 }, new[] { 0, 0 }, new[] { 5152, 5151 } }));
+        Assert.AreEqual(2, Leetcode.Ex149_MaxPoints_Fixing1stPoint(
+            new[] { new[] { 1, 1 }, new[] { 2, 2 }, new[] {  2, 1 }, new[] { 3, 2 } }));
+    }
+
+    [TestMethod]
     public void Ex207_CanFinish_EdgeList()
     {
         Assert.IsTrue(Leetcode.Ex207_CanFinish_EdgeList(2, new[] { new[] { 0, 1 } }));
@@ -237,6 +289,14 @@ public class LeetcodeTests
                 if (n.right != null) queue.Enqueue(n.right);
             }
         }
+    }
+
+    [TestMethod]
+    public void Ex299_GetHint()
+    {
+        Assert.AreEqual("1A3B", Leetcode.Ex299_GetHint("1807", "7810"));
+        Assert.AreEqual("1A1B", Leetcode.Ex299_GetHint("1123", "0111"));
+        Assert.AreEqual("3A9B", Leetcode.Ex299_GetHint("18071236345345", "78101535234523"));
     }
 
     [TestMethod]
@@ -458,6 +518,23 @@ public class LeetcodeTests
         }
     }
 
+    [TestMethod]
+    public void Ex992_SubarraysWithKDistinct_Quadratic()
+    {
+        Assert.AreEqual(7, Leetcode.Ex992_SubarraysWithKDistinct_Quadratic(new[] { 1, 2, 1, 2, 3 }, 2));
+        Assert.AreEqual(3, Leetcode.Ex992_SubarraysWithKDistinct_Quadratic(new[] { 1, 2, 1, 3, 4 }, 3));
+        Assert.AreEqual(10, Leetcode.Ex992_SubarraysWithKDistinct_Quadratic(new[] { 2, 1, 2, 1, 2 }, 2));
+        Assert.AreEqual(23, Leetcode.Ex992_SubarraysWithKDistinct_Quadratic(new[] { 2, 2, 1, 2, 2, 2, 1, 1 }, 2));
+    }
+
+    [TestMethod]
+    public void Ex992_SubarraysWithKDistinct_ForAndWhile()
+    {
+        Assert.AreEqual(7, Leetcode.Ex992_SubarraysWithKDistinct_ForAndWhile(new[] { 1, 2, 1, 2, 3 }, 2));
+        Assert.AreEqual(3, Leetcode.Ex992_SubarraysWithKDistinct_ForAndWhile(new[] { 1, 2, 1, 3, 4 }, 3));
+        Assert.AreEqual(10, Leetcode.Ex992_SubarraysWithKDistinct_ForAndWhile(new[] { 2, 1, 2, 1, 2 }, 2));
+        Assert.AreEqual(23, Leetcode.Ex992_SubarraysWithKDistinct_ForAndWhile(new[] { 2, 2, 1, 2, 2, 2, 1, 1 }, 2));
+    }
     [TestMethod]
     public void Ex1138_AlphabetBoardPath()
     {
