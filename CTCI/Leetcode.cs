@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Immutable;
+using System.Data;
 using System.Diagnostics.Metrics;
 using System.Text;
 
@@ -396,6 +397,38 @@ public static class Leetcode
         }
     }
 
+    public static int Ex159_LengthOfLongestSubstringTwoDistinct(string s)
+    {
+        if (s.Length <= 2) return s.Length;
+
+        // i = start of the window
+        // j = end of the window inclusive
+        // i and j moving from left to right
+
+        var i = 0; var j = 0; var max = 1;
+        var distinctChars = new Dictionary<char, int> { [s[0]] = 1 };
+        while (j < s.Length - 1)
+        {
+            if (!distinctChars.TryGetValue(s[j + 1], out var countNextJ))
+                countNextJ = 0;
+            if (distinctChars.Count < 2 || countNextJ > 0)
+            {
+                j++;
+                distinctChars[s[j]] = countNextJ + 1;
+                max = Math.Max(max, j - i + 1);
+            }
+            else if (i <= j)
+            {
+                distinctChars[s[i]]--;
+                if (distinctChars[s[i]] == 0)
+                    distinctChars.Remove(s[i]);
+                i++;
+            }
+        }
+
+        return max;
+    }
+
     public static bool Ex207_CanFinish_EdgeList(int numCourses, int[][] prerequisites)
     {
         var visited = new HashSet<int> { };
@@ -468,6 +501,63 @@ public static class Leetcode
 
             return false;
         }
+    }
+
+    public static int Ex209_MinSubArrayLen_DP(int target, int[] nums)
+    {
+        var solutions = new Dictionary<(int, int), int> { };
+        var min = int.MaxValue;
+        for (var i = 0; i < nums.Length; i++)
+            min = Math.Min(min, MinSubArrayLen(i, target));
+        return min == int.MaxValue ? 0 : min;
+
+        int MinSubArrayLen(int i, int target)
+        {
+            if (i >= nums.Length)
+                return int.MaxValue;
+
+            if (nums[i] >= target)
+                return 1;
+
+            if (solutions.TryGetValue((i, target), out var solution)) return solution;
+
+            var v = MinSubArrayLen(i + 1, target - nums[i]);
+            solution = v == int.MaxValue ? int.MaxValue : 1 + v;
+            solutions[(i, target)] = solution;
+            return solution;
+        }
+    }
+
+    public static int Ex209_MinSubArrayLen_SlidingWindow(int target, int[] nums)
+    {
+        var n = nums.Length;
+
+        var min = int.MaxValue;
+        var start = 0; var end = 0; var sum = nums[end];
+        while (start < n && end < n)
+        {
+            if (sum >= target)
+            {
+                min = Math.Min(min, end - start + 1);
+            }
+
+            if (end < n - 1 && sum < target)
+            {
+                end++;
+                sum += nums[end];
+            }
+            else if (start < end)
+            {
+                sum -= nums[start];
+                start++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return min == int.MaxValue ? 0 : min;
     }
 
     public static int[] Ex210_FindOrder(int numCourses, int[][] prerequisites)
@@ -841,6 +931,42 @@ public static class Leetcode
         }
     }
 
+    public static int Ex340_LengthOfLongestSubstringKDistinct(string s, int k)
+    {
+        var n = s.Length;
+        if (k == 0) return 0;
+        if (n <= k) return n;
+
+        var max = 1;
+
+        // start = start of the window, inclusive
+        // end = end of the window, inclusive
+        var start = 0; var end = 0;
+        var counts = new Dictionary<char, int> { [s[end]] = 1 };
+
+        while (end < n - 1)
+        {
+            if (!counts.TryGetValue(s[end + 1], out var countOfNext))
+                countOfNext = 0;
+
+            if (counts.Count < k || countOfNext > 0)
+            {
+                end++;
+                counts[s[end]] = countOfNext + 1;
+                max = Math.Max(max, end - start + 1);
+            }
+            else if (start <= end)
+            {
+                counts[s[start]]--;
+                if (counts[s[start]] == 0)
+                    counts.Remove(s[start]);
+                start++;
+            }
+        }
+
+        return max;
+    }
+
     public static int[] Ex347_TopKFrequent(int[] nums, int k)
     {
         var counts = new Dictionary<int, int> { };
@@ -1138,6 +1264,235 @@ public static class Leetcode
                 ranks[rj] = Math.Max(rj + 1, ri);
             }
         }
+    }
+
+    public class Ex591
+    {
+        private record State(string Code, int Position, ImmutableStack<string> Tags)
+        {
+            public State? Parse(Func<State, State?> rule) => rule(this);
+
+            public State? ParseFirst(params Func<State, State?>[] rules)
+            {
+                return rules.Select(rule => rule.Invoke(this)).Where(state => state != null).FirstOrDefault();
+            }
+
+            public State? ParseZeroOrMore(Func<State, State?> rule)
+            {
+                var previousState = this;
+                while (previousState.Parse(rule) is State state)
+                    previousState = state;
+                return previousState;
+            }
+        }
+
+        // GRAMMAR
+        // start = closedTag
+        // closedTag = tagOpening tagContent tagClosing
+        //
+        // tagOpening = "<" tagName ">"
+        // tagClosing = "</" tagName ">"
+        // tagContent = (closedTag | cdataTag | tagString)*
+        // tagName = [A-Z]{1, 9}
+        // 
+        // cdataTag = "<![CDATA[" cdataContent "]]>" (eager matching of "]]>")
+        // cdataContent = .* (except "]]>")
+
+        public static bool IsValid(string code) =>
+            new State(code, 0, ImmutableStack<string>.Empty)
+            .Parse(Start)
+            is State { Position: var position, Tags: var tags }
+                && position == code.Length
+                && tags.IsEmpty;
+
+        static State? Start(State state) => state
+            .Parse(ClosedTag);
+
+        static State? ClosedTag(State state) => state
+            .Parse(TagOpening)
+            ?.Parse(TagContent)
+            ?.Parse(TagClosing);
+
+        static State? TagOpening(State state)
+        {
+            var initialPosition = state.Position;
+            var result = state
+                .Parse(StringValue("<"))
+                ?.Parse(TagName)
+                ?.Parse(StringValue(">"));
+
+            if (result == null)
+                return result;
+
+            var finalPosition = result.Position;
+            var tagName = result.Code[(initialPosition + 1)..(finalPosition - 1)];
+            return result with
+            {
+                Tags = result.Tags.Push(tagName)
+            };
+        }
+
+        static State? TagClosing(State state)
+        {
+            var initialPosition = state.Position;
+            var result = state
+                .Parse(StringValue("</"))
+                ?.Parse(TagName)
+                ?.Parse(StringValue(">"));
+
+            if (result == null)
+                return result;
+
+            var finalPosition = result.Position;
+            var tagName = result.Code[(initialPosition + 2)..(finalPosition - 1)];
+            if (result.Tags.Peek() != tagName)
+                return null;
+
+            return result with
+            {
+                Tags = result.Tags.Pop()
+            };
+        }
+
+        static State? TagName(State state)
+        {
+            int i;
+            for (i = 0; i < 9 && i < state.Code.Length - state.Position; i++)
+            {
+                var currentChar = state.Code[state.Position + i];
+                if (!(currentChar >= 'A' && currentChar <= 'Z'))
+                    break;
+            }
+
+            if (i == 0)
+                return null; // Not even a single char has been parsed
+            return state with { Position = state.Position + i };
+        }
+
+        static Func<State, State?> StringValue(string s) =>
+            state =>
+            {
+                if (state.Position + s.Length > state.Code.Length)
+                    return null;
+
+                if (state.Code[state.Position..(state.Position + s.Length)] != s)
+                    return null;
+
+                return state with { Position = state.Position + s.Length };
+            };
+
+        static State? TagContent(State state) => state
+            .ParseZeroOrMore(state1 => state1
+                .ParseFirst(ClosedTag, CdataTag, TagString));
+
+        static State? CdataTag(State state) => state
+            .Parse(StringValue("<![CDATA["))
+            ?.Parse(CdataContent)
+            ?.Parse(StringValue("]]>"));
+
+        static State? CdataContent(State state)
+        {
+            var i = 0;
+            while (
+                state.Position + i < state.Code.Length &&
+                (
+                    state.Position + i > state.Code.Length - 3 ||
+                    state.Code[(state.Position + i)..(state.Position + i + 3)] != "]]>")
+                )
+                i++;
+
+            return state with { Position = state.Position + i };
+        }
+
+        static State? TagString(State state)
+        {
+            var i = 0;
+            while (
+                state.Position + i < state.Code.Length &&
+                state.Code[state.Position + i] != '<')
+                i++;
+            if (i == 0)
+                return null;
+            return state with { Position = state.Position + i };
+        }
+    }
+
+    public static int Ex718_FindLength_DP(int[] nums1, int[] nums2)
+    {
+        var solutions = new Dictionary<(int, int), int> { };
+
+        var max = 0;
+        for (var i = 0; i < nums1.Length; i++)
+            for (var j = 0; j < nums2.Length; j++)
+                max = Math.Max(max, FindLength(i, j));
+        return max;
+
+        int FindLength(int i, int j)
+        {
+            if (i >= nums1.Length || j >= nums2.Length || nums1[i] != nums2[j])
+                return 0;
+            if (solutions.TryGetValue((i, j), out var solution))
+                return solution;
+
+            solution = 1 + FindLength(i + 1, j + 1);
+            solutions[(i, j)] = FindLength(i + 1, j + 1);
+            return solution;
+        }
+
+    }
+
+    public static int Ex718_FindLength_DPOptimized(int[] nums1, int[] nums2)
+    {
+        var solutions = new Dictionary<(int, int), int> { };
+
+        var max = 0;
+        for (var i = 0; i < nums1.Length; i++)
+            for (var j = 0; j < nums2.Length; j++)
+                max = Math.Max(max, FindLength(i, j, max));
+        return max;
+
+        int FindLength(int i, int j, int max)
+        {
+            if (nums1.Length - i <= max || nums2.Length - j <= max)
+                return max;
+
+            if (i >= nums1.Length || j >= nums2.Length || nums1[i] != nums2[j])
+                return 0;
+            if (solutions.TryGetValue((i, j), out var solution))
+                return solution;
+
+            solution = 1 + FindLength(i + 1, j + 1, max - 1);
+            solutions[(i, j)] = solution;
+            return solution;
+        }
+    }
+
+    public static int Ex718_FindLength_DPBottomUp(int[] nums1, int[] nums2)
+    {
+        var n = nums1.Length;
+        var m = nums2.Length;
+
+        var solutions = new int[n + 1, m + 1];
+
+        var max = 0;
+        for (var d = 0; d < n + m - 1; ++d)
+        {
+            var i = d < m ? 0 : d - m + 1;
+            var j = d - i;
+            while (i < nums1.Length && j >= 0)
+            {
+                Console.WriteLine($"Filling in ({i}, {j})...");
+
+                max = Math.Max(
+                    max,
+                    solutions[i, j] = (nums1[i] == nums2[j])
+                        ? 1 + (i > 0 && j > 0 ? solutions[i - 1, j - 1] : 0)
+                        : 0);
+                i++; j--;
+            }
+        }
+
+        return max;
     }
 
     public static string Ex727_MinWindow(string s, string t)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -195,6 +196,16 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex159_LengthOfLongestSubstringTwoDistinct()
+    {
+        Assert.AreEqual(1, Leetcode.Ex159_LengthOfLongestSubstringTwoDistinct("a"));
+        Assert.AreEqual(4, Leetcode.Ex159_LengthOfLongestSubstringTwoDistinct("aaaa"));
+        Assert.AreEqual(3, Leetcode.Ex159_LengthOfLongestSubstringTwoDistinct("eceba"));
+        Assert.AreEqual(14, Leetcode.Ex159_LengthOfLongestSubstringTwoDistinct("aaaababaabaabbcbababc"));
+        Assert.AreEqual(8, Leetcode.Ex159_LengthOfLongestSubstringTwoDistinct("abbaacbabababadbdbdb"));
+    }
+
+    [TestMethod]
     public void Ex207_CanFinish_EdgeList()
     {
         Assert.IsTrue(Leetcode.Ex207_CanFinish_EdgeList(2, new[] { new[] { 0, 1 } }));
@@ -246,6 +257,28 @@ public class LeetcodeTests
             new[] {90,88},new[] {90,89},new[] {91,89},new[] {91,90},new[] {92,90},new[] {92,91},new[] {93,91},
             new[] {93,92},new[] {94,92},new[] {94,93},new[] {95,93},new[] {95,94},new[] {96,94},new[] {96,95},
             new[] {97,95},new[] {97,96},new[] {98,96},new[] {98,97},new[] {99,97}}));
+    }
+
+    [TestMethod]
+    public void Ex209_MinSubArrayLen_DP()
+    {
+        Assert.AreEqual(2, Leetcode.Ex209_MinSubArrayLen_DP(7, new[] { 2, 3, 1, 2, 4, 3 }));
+        Assert.AreEqual(1, Leetcode.Ex209_MinSubArrayLen_DP(4,  new[] { 1, 4, 4 }));
+        Assert.AreEqual(0, Leetcode.Ex209_MinSubArrayLen_DP(11, new[] { 1, 1, 1, 1, 1, 1, 1, 1 }));
+        Assert.AreEqual(5, Leetcode.Ex209_MinSubArrayLen_DP(5, new[] { 1, 1, 1, 1, 1, 1, 1, 1 }));
+        Assert.AreEqual(4, Leetcode.Ex209_MinSubArrayLen_DP(5, new[] { 1, 2, 1, 1, 1, 1, 1, 1 }));
+        Assert.AreEqual(3, Leetcode.Ex209_MinSubArrayLen_DP(5, new[] { 1, 2, 1, 1, 1, 3, 1, 1 }));
+    }
+
+    [TestMethod]
+    public void Ex209_MinSubArrayLen_SlidingWindow()
+    {
+        Assert.AreEqual(2, Leetcode.Ex209_MinSubArrayLen_SlidingWindow(7, new[] { 2, 3, 1, 2, 4, 3 }));
+        Assert.AreEqual(1, Leetcode.Ex209_MinSubArrayLen_SlidingWindow(4, new[] { 1, 4, 4 }));
+        Assert.AreEqual(0, Leetcode.Ex209_MinSubArrayLen_SlidingWindow(11, new[] { 1, 1, 1, 1, 1, 1, 1, 1 }));
+        Assert.AreEqual(5, Leetcode.Ex209_MinSubArrayLen_SlidingWindow(5, new[] { 1, 1, 1, 1, 1, 1, 1, 1 }));
+        Assert.AreEqual(4, Leetcode.Ex209_MinSubArrayLen_SlidingWindow(5, new[] { 1, 2, 1, 1, 1, 1, 1, 1 }));
+        Assert.AreEqual(3, Leetcode.Ex209_MinSubArrayLen_SlidingWindow(5, new[] { 1, 2, 1, 1, 1, 3, 1, 1 }));
     }
 
     [TestMethod]
@@ -361,6 +394,18 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex340_LengthOfLongestSubstringKDistinct()
+    {
+        Assert.AreEqual(3, Leetcode.Ex340_LengthOfLongestSubstringKDistinct("eceba", 2));
+        Assert.AreEqual(4, Leetcode.Ex340_LengthOfLongestSubstringKDistinct("abaaaab", 1));
+        Assert.AreEqual(5, Leetcode.Ex340_LengthOfLongestSubstringKDistinct("abbaacad", 2));
+        Assert.AreEqual(7, Leetcode.Ex340_LengthOfLongestSubstringKDistinct("abbaacad", 3));
+        Assert.AreEqual(0, Leetcode.Ex340_LengthOfLongestSubstringKDistinct("abbaacad", 0));
+        Assert.AreEqual(0, Leetcode.Ex340_LengthOfLongestSubstringKDistinct("a", 0));
+        Assert.AreEqual(9, Leetcode.Ex340_LengthOfLongestSubstringKDistinct("aaaaaaaaa", 1));
+    }
+
+    [TestMethod]
     public void Ex347_TopKFrequent()
     {
         Assert.IsTrue(Array.Empty<int>().SequenceEqual(Leetcode.Ex347_TopKFrequent(new[] { 1, 1, 1, 1, 2, 3, 4, 4, 4 }, 0)));
@@ -447,6 +492,123 @@ public class LeetcodeTests
     {
         Assert.AreEqual(2, Leetcode.Ex547_FindCircleNum(new[] {new[] {1, 1, 0},new[] {1, 1, 0},new[] {0, 0, 1}}));
         Assert.AreEqual(3, Leetcode.Ex547_FindCircleNum(new[] { new[] { 1, 0, 0 }, new[] { 0, 1, 0 }, new[] { 0, 0, 1 } }));
+    }
+
+    [TestMethod]
+    public void Ex591_IsValid()
+    {
+        // Tag incomplete
+        Assert.IsFalse(Ex591.IsValid("<A></A"));
+        Assert.IsFalse(Ex591.IsValid("<A>/A>"));
+        Assert.IsFalse(Ex591.IsValid("A></A>"));
+        Assert.IsFalse(Ex591.IsValid("<A</A>"));
+
+        // Tag name
+        Assert.IsTrue(Ex591.IsValid("<A></A>"));
+        Assert.IsFalse(Ex591.IsValid("<A><</A>"));
+        Assert.IsFalse(Ex591.IsValid("<A></<"));
+        Assert.IsFalse(Ex591.IsValid("<></>"));
+        Assert.IsTrue(Ex591.IsValid("<AAAAAAAAA></AAAAAAAAA>"));
+        Assert.IsFalse(Ex591.IsValid("<AAAAAAAAAA></AAAAAAAAAA>"));
+
+        // Tag name matching
+        Assert.IsFalse(Ex591.IsValid("<A></B>"));
+        Assert.IsFalse(Ex591.IsValid("<AB></BA>"));
+
+        // String Content
+        Assert.IsTrue(Ex591.IsValid("<A>abc</A>"));
+        Assert.IsTrue(Ex591.IsValid("<A>123</A>"));
+        Assert.IsTrue(Ex591.IsValid("<A>.$#</A>"));
+        Assert.IsTrue(Ex591.IsValid("<A>>>></A>"));
+        Assert.IsTrue(Ex591.IsValid("<A> \t\n</A>"));
+
+        // Invalid Content
+        Assert.IsFalse(Ex591.IsValid("<A><</A>"));
+
+        // Root tag
+        Assert.IsFalse(Ex591.IsValid("<A></A><A></A>"));
+        Assert.IsFalse(Ex591.IsValid("<A></A><B></B>"));
+
+        // Nesting
+        Assert.IsTrue(Ex591.IsValid("<A><A></A><B></B></A>"));
+        Assert.IsTrue(Ex591.IsValid("<C><A></A><B></B></C>"));
+        Assert.IsTrue(Ex591.IsValid("<A><B></B></A>"));
+        Assert.IsTrue(Ex591.IsValid("<A><A></A></A>"));
+        Assert.IsTrue(Ex591.IsValid("<A><B><A></A></B></A>"));
+
+        Assert.IsTrue(Ex591.IsValid("<C><B><A></A></B></C>"));
+        Assert.IsFalse(Ex591.IsValid("<C><B><A></C></B></A>"));
+        Assert.IsFalse(Ex591.IsValid("<C><B><A></A></B></D>"));
+
+        Assert.IsFalse(Ex591.IsValid("<A></A></A>"));
+        Assert.IsFalse(Ex591.IsValid("<A><A></A>"));
+
+        // String Content and Nesting
+        Assert.IsTrue(Ex591.IsValid("<A>12<B>34</B>56</A>"));
+        Assert.IsTrue(Ex591.IsValid("<A>12<B><C>3</C>4</B>56<D></D></A>"));
+        Assert.IsFalse(Ex591.IsValid("<A>125<6<D></D></A>"));
+
+        // Cdata
+        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[]]></A>"));
+        Assert.IsFalse(Ex591.IsValid("<A><![CDATA[]></A>"));
+        Assert.IsFalse(Ex591.IsValid("<A><![CDTA[]]></A>"));
+        Assert.IsTrue(Ex591.IsValid("<A>![CDTA[]]></A>"));
+
+        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[a]]></A>"));
+        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[<]]></A>"));
+        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[>]]></A>"));
+        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[ ]]></A>"));
+        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[a]]><![CDATA[b]]></A>"));
+        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[<![CDATA[b]]></A>"));
+
+        Assert.IsFalse(Ex591.IsValid("<A><![CDATA]]></A>"));
+        Assert.IsFalse(Ex591.IsValid("<A><![]]></A>"));
+        Assert.IsFalse(Ex591.IsValid("<A><!></A>"));
+        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[<![CDATA[b]]>]]></A>"));
+        Assert.IsFalse(Ex591.IsValid("<A><![CDATA[<![CDATA[b]]><]]></A>"));
+
+        // Cdata and tags
+        Assert.IsFalse(Ex591.IsValid("<A><![CDATA[</A>]]>"));
+        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[</A>]]></A>"));
+
+        // Cdata, tags and content
+        Assert.IsTrue(Ex591.IsValid("<A>A<A></A><![CDATA[</A>]]>A</A>"));
+    }
+
+    [TestMethod]
+    public void Ex718_FindLength_DP()
+    {
+        Assert.AreEqual(0, Leetcode.Ex718_FindLength_DP(new[] { 1, 2, 3, 2, 1 }, Array.Empty<int>()));
+        Assert.AreEqual(1, Leetcode.Ex718_FindLength_DP(new[] { 1, 2, 3, 2, 1 }, new[] { 1 }));
+        Assert.AreEqual(5, Leetcode.Ex718_FindLength_DP(new[] { 1, 2, 3, 2, 1 }, new[] { 1, 2, 3, 2, 1 }));
+        Assert.AreEqual(3, Leetcode.Ex718_FindLength_DP(new[] { 1, 2, 3, 2, 1 }, new[] { 3, 2, 1, 4, 7 }));
+        Assert.AreEqual(2, Leetcode.Ex718_FindLength_DP(new[] { 1, 2, 3, 2, 1 }, new[] { 3, 2, 4, 4, 7 }));
+        Assert.AreEqual(2, Leetcode.Ex718_FindLength_DP(new[] { 1, 1, 1, 1, 1 }, new[] { 1, 2, 1, 1, 2 }));
+        Assert.AreEqual(4, Leetcode.Ex718_FindLength_DP(new[] { 1, 1, 1, 1, 1 }, new[] { 1, 2, 1, 1, 2, 1, 1, 1, 3, 1, 1, 1, 1, 4 }));
+    }
+
+    [TestMethod]
+    public void Ex718_FindLength_DPOptimized()
+    {
+        Assert.AreEqual(0, Leetcode.Ex718_FindLength_DPOptimized(new[] { 1, 2, 3, 2, 1 }, Array.Empty<int>()));
+        Assert.AreEqual(1, Leetcode.Ex718_FindLength_DPOptimized(new[] { 1, 2, 3, 2, 1 }, new[] { 1 }));
+        Assert.AreEqual(5, Leetcode.Ex718_FindLength_DPOptimized(new[] { 1, 2, 3, 2, 1 }, new[] { 1, 2, 3, 2, 1 }));
+        Assert.AreEqual(3, Leetcode.Ex718_FindLength_DPOptimized(new[] { 1, 2, 3, 2, 1 }, new[] { 3, 2, 1, 4, 7 }));
+        Assert.AreEqual(2, Leetcode.Ex718_FindLength_DPOptimized(new[] { 1, 2, 3, 2, 1 }, new[] { 3, 2, 4, 4, 7 }));
+        Assert.AreEqual(2, Leetcode.Ex718_FindLength_DPOptimized(new[] { 1, 1, 1, 1, 1 }, new[] { 1, 2, 1, 1, 2 }));
+        Assert.AreEqual(4, Leetcode.Ex718_FindLength_DPOptimized(new[] { 1, 1, 1, 1, 1 }, new[] { 1, 2, 1, 1, 2, 1, 1, 1, 3, 1, 1, 1, 1, 4 }));
+    }
+
+    [TestMethod]
+    public void Ex718_FindLength_DPBottomUp()
+    {
+        Assert.AreEqual(0, Leetcode.Ex718_FindLength_DPBottomUp(new[] { 1, 2, 3, 2, 1 }, Array.Empty<int>()));
+        Assert.AreEqual(1, Leetcode.Ex718_FindLength_DPBottomUp(new[] { 1, 2, 3, 2, 1 }, new[] { 1 }));
+        Assert.AreEqual(5, Leetcode.Ex718_FindLength_DPBottomUp(new[] { 1, 2, 3, 2, 1 }, new[] { 1, 2, 3, 2, 1 }));
+        Assert.AreEqual(3, Leetcode.Ex718_FindLength_DPBottomUp(new[] { 1, 2, 3, 2, 1 }, new[] { 3, 2, 1, 4, 7 }));
+        Assert.AreEqual(2, Leetcode.Ex718_FindLength_DPBottomUp(new[] { 1, 2, 3, 2, 1 }, new[] { 3, 2, 4, 4, 7 }));
+        Assert.AreEqual(2, Leetcode.Ex718_FindLength_DPBottomUp(new[] { 1, 1, 1, 1, 1 }, new[] { 1, 2, 1, 1, 2 }));
+        Assert.AreEqual(4, Leetcode.Ex718_FindLength_DPBottomUp(new[] { 1, 1, 1, 1, 1 }, new[] { 1, 2, 1, 1, 2, 1, 1, 1, 3, 1, 1, 1, 1, 4 }));
     }
 
     [TestMethod]
