@@ -1163,6 +1163,38 @@ public static class Leetcode
         }
     }
 
+    public static int Ex395_LongestSubstring_Quadratic(string s, int k)
+    {
+        var n = s.Length;
+
+        var max = 0;
+        for (var i = 0; i < n; i++)
+        {
+            var counts = new Dictionary<char, int> { };
+            var lowerThanBar = 0;
+            for (var j = i; j < n; j++)
+            {
+                if (counts.TryGetValue(s[j], out var count))
+                {
+                    counts[s[j]] = count + 1;
+                    lowerThanBar += k != counts[s[j]] ? 0 : -1;
+                }
+                else
+                {
+                    counts[s[j]] = 1;
+                    lowerThanBar += k != 1 ? 1 : 0;
+                }
+
+                //Console.WriteLine("Counts: " + string.Join(", ", counts.Select(kvp => $"{kvp.Key} -> {kvp.Value}")));
+                //Console.WriteLine("Lower than bar: " + lowerThanBar);
+
+                if (lowerThanBar == 0)
+                    max = Math.Max(max, j - i + 1);
+            }
+        }
+        return max;
+    }
+
     public static double[] Ex399_CalcEquation_Dfs(IList<IList<string>> equations, double[] values, IList<IList<string>> queries)
     {
         var adjs = new Dictionary<string, ISet<string>> { };

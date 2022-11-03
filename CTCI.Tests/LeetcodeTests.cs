@@ -476,6 +476,18 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex395_LongestSubstring_Quadratic()
+    {
+        Assert.AreEqual(1, Leetcode.Ex395_LongestSubstring_Quadratic("a", 1));
+        Assert.AreEqual(3, Leetcode.Ex395_LongestSubstring_Quadratic("bbaaacbd", 3));
+        Assert.AreEqual(3, Leetcode.Ex395_LongestSubstring_Quadratic("aaabb", 3));
+        Assert.AreEqual(5, Leetcode.Ex395_LongestSubstring_Quadratic("ababbc", 2));
+        Assert.AreEqual(0, Leetcode.Ex395_LongestSubstring_Quadratic("weitong", 2));
+        Assert.AreEqual(9, Leetcode.Ex395_LongestSubstring_Quadratic("aabbcaccbdaaadaaaaaaaaaebbbbbbbbb", 3));
+        Assert.AreEqual(10, Leetcode.Ex395_LongestSubstring_Quadratic("aabbcaccbdaaadaaaaaaaaaebbbbbbbbbb", 3));
+    }
+
+    [TestMethod]
     public void Ex399_CalcEquation_Dfs()
     {
         new[] { 6.00000, 0.50000, 1.20000, 1.00000, -1.00000, 0.50000 }
