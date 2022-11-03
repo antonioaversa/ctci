@@ -206,6 +206,32 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex187_FindRepeatedDnaSequences_2Bits()
+    {
+        Assert.IsTrue(Array.Empty<string>().SequenceEqual(
+            Leetcode.Ex187_FindRepeatedDnaSequences_2Bits("A")));
+        Assert.IsTrue(Array.Empty<string>().SequenceEqual(
+            Leetcode.Ex187_FindRepeatedDnaSequences_2Bits("ATCG")));
+        Assert.IsTrue(new string[] { "AAAAACCCCC", "CCCCCAAAAA" }.SequenceEqual(
+            Leetcode.Ex187_FindRepeatedDnaSequences_2Bits("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT")));
+        Assert.IsTrue(new string[] { "AATTCCAACC", "CCTTTTTCCC", "CTTTTTCCCC", "TTTTTCCCCC", "TTTTCCCCCT", "TTTCCCCCTT", "TTCCCCCTTT", "TCCCCCTTTT", "CCCCCTTTTT", "TTTTTTTTTT" }.SequenceEqual(
+            Leetcode.Ex187_FindRepeatedDnaSequences_2Bits("AATTCCAACCAATTCCAACCTTTTTCCCCCTTTTTCCCCCTTTTTTTTTTTTTTTTTT")));
+    }
+
+    [TestMethod]
+    public void Ex187_FindRepeatedDnaSequences_3Bits()
+    {
+        Assert.IsTrue(Array.Empty<string>().SequenceEqual(
+            Leetcode.Ex187_FindRepeatedDnaSequences_3Bits("A")));
+        Assert.IsTrue(Array.Empty<string>().SequenceEqual(
+            Leetcode.Ex187_FindRepeatedDnaSequences_3Bits("ATCG")));
+        Assert.IsTrue(new string[] { "AAAAACCCCC", "CCCCCAAAAA" }.SequenceEqual(
+            Leetcode.Ex187_FindRepeatedDnaSequences_3Bits("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT")));
+        Assert.IsTrue(new string[] { "AATTCCAACC", "CCTTTTTCCC", "CTTTTTCCCC", "TTTTTCCCCC", "TTTTCCCCCT", "TTTCCCCCTT", "TTCCCCCTTT", "TCCCCCTTTT", "CCCCCTTTTT", "TTTTTTTTTT" }.SequenceEqual(
+            Leetcode.Ex187_FindRepeatedDnaSequences_3Bits("AATTCCAACCAATTCCAACCTTTTTCCCCCTTTTTCCCCCTTTTTTTTTTTTTTTTTT")));
+    }
+
+    [TestMethod]
     public void Ex207_CanFinish_EdgeList()
     {
         Assert.IsTrue(Leetcode.Ex207_CanFinish_EdgeList(2, new[] { new[] { 0, 1 } }));
@@ -325,6 +351,33 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex295_MedianFinder()
+    {
+        var finder = new Ex295_MedianFinder();
+        finder.AddNum(1);
+        finder.AddNum(2);
+        Assert.AreEqual(1.5, finder.FindMedian());
+        finder.AddNum(3);
+        Assert.AreEqual(2.0, finder.FindMedian());
+        finder.AddNum(0);
+        Assert.AreEqual(1.5, finder.FindMedian());
+        finder.AddNum(2);
+        Assert.AreEqual(2.0, finder.FindMedian());
+        finder.AddNum(4);
+        Assert.AreEqual(2.0, finder.FindMedian());
+        finder.AddNum(4);
+        Assert.AreEqual(2.0, finder.FindMedian());
+        finder.AddNum(3);
+        Assert.AreEqual(2.5, finder.FindMedian());
+        finder.AddNum(3);
+        Assert.AreEqual(3.0, finder.FindMedian());
+        finder.AddNum(1);
+        Assert.AreEqual(2.5, finder.FindMedian());
+        finder.AddNum(2);
+        Assert.AreEqual(2.0, finder.FindMedian());
+    }
+
+    [TestMethod]
     public void Ex299_GetHint()
     {
         Assert.AreEqual("1A3B", Leetcode.Ex299_GetHint("1807", "7810"));
@@ -437,7 +490,7 @@ public class LeetcodeTests
     }
 
     [TestMethod]
-    public void Ex399_CalcEquation_DisjointSet()
+    public void Ex399_CalcEquation_DisjointSets()
     {
         new[] { 6.00000, 0.50000, 1.20000, 1.00000, -1.00000, 0.50000 }
             .Zip(Leetcode.Ex399_CalcEquation_DisjointSets(
@@ -498,81 +551,81 @@ public class LeetcodeTests
     public void Ex591_IsValid()
     {
         // Tag incomplete
-        Assert.IsFalse(Ex591.IsValid("<A></A"));
-        Assert.IsFalse(Ex591.IsValid("<A>/A>"));
-        Assert.IsFalse(Ex591.IsValid("A></A>"));
-        Assert.IsFalse(Ex591.IsValid("<A</A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A></A"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A>/A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("A></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A</A>"));
 
         // Tag name
-        Assert.IsTrue(Ex591.IsValid("<A></A>"));
-        Assert.IsFalse(Ex591.IsValid("<A><</A>"));
-        Assert.IsFalse(Ex591.IsValid("<A></<"));
-        Assert.IsFalse(Ex591.IsValid("<></>"));
-        Assert.IsTrue(Ex591.IsValid("<AAAAAAAAA></AAAAAAAAA>"));
-        Assert.IsFalse(Ex591.IsValid("<AAAAAAAAAA></AAAAAAAAAA>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A><</A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A></<"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<></>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<AAAAAAAAA></AAAAAAAAA>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<AAAAAAAAAA></AAAAAAAAAA>"));
 
         // Tag name matching
-        Assert.IsFalse(Ex591.IsValid("<A></B>"));
-        Assert.IsFalse(Ex591.IsValid("<AB></BA>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A></B>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<AB></BA>"));
 
         // String Content
-        Assert.IsTrue(Ex591.IsValid("<A>abc</A>"));
-        Assert.IsTrue(Ex591.IsValid("<A>123</A>"));
-        Assert.IsTrue(Ex591.IsValid("<A>.$#</A>"));
-        Assert.IsTrue(Ex591.IsValid("<A>>>></A>"));
-        Assert.IsTrue(Ex591.IsValid("<A> \t\n</A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A>abc</A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A>123</A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A>.$#</A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A>>>></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A> \t\n</A>"));
 
         // Invalid Content
-        Assert.IsFalse(Ex591.IsValid("<A><</A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A><</A>"));
 
         // Root tag
-        Assert.IsFalse(Ex591.IsValid("<A></A><A></A>"));
-        Assert.IsFalse(Ex591.IsValid("<A></A><B></B>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A></A><A></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A></A><B></B>"));
 
         // Nesting
-        Assert.IsTrue(Ex591.IsValid("<A><A></A><B></B></A>"));
-        Assert.IsTrue(Ex591.IsValid("<C><A></A><B></B></C>"));
-        Assert.IsTrue(Ex591.IsValid("<A><B></B></A>"));
-        Assert.IsTrue(Ex591.IsValid("<A><A></A></A>"));
-        Assert.IsTrue(Ex591.IsValid("<A><B><A></A></B></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A><A></A><B></B></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<C><A></A><B></B></C>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A><B></B></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A><A></A></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A><B><A></A></B></A>"));
 
-        Assert.IsTrue(Ex591.IsValid("<C><B><A></A></B></C>"));
-        Assert.IsFalse(Ex591.IsValid("<C><B><A></C></B></A>"));
-        Assert.IsFalse(Ex591.IsValid("<C><B><A></A></B></D>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<C><B><A></A></B></C>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<C><B><A></C></B></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<C><B><A></A></B></D>"));
 
-        Assert.IsFalse(Ex591.IsValid("<A></A></A>"));
-        Assert.IsFalse(Ex591.IsValid("<A><A></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A></A></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A><A></A>"));
 
         // String Content and Nesting
-        Assert.IsTrue(Ex591.IsValid("<A>12<B>34</B>56</A>"));
-        Assert.IsTrue(Ex591.IsValid("<A>12<B><C>3</C>4</B>56<D></D></A>"));
-        Assert.IsFalse(Ex591.IsValid("<A>125<6<D></D></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A>12<B>34</B>56</A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A>12<B><C>3</C>4</B>56<D></D></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A>125<6<D></D></A>"));
 
         // Cdata
-        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[]]></A>"));
-        Assert.IsFalse(Ex591.IsValid("<A><![CDATA[]></A>"));
-        Assert.IsFalse(Ex591.IsValid("<A><![CDTA[]]></A>"));
-        Assert.IsTrue(Ex591.IsValid("<A>![CDTA[]]></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A><![CDATA[]]></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A><![CDATA[]></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A><![CDTA[]]></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A>![CDTA[]]></A>"));
 
-        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[a]]></A>"));
-        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[<]]></A>"));
-        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[>]]></A>"));
-        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[ ]]></A>"));
-        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[a]]><![CDATA[b]]></A>"));
-        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[<![CDATA[b]]></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A><![CDATA[a]]></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A><![CDATA[<]]></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A><![CDATA[>]]></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A><![CDATA[ ]]></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A><![CDATA[a]]><![CDATA[b]]></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A><![CDATA[<![CDATA[b]]></A>"));
 
-        Assert.IsFalse(Ex591.IsValid("<A><![CDATA]]></A>"));
-        Assert.IsFalse(Ex591.IsValid("<A><![]]></A>"));
-        Assert.IsFalse(Ex591.IsValid("<A><!></A>"));
-        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[<![CDATA[b]]>]]></A>"));
-        Assert.IsFalse(Ex591.IsValid("<A><![CDATA[<![CDATA[b]]><]]></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A><![CDATA]]></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A><![]]></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A><!></A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A><![CDATA[<![CDATA[b]]>]]></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A><![CDATA[<![CDATA[b]]><]]></A>"));
 
         // Cdata and tags
-        Assert.IsFalse(Ex591.IsValid("<A><![CDATA[</A>]]>"));
-        Assert.IsTrue(Ex591.IsValid("<A><![CDATA[</A>]]></A>"));
+        Assert.IsFalse(Leetcode.Ex591_IsValid.IsValid("<A><![CDATA[</A>]]>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A><![CDATA[</A>]]></A>"));
 
         // Cdata, tags and content
-        Assert.IsTrue(Ex591.IsValid("<A>A<A></A><![CDATA[</A>]]>A</A>"));
+        Assert.IsTrue(Leetcode.Ex591_IsValid.IsValid("<A>A<A></A><![CDATA[</A>]]>A</A>"));
     }
 
     [TestMethod]
@@ -789,6 +842,33 @@ public class LeetcodeTests
             string.Join("", Leetcode.Ex1548_MostSimilarPath(n, ToRoads("A,C;C,D;D,E"), names, ToPath("ACDE"))));
         Assert.AreEqual("ACACA",
             string.Join("", Leetcode.Ex1548_MostSimilarPath(n, ToRoads("A,C;C,D;D,E"), names, ToPath("ABCDE"))));
+    }
+
+    [TestMethod]
+    public void Ex1696_MaxResult_DP()
+    {
+        Assert.AreEqual(7, Leetcode.Ex1696_MaxResult_DP(new[] { 1, -1, -2, 4, -7, 3 }, 2));
+        Assert.AreEqual(17, Leetcode.Ex1696_MaxResult_DP(new[] { 10, -5, -2, 4, 0, 3 }, 3));
+        Assert.AreEqual(0, Leetcode.Ex1696_MaxResult_DP(new[] { 1, -5, -20, 4, -1, 3, -6, -3 }, 2));
+        Assert.AreEqual(198, Leetcode.Ex1696_MaxResult_DP(new[] { 100, -1, -100, -1, 100 }, 2));
+    }
+
+    [TestMethod]
+    public void Ex1696_MaxResult_DP_BottomUp()
+    {
+        Assert.AreEqual(7, Leetcode.Ex1696_MaxResult_DP_BottomUp(new[] { 1, -1, -2, 4, -7, 3 }, 2));
+        Assert.AreEqual(17, Leetcode.Ex1696_MaxResult_DP_BottomUp(new[] { 10, -5, -2, 4, 0, 3 }, 3));
+        Assert.AreEqual(0, Leetcode.Ex1696_MaxResult_DP_BottomUp(new[] { 1, -5, -20, 4, -1, 3, -6, -3 }, 2));
+        Assert.AreEqual(198, Leetcode.Ex1696_MaxResult_DP_BottomUp(new[] { 100, -1, -100, -1, 100 }, 2));
+    }
+
+    [TestMethod]
+    public void Ex1696_MaxResult_WithHeap()
+    {
+        Assert.AreEqual(7, Leetcode.Ex1696_MaxResult_WithHeap(new[] { 1, -1, -2, 4, -7, 3 }, 2));
+        Assert.AreEqual(17, Leetcode.Ex1696_MaxResult_WithHeap(new[] { 10, -5, -2, 4, 0, 3 }, 3));
+        Assert.AreEqual(0, Leetcode.Ex1696_MaxResult_WithHeap(new[] { 1, -5, -20, 4, -1, 3, -6, -3 }, 2));
+        Assert.AreEqual(198, Leetcode.Ex1696_MaxResult_WithHeap(new[] { 100, -1, -100, -1, 100 }, 2));
     }
 
     [TestMethod]

@@ -429,6 +429,77 @@ public static class Leetcode
         return max;
     }
 
+    public static IList<string> Ex187_FindRepeatedDnaSequences_2Bits(string s)
+    {
+        if (s.Length < 10)
+            return Array.Empty<string>();
+
+        var result = new List<string> { };
+        var values = new Dictionary<char, int>(4)
+        {
+            ['A'] = 0,
+            ['C'] = 1,
+            ['G'] = 2,
+            ['T'] = 3,
+        };
+
+        var counts = new Dictionary<int, int> { };
+        var hash = 0;
+        for (var i = 0; i < 10; i++)
+            hash = (hash << 2) + values[s[i]];
+        counts[hash] = 1;
+
+        for (var i = 10; i < s.Length; i++)
+        {
+            hash &= 0b00111111111111111111;
+            hash = (hash << 2) + values[s[i]];
+            if (counts.TryGetValue(hash, out var count))
+            {
+                if (count == 1)
+                    result.Add(s[(i - 9)..(i + 1)]);
+                counts[hash]++;
+            }
+            else
+            {
+                counts[hash] = 1;
+            }
+        }
+
+        return result;
+    }
+
+    public static IList<string> Ex187_FindRepeatedDnaSequences_3Bits(string s)
+    {
+        if (s.Length < 10)
+            return Array.Empty<string>();
+
+        var result = new List<string> { };
+
+        var counts = new Dictionary<int, int> { };
+        var hash = 0;
+        for (var i = 0; i < 10; i++)
+            hash = (hash << 3) + (s[i] - 'A');
+        counts[hash] = 1;
+
+        for (var i = 10; i < s.Length; i++)
+        {
+            hash &= 0b00111111111111111111111111111;
+            hash = (hash << 3) + (s[i] - 'A');
+            if (counts.TryGetValue(hash, out var count))
+            {
+                if (count == 1)
+                    result.Add(s[(i - 9)..(i + 1)]);
+                counts[hash] = count + 1;
+            }
+            else
+            {
+                counts[hash] = 1;
+            }
+        }
+
+        return result;
+    }
+
     public static bool Ex207_CanFinish_EdgeList(int numCourses, int[][] prerequisites)
     {
         var visited = new HashSet<int> { };
@@ -637,6 +708,67 @@ public static class Leetcode
         var left = Ex226_InvertTree(root.left);
         var right = Ex226_InvertTree(root.right);
         return new TreeNode(root.val, right, left);
+    }
+
+    public class Ex295_MedianFinder
+    {
+        private PriorityQueue<int, int> SmallerHalf { get; } = new PriorityQueue<int, int>();
+        private PriorityQueue<int, int> BiggerHalf { get; } = new PriorityQueue<int, int>();
+
+        public Ex295_MedianFinder()
+        {
+        }
+
+        public void AddNum(int num)
+        {
+            if (SmallerHalf.Count == 0)
+            {
+                SmallerHalf.Enqueue(num, -num);
+                return;
+            }
+
+            var maxOfSmallerHalf = SmallerHalf.Peek();
+
+            if (SmallerHalf.Count <= BiggerHalf.Count)
+            {
+                if (num <= maxOfSmallerHalf)
+                {
+                    SmallerHalf.Enqueue(num, -num);
+                }
+                else
+                {
+                    BiggerHalf.Enqueue(num, num);
+                    var minOfBiggerHalf = BiggerHalf.Dequeue();
+                    SmallerHalf.Enqueue(minOfBiggerHalf, -minOfBiggerHalf);
+                }
+            }
+            else
+            {
+                if (num <= maxOfSmallerHalf)
+                {
+                    SmallerHalf.Enqueue(num, -num);
+                    maxOfSmallerHalf = SmallerHalf.Dequeue();
+                    BiggerHalf.Enqueue(maxOfSmallerHalf, maxOfSmallerHalf);
+                }
+                else
+                {
+                    BiggerHalf.Enqueue(num, num);
+                }
+
+            }
+
+            //Console.WriteLine(nameof(SmallerHalf) + ": " + string.Join(", ", SmallerHalf.UnorderedItems));
+            //Console.WriteLine(nameof(BiggerHalf) + ": " + string.Join(", ", BiggerHalf.UnorderedItems));
+        }
+
+        public double FindMedian()
+        {
+            if (SmallerHalf.Count < BiggerHalf.Count)
+                return BiggerHalf.Peek();
+            else if (SmallerHalf.Count > BiggerHalf.Count)
+                return SmallerHalf.Peek();
+            return (BiggerHalf.Peek() + SmallerHalf.Peek()) / 2.0;
+        }
     }
 
     public static string Ex299_GetHint(string secret, string guess)
@@ -1266,7 +1398,7 @@ public static class Leetcode
         }
     }
 
-    public class Ex591
+    public class Ex591_IsValid
     {
         private record State(string Code, int Position, ImmutableStack<string> Tags)
         {
@@ -1865,6 +1997,72 @@ public static class Leetcode
             solutions[(vertex, j)] = solution;
             return solution;
         }
+    }
+
+    public static int Ex1696_MaxResult_DP(int[] nums, int k)
+    {
+        var solutions = new Dictionary<int, int> { };
+        var n = nums.Length;
+        return MaxResult(0);
+
+        int MaxResult(int i) // Suffixes nums[i..]
+        {
+            if (i > n - 1) return int.MinValue;
+            if (i == n - 1) return nums[i];
+            if (solutions.TryGetValue(i, out var solution)) return solution;
+
+            solution = int.MinValue;
+
+            for (var j = i + 1; j <= Math.Min(n - 1, i + k); j++)
+            {
+                var remainingPathResult = MaxResult(j);
+                if (remainingPathResult != int.MinValue)
+                    solution = Math.Max(solution, nums[i] + remainingPathResult);
+            }
+
+            solutions[i] = solution;
+            return solution;
+        }
+    }
+
+    public static int Ex1696_MaxResult_DP_BottomUp(int[] nums, int k)
+    {
+        var n = nums.Length;
+        var solutions = new int[n];
+
+        solutions[n - 1] = nums[n - 1];
+        for (var i = n - 2; i >= 0; i--)
+        {
+            var solution = int.MinValue;
+            for (var j = i + 1; j <= Math.Min(n - 1, i + k); j++)
+            {
+                if (solutions[j] != int.MinValue)
+                    solution = Math.Max(solution, nums[i] + solutions[j]);
+            }
+            solutions[i] = solution;
+        }
+
+        return solutions[0];
+    }
+
+    public static int Ex1696_MaxResult_WithHeap(int[] nums, int k)
+    {
+        var n = nums.Length;
+        var solutions = new int[n];
+        var values = new PriorityQueue<int, int> { };
+
+        solutions[n - 1] = nums[n - 1];
+        for (var i = n - 2; i >= 0; i--)
+        {
+            values.Enqueue(i + 1, -solutions[i + 1]);
+
+            while (values.Peek() > i + k)
+                values.Dequeue();
+
+            solutions[i] = nums[i] + solutions[values.Peek()];
+        }
+
+        return solutions[0];
     }
 
     public static int[] Ex1834_GetOrder(int[][] tasks)
