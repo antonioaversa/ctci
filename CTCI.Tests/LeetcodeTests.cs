@@ -907,6 +907,28 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex2034_StockPrice()
+    {
+        var stockPrice = new Ex2034_StockPrice();
+        stockPrice.Update(1, 10);
+        stockPrice.Update(2, 5);
+        Assert.AreEqual(5, stockPrice.Current());
+        Assert.AreEqual(10, stockPrice.Maximum());
+        stockPrice.Update(1, 3);
+        Assert.AreEqual(5, stockPrice.Maximum());
+        stockPrice.Update(4, 2);
+        Assert.AreEqual(2, stockPrice.Minimum());
+        stockPrice.Update(2, 8);
+        Assert.AreEqual(2, stockPrice.Current());
+        Assert.AreEqual(8, stockPrice.Maximum());
+        Assert.AreEqual(2, stockPrice.Minimum());
+        stockPrice.Update(2, 1);
+        Assert.AreEqual(2, stockPrice.Current());
+        Assert.AreEqual(3, stockPrice.Maximum());
+        Assert.AreEqual(1, stockPrice.Minimum());
+    }
+
+    [TestMethod]
     public void Ex2050_MinimumTime_ShortestPathViaTopoSort()
     {
         Assert.AreEqual(8, Leetcode.Ex2050_MinimumTime_ShortestPathViaTopoSort(

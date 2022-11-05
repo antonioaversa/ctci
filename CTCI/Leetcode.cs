@@ -2196,6 +2196,48 @@ public static class Leetcode
         return ans;
     }
 
+    public class Ex2034_StockPrice
+    {
+        private readonly Dictionary<int, int> prices = new();
+        private int maxTimestamp = int.MinValue;
+        private readonly PriorityQueue<int, int> maxes = new();
+        private readonly PriorityQueue<int, int> mins = new();
+
+        public Ex2034_StockPrice()
+        {
+        }
+
+        // Update price for timestamp
+        public void Update(int timestamp, int price)
+        {
+            prices[timestamp] = price;
+            maxTimestamp = Math.Max(maxTimestamp, timestamp);
+            maxes.Enqueue(timestamp, -price);
+            mins.Enqueue(timestamp, price);
+        }
+
+        // Price at max timestamp
+        public int Current() => prices[maxTimestamp];
+
+        // Max price
+        public int Maximum()
+        {
+            int price;
+            while (maxes.TryPeek(out var timestamp, out price) && prices[timestamp] != -price)
+                maxes.Dequeue();
+            return -price;
+        }
+
+        // Min price
+        public int Minimum()
+        {
+            int price;
+            while (mins.TryPeek(out var timestamp, out price) && prices[timestamp] != price)
+                mins.Dequeue();
+            return price;
+        }
+    }
+
     public static int Ex2050_MinimumTime_ShortestPathViaTopoSort(int n, int[][] relations, int[] time)
     {
         // Vertices: 0 = start, 1..n = begin of courses, n+1..2n = end of courses
