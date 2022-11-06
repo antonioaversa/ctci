@@ -1581,6 +1581,76 @@ public static class Leetcode
         }
     }
 
+    public class Ex641_MyCircularDeque
+    {
+        private int[] values;
+        private int front;
+        private int back;
+        private int count;
+        private readonly int k;
+
+        public Ex641_MyCircularDeque(int k)
+        {
+            values = new int[k];
+            front = -1;
+            back = 0;
+            count = 0;
+            this.k = k;
+        }
+
+        public bool InsertFront(int value)
+        {
+            if (IsFull()) return false;
+            front = (front + 1) % k;
+            values[front] = value;
+            ++count;
+            return true;
+        }
+
+        public bool InsertLast(int value)
+        {
+            if (IsFull()) return false;
+            back = (back - 1 + k) % k;
+            values[back] = value;
+            ++count;
+            return true;
+        }
+
+        public bool DeleteFront()
+        {
+            if (IsEmpty()) return false;
+            var value = values[front];
+            front = (front - 1 + k) % k;
+            --count;
+            return true;
+        }
+
+        public bool DeleteLast()
+        {
+            if (IsEmpty()) return false;
+            var value = values[back];
+            back = (back + 1) % k;
+            --count;
+            return true;
+        }
+
+        public int GetFront()
+        {
+            if (IsEmpty()) return -1;
+            return values[front];
+        }
+
+        public int GetRear()
+        {
+            if (IsEmpty()) return -1;
+            return values[back];
+        }
+
+        public bool IsEmpty() => count == 0;
+
+        public bool IsFull() => count == k;
+    }
+
     public static int Ex718_FindLength_DP(int[] nums1, int[] nums2)
     {
         var solutions = new Dictionary<(int, int), int> { };
@@ -1935,6 +2005,85 @@ public static class Leetcode
         return total - min;
     }
 
+    public static int Ex1443_MinTime(int n, int[][] edges, IList<bool> hasApple)
+    {
+        var adjs = new ISet<int>[n];
+        for (var i = 0; i < edges.Length; i++)
+        {
+            var edge = edges[i];
+            if (adjs[edge[0]] == null)
+                adjs[edge[0]] = new HashSet<int> { edge[1] };
+            else
+                adjs[edge[0]].Add(edge[1]);
+
+            if (adjs[edge[1]] == null)
+                adjs[edge[1]] = new HashSet<int> { edge[0] };
+            else
+                adjs[edge[1]].Add(edge[0]);
+        }
+
+        return Dfs(0, new HashSet<int> { }).edges;
+
+        (int edges, int apples) Dfs(int vertex, ISet<int> visited)
+        {
+            if (visited.Contains(vertex)) return (0, 0);
+            visited.Add(vertex);
+
+            var apples = hasApple[vertex] ? 1 : 0;
+            var edges = 0;
+            if (adjs[vertex] != null)
+            {
+                foreach (var neighbor in adjs[vertex])
+                {
+                    var (neighborEdges, neighborApples) = Dfs(neighbor, visited);
+                    apples += neighborApples;
+                    if (neighborApples > 0)
+                        edges += 2 + neighborEdges;
+                }
+            }
+
+            return (edges, apples);
+        }
+    }
+
+    public static int Ex1443_MinTimeOptimized(int n, int[][] edges, IList<bool> hasApple)
+    {
+        var adjs = new ISet<int>[n];
+        for (var i = 0; i < edges.Length; i++)
+        {
+            var edge = edges[i];
+            if (adjs[edge[0]] == null)
+                adjs[edge[0]] = new HashSet<int> { edge[1] };
+            else
+                adjs[edge[0]].Add(edge[1]);
+
+            if (adjs[edge[1]] == null)
+                adjs[edge[1]] = new HashSet<int> { edge[0] };
+            else
+                adjs[edge[1]].Add(edge[0]);
+        }
+
+        return Math.Max(0, Dfs(0, new bool[n]) - 2);
+
+        int Dfs(int vertex, bool[] visited)
+        {
+            if (visited[vertex]) return 0;
+            visited[vertex] = true;
+
+            var edges = 0;
+            if (adjs[vertex] != null)
+            {
+                foreach (var neighbor in adjs[vertex])
+                {
+                    var neighborEdges = Dfs(neighbor, visited);
+                    edges += neighborEdges;
+                }
+            }
+
+            return hasApple[vertex] || edges > 0 ? edges + 2 : 0;
+        }
+    }
+
     public static int Ex1499_FindMaxValueOfEquation(int[][] points, int k)
     {
         var n = points.Length;
@@ -2029,6 +2178,72 @@ public static class Leetcode
             solutions[(vertex, j)] = solution;
             return solution;
         }
+    }
+
+    public static int Ex1695_MaximumUniqueSubarray(int[] nums)
+    {
+        var n = nums.Length;
+
+        // Window nums[i..(j + 1)] 
+        var i = 0; var j = 0; var sum = nums[j]; var result = nums[0];
+        var positions = new Dictionary<int, int> { [nums[0]] = 0 };
+        while (j < n)
+        {
+            Console.WriteLine($"i = {i}, j = {j}, sum = {sum}, result = {result}");
+
+            // Push j as far as possible, i.e. until next j is already in the window
+            while (j < n - 1 && (!positions.TryGetValue(nums[j + 1], out var position) || position < i || position > j))
+            {
+                j++;
+                positions[nums[j]] = j;
+                sum += nums[j];
+            }
+
+            result = Math.Max(result, sum);
+
+            if (j == n - 1)
+                break;
+
+            i = positions[nums[j + 1]] + 1;
+            j = i;
+            sum = nums[j];
+            positions[nums[j]] = j;
+        }
+
+        return result;
+    }
+
+    public static int Ex1695_MaximumUniqueSubarrayOptimized(int[] nums)
+    {
+        var n = nums.Length;
+
+        // Window nums[i..(j + 1)] 
+        var i = 0; var j = 0; var sums = new int[n]; var result = nums[0];
+        sums[0] = nums[j];
+        var positions = new Dictionary<int, int> { [nums[0]] = 0 };
+        while (j < n)
+        {
+            // Push j as far as possible, i.e. until next j is already in the window
+            while (j < n - 1 && (!positions.TryGetValue(nums[j + 1], out var position) || position < i || position > j))
+            {
+                j++;
+                positions[nums[j]] = j;
+                sums[j] = (j > 0 ? sums[j - 1] : 0) + nums[j];
+            }
+
+            result = Math.Max(result, sums[j] - (i > 0 ? sums[i - 1] : 0));
+
+            if (j == n - 1)
+                break;
+
+            j++;
+            i = positions[nums[j]] + 1;
+
+            positions[nums[j]] = j;
+            sums[j] = sums[j - 1] + nums[j];
+        }
+
+        return result;
     }
 
     public static int Ex1696_MaxResult_DP(int[] nums, int k)

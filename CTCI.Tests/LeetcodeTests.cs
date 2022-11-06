@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -641,6 +642,31 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex641_MyCircularDeque()
+    {
+        var deque = new Ex641_MyCircularDeque(3);
+        Assert.AreEqual(true, deque.InsertLast(1));
+        Assert.AreEqual(true, deque.InsertLast(2));
+        Assert.AreEqual(true, deque.InsertFront(3));
+        Assert.AreEqual(false, deque.InsertFront(4));
+        Assert.AreEqual(2, deque.GetRear());
+        Assert.AreEqual(true, deque.IsFull());
+        Assert.AreEqual(true, deque.DeleteLast());
+        Assert.AreEqual(true, deque.InsertFront(4));
+        Assert.AreEqual(4, deque.GetFront());
+        Assert.AreEqual(false, deque.InsertFront(5));
+        Assert.AreEqual(false, deque.InsertFront(6));
+        Assert.AreEqual(false, deque.InsertLast(7));
+        Assert.AreEqual(4, deque.GetFront());
+        Assert.AreEqual(1, deque.GetRear());
+        Assert.AreEqual(true, deque.DeleteLast());
+        Assert.AreEqual(3, deque.GetRear());
+        Assert.AreEqual(4, deque.GetFront());
+        Assert.AreEqual(true, deque.DeleteLast());
+        Assert.AreEqual(true, deque.DeleteFront());
+    }
+    
+    [TestMethod]
     public void Ex718_FindLength_DP()
     {
         Assert.AreEqual(0, Leetcode.Ex718_FindLength_DP(new[] { 1, 2, 3, 2, 1 }, Array.Empty<int>()));
@@ -812,6 +838,48 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex1443_MinTime()
+    {
+        Assert.AreEqual(8, Leetcode.Ex1443_MinTime(
+            7,
+            new[] { new[] { 0, 1 }, new[] { 0, 2 }, new[] { 1, 4 }, new[] { 1, 5 }, new[] { 2, 3 }, new[] { 2, 6 } },
+            new[] { false, false, true, false, true, true, false }));
+        Assert.AreEqual(6, Leetcode.Ex1443_MinTime(
+            7,
+            new[] {new[] {0, 1},new[] {0,2},new[] {1,4},new[] {1,5},new[] {2,3},new[] {2,6}},
+            new[] {false,false,true,false,false,true,false}));
+        Assert.AreEqual(0, Leetcode.Ex1443_MinTime(
+            7,
+            new[] {new[] {0, 1},new[] {0,2},new[] {1,4},new[] {1,5},new[] {2,3},new[] {2,6}},
+            new[] {false,false,false,false,false,false,false}));
+        Assert.AreEqual(4, Leetcode.Ex1443_MinTime(
+            4,
+            new[] { new[] { 0, 2 }, new[] { 0, 3 }, new[] { 1, 2 } },
+            new[] { false, true, false, false }));
+    }
+
+    [TestMethod]
+    public void Ex1443_MinTimeOptimized()
+    {
+        Assert.AreEqual(8, Leetcode.Ex1443_MinTimeOptimized(
+            7,
+            new[] { new[] { 0, 1 }, new[] { 0, 2 }, new[] { 1, 4 }, new[] { 1, 5 }, new[] { 2, 3 }, new[] { 2, 6 } },
+            new[] { false, false, true, false, true, true, false }));
+        Assert.AreEqual(6, Leetcode.Ex1443_MinTimeOptimized(
+            7,
+            new[] { new[] { 0, 1 }, new[] { 0, 2 }, new[] { 1, 4 }, new[] { 1, 5 }, new[] { 2, 3 }, new[] { 2, 6 } },
+            new[] { false, false, true, false, false, true, false }));
+        Assert.AreEqual(0, Leetcode.Ex1443_MinTimeOptimized(
+            7,
+            new[] { new[] { 0, 1 }, new[] { 0, 2 }, new[] { 1, 4 }, new[] { 1, 5 }, new[] { 2, 3 }, new[] { 2, 6 } },
+            new[] { false, false, false, false, false, false, false }));
+        Assert.AreEqual(4, Leetcode.Ex1443_MinTimeOptimized(
+            4,
+            new[] { new[] { 0, 2 }, new[] { 0, 3 }, new[] { 1, 2 } },
+            new[] { false, true, false, false }));
+    }
+
+    [TestMethod]
     public void Ex1499_FindMaxValueOfEquation()
     {
         Assert.AreEqual(4, Leetcode.Ex1499_FindMaxValueOfEquation(
@@ -854,6 +922,16 @@ public class LeetcodeTests
             string.Join("", Leetcode.Ex1548_MostSimilarPath(n, ToRoads("A,C;C,D;D,E"), names, ToPath("ACDE"))));
         Assert.AreEqual("ACACA",
             string.Join("", Leetcode.Ex1548_MostSimilarPath(n, ToRoads("A,C;C,D;D,E"), names, ToPath("ABCDE"))));
+    }
+
+    [TestMethod]
+    public void Ex1695_MaximumUniqueSubarray()
+    {
+        Assert.AreEqual(17, Leetcode.Ex1695_MaximumUniqueSubarray(new[] { 4, 2, 4, 5, 6 }));
+        Assert.AreEqual(8, Leetcode.Ex1695_MaximumUniqueSubarray(new[] { 5, 2, 1, 2, 5, 2, 1, 2, 5 }));
+        Assert.AreEqual(4, Leetcode.Ex1695_MaximumUniqueSubarray(new[] { 4 }));
+        Assert.AreEqual(22, Leetcode.Ex1695_MaximumUniqueSubarray(new[] { 4, 2, 4, 5, 6, 4, 7, 4, 3, 2, 1, 7 }));
+        Assert.AreEqual(17, Leetcode.Ex1695_MaximumUniqueSubarray(new[] { 4, 2, 4, 5, 0, 4, 7, 4, 3, 2, 1, 7 }));
     }
 
     [TestMethod]
