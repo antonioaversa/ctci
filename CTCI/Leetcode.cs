@@ -500,6 +500,104 @@ public static class Leetcode
         return result;
     }
 
+    public static int Ex200_NumIslands_WithAdjs(char[][] grid)
+    {
+        var m = grid.Length;
+        var n = grid[0].Length;
+        var maxVertices = 301;
+
+        var landAdjs = BuildAdjs();
+
+        var numberOfIslands = 0;
+        var visitedLands = new HashSet<int>();
+        foreach (var landId in landAdjs.Keys)
+        {
+            if (visitedLands.Contains(landId))
+                continue;
+            numberOfIslands++;
+            ExploreLands(landId, visitedLands);
+        }
+
+        return numberOfIslands;
+
+        void ExploreLands(int landId, ISet<int> visitedLands)
+        {
+            if (visitedLands.Contains(landId)) return;
+            visitedLands.Add(landId);
+
+            foreach (var adjLandId in landAdjs[landId])
+                ExploreLands(adjLandId, visitedLands);
+        }
+
+        IDictionary<int, ISet<int>> BuildAdjs()
+        {
+            var adjs = new Dictionary<int, ISet<int>>();
+            for (var i = 0; i < m; i++)
+            {
+                for (var j = 0; j < n; j++)
+                {
+                    if (grid[i][j] != '1')
+                        continue;
+
+                    var adj = new HashSet<int> { };
+
+                    if (j > 0 && grid[i][j - 1] == '1')
+                        adj.Add(VertexId(i, j - 1));
+                    if (j < n - 1 && grid[i][j + 1] == '1')
+                        adj.Add(VertexId(i, j + 1));
+                    if (i > 0 && grid[i - 1][j] == '1')
+                        adj.Add(VertexId(i - 1, j));
+                    if (i < m - 1 && grid[i + 1][j] == '1')
+                        adj.Add(VertexId(i + 1, j));
+
+                    adjs[VertexId(i, j)] = adj;
+                }
+            }
+            return adjs;
+        }
+
+        int VertexId(int i, int j) => maxVertices * i + j;
+    }
+
+    public static int Ex200_NumIslands_WithoutAdjs(char[][] grid)
+    {
+        var m = grid.Length;
+        var n = grid[0].Length;
+        var maxVertices = 301;
+
+        var numberOfIslands = 0;
+        var visitedLands = new HashSet<int>();
+        for (var i = 0; i < m; i++)
+        {
+            for (var j = 0; j < n; j++)
+            {
+                var landId = maxVertices * i + j;
+                if (grid[i][j] != '1' || visitedLands.Contains(landId))
+                    continue;
+                numberOfIslands++;
+                ExploreLands(i, j, visitedLands);
+            }
+        }
+
+        return numberOfIslands;
+
+        void ExploreLands(int i, int j, ISet<int> visitedLands)
+        {
+            var landId = maxVertices * i + j;
+            if (visitedLands.Contains(landId)) return;
+            visitedLands.Add(landId);
+
+            if (i > 0 && grid[i - 1][j] == '1')
+                ExploreLands(i - 1, j, visitedLands);
+            if (i < m - 1 && grid[i + 1][j] == '1')
+                ExploreLands(i + 1, j, visitedLands);
+            if (j > 0 && grid[i][j - 1] == '1')
+                ExploreLands(i, j - 1, visitedLands);
+            if (j < n - 1 && grid[i][j + 1] == '1')
+                ExploreLands(i, j + 1, visitedLands);
+        }
+    }
+
     public static bool Ex207_CanFinish_EdgeList(int numCourses, int[][] prerequisites)
     {
         var visited = new HashSet<int> { };
@@ -2705,6 +2803,132 @@ public static class Leetcode
             }
 
             return longestPaths;
+        }
+    }
+
+    public static string Ex2096_GetDirections_TwoDfs(TreeNode root, int startValue, int destValue)
+    {
+        var pathToStart = Dfs(root, startValue).ToArray();
+        var pathToDest = Dfs(root, destValue).ToArray();
+
+        // Calculate last node in common
+        var i = 0;
+        while (i < pathToStart.Length && i < pathToDest.Length && pathToStart[i] == pathToDest[i])
+            i++;
+
+        var path = new StringBuilder();
+        path.Append(new string('U', pathToStart.Length - i));
+        for (var j = i - 1; j < pathToDest.Length - 1; j++)
+            if (pathToDest[j].left?.val == pathToDest[j + 1].val)
+                path.Append('L');
+            else
+                path.Append('R');
+
+        return path.ToString();
+
+        IEnumerable<TreeNode> Dfs(TreeNode node, int targetValue)
+        {
+            if (node == null)
+                yield break;
+
+            if (node.val == targetValue)
+            {
+                yield return node;
+                yield break;
+            }
+
+            var leftPath = Dfs(node.left, targetValue).ToList();
+            if (leftPath.Any())
+            {
+                yield return node;
+                foreach (var leftPathNode in leftPath)
+                    yield return leftPathNode;
+                yield break;
+            }
+
+            var rightPath = Dfs(node.right, targetValue).ToList();
+            if (rightPath.Any())
+            {
+                yield return node;
+                foreach (var rightPathNode in rightPath)
+                    yield return rightPathNode;
+            }
+        }
+    }
+
+    public static string Ex2096_GetDirections_SingleDfs(TreeNode root, int startValue, int destValue)
+    {
+        List<TreeNode> pathToStart = new List<TreeNode>(), pathToDest = new List<TreeNode>();
+        Dfs(root, new List<TreeNode>());
+
+        // Calculate last node in common
+        var i = 0;
+        while (i < pathToStart.Count && i < pathToDest.Count && pathToStart[i] == pathToDest[i])
+            i++;
+
+        var path = new StringBuilder();
+        path.Append(new string('U', pathToStart.Count - i));
+        for (var j = i - 1; j < pathToDest.Count - 1; j++)
+            if (pathToDest[j].left?.val == pathToDest[j + 1].val)
+                path.Append('L');
+            else
+                path.Append('R');
+
+        return path.ToString();
+
+        void Dfs(TreeNode node, List<TreeNode> currentPath)
+        {
+            if (node == null)
+                return;
+
+            currentPath.Add(node);
+            if (node.val == startValue)
+                pathToStart = currentPath.ToList();
+
+            if (node.val == destValue)
+                pathToDest = currentPath.ToList();
+
+            Dfs(node.left, currentPath);
+            Dfs(node.right, currentPath);
+            currentPath.RemoveAt(currentPath.Count - 1);
+        }
+    }
+
+    public static string Ex2096_GetDirections_WithStringBuffer(TreeNode root, int startValue, int destValue)
+    {
+        var pathToStart = Dfs(root, startValue, new StringBuilder());
+        var pathToDest = Dfs(root, destValue, new StringBuilder());
+
+        //Console.WriteLine($"{nameof(pathToStart)} = {pathToStart}, {nameof(pathToDest)} = {pathToDest}");
+
+        // Calculate last node in common
+        var i = 0;
+        while (i < pathToStart.Length && i < pathToDest.Length && pathToStart[i] == pathToDest[i])
+            i++;
+
+        return new string('U', pathToStart.Length - i) + pathToDest[i..];
+
+        string Dfs(TreeNode node, int targetValue, StringBuilder currentPath)
+        {
+            if (node == null)
+                return null;
+
+            if (node.val == targetValue)
+                return currentPath.ToString();
+
+            currentPath.Append("L");
+            var leftPath = Dfs(node.left, targetValue, currentPath);
+            if (leftPath != null) return leftPath;
+
+            currentPath.Remove(currentPath.Length - 1, 1);
+
+            currentPath.Append("R");
+            var rightPath = Dfs(node.right, targetValue, currentPath);
+            if (rightPath != null) return rightPath;
+
+            currentPath.Remove(currentPath.Length - 1, 1);
+
+            return null;
         }
     }
 

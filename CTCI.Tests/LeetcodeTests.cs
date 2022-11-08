@@ -233,6 +233,117 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex200_NumIslands_WithAdjs()
+    {
+        Assert.AreEqual(1, Leetcode.Ex200_NumIslands_WithAdjs(
+            new[]
+            {
+                new[] {'1', '1', '1', '1', '0'},
+                new[] {'1', '1', '0', '1', '0'},
+                new[] {'1', '1', '0', '0', '0'},
+                new[] {'0', '0', '0', '0', '0'}
+            }));
+
+        Assert.AreEqual(3, Leetcode.Ex200_NumIslands_WithAdjs(
+            new[] 
+            { 
+                new[] { '1', '1', '0', '0', '0' }, 
+                new[] { '1', '1', '0', '0', '0' }, 
+                new[] { '0', '0', '1', '0', '0' }, 
+                new[] { '0', '0', '0', '1', '1' } 
+            }));
+
+        Assert.AreEqual(3, Leetcode.Ex200_NumIslands_WithAdjs(
+            new[] 
+            {
+                new[] {'1','1','1','1','0'},
+                new[] {'1','1','0','0','0'},
+                new[] {'0','1','1','0','0'},
+                new[] {'1','0','0','1','1'}
+            }));
+    }
+
+    [TestMethod]
+    public void Ex200_NumIslands_WithoutAdjs()
+    {
+        Assert.AreEqual(1, Leetcode.Ex200_NumIslands_WithAdjs(
+            new[]
+            {
+                new[] {'1', '1', '1', '1', '0'},
+                new[] {'1', '1', '0', '1', '0'},
+                new[] {'1', '1', '0', '0', '0'},
+                new[] {'0', '0', '0', '0', '0'}
+            }));
+
+        Assert.AreEqual(3, Leetcode.Ex200_NumIslands_WithAdjs(
+            new[]
+            {
+                new[] { '1', '1', '0', '0', '0' },
+                new[] { '1', '1', '0', '0', '0' },
+                new[] { '0', '0', '1', '0', '0' },
+                new[] { '0', '0', '0', '1', '1' }
+            }));
+
+        Assert.AreEqual(3, Leetcode.Ex200_NumIslands_WithAdjs(
+            new[]
+            {
+                new[] {'1','1','1','1','0'},
+                new[] {'1','1','0','0','0'},
+                new[] {'0','1','1','0','0'},
+                new[] {'1','0','0','1','1'}
+            }));
+    }
+
+    [TestMethod]
+    public void Ex200_NumIslands_TurnToZero()
+    {
+        Assert.AreEqual(1, Leetcode.Ex200_NumIslands_WithAdjs(
+            new[]
+            {
+                new[] {'1', '1', '1', '0', '0'},
+                new[] {'0', '0', '0', '0', '0'},
+                new[] {'0', '0', '0', '0', '0'},
+                new[] {'0', '0', '0', '0', '0'}
+            }));
+
+
+        int NumIslands(char[][] grid)
+        {
+            // If an "island" is found in the given grid, increment the counter and turn all connecting adjacent lands to "0".
+            int islands = 0;
+            for (int i = 0; i < grid.Length; i++)
+            {
+                for (int j = 0; j < grid[i].Length; j++)
+                {
+                    if (grid[i][j] == '1')
+                    {
+                        // turn all connecting adjacent lands to "0"
+                        turnToZero(grid, i, j);
+                        islands++;
+                    }
+                }
+            }
+            return islands;
+        }
+
+        void turnToZero(char[][] grid, int i, int j)
+        {
+            if (i < 0) return;
+            if (j < 0) return;
+            if (i >= grid.Length) return;
+            if (j >= grid[i].Length) return;
+            if (grid[i][j] == '0') return;
+
+            grid[i][j] = '0';
+            turnToZero(grid, i, j + 1);
+            turnToZero(grid, i, j - 1);
+            turnToZero(grid, i + 1, j);
+            turnToZero(grid, i - 1, j);
+        }
+
+    }
+
+    [TestMethod]
     public void Ex207_CanFinish_EdgeList()
     {
         Assert.IsTrue(Leetcode.Ex207_CanFinish_EdgeList(2, new[] { new[] { 0, 1 } }));
@@ -1025,6 +1136,81 @@ public class LeetcodeTests
     {
         Assert.AreEqual(8, Leetcode.Ex2050_MinimumTime_ShortestPathViaDfs(
             3, new[] { new[] { 1, 3 }, new[] { 2, 3 } }, new[] { 3, 2, 5 }));
+    }
+
+    private TreeNode? BuildTree(params int?[] numbers)
+    {
+        if (numbers.Length == 0 || numbers[0] == null)
+            throw new ArgumentException($"{nameof(numbers)} is empty.");
+
+        var nodes = Enumerable
+            .Range(0, numbers.Length)
+            .Select(i => numbers[i] != null ? new TreeNode(numbers[i].Value) : null)
+            .ToArray();
+
+        var nodesInCurrentLevel = 1;
+        var firstIndexInCurrentLevel = 0;
+
+        while (firstIndexInCurrentLevel < numbers.Length)
+        {
+            var nodesNonNullInCurrentLevel = 0;
+            for (
+                var currentIndex = firstIndexInCurrentLevel; 
+                currentIndex < firstIndexInCurrentLevel + nodesInCurrentLevel && currentIndex < numbers.Length;
+                currentIndex++)
+            {
+                if (nodes[currentIndex] != null)
+                {
+                    var leftChildIndex = firstIndexInCurrentLevel + nodesInCurrentLevel + 2 * nodesNonNullInCurrentLevel;
+                    if (leftChildIndex < nodes.Length)
+                        nodes[currentIndex].left = nodes[leftChildIndex];
+
+                    var rightChildIndex = firstIndexInCurrentLevel + nodesInCurrentLevel + 2 * nodesNonNullInCurrentLevel + 1;
+                    if (rightChildIndex < nodes.Length)
+                        nodes[currentIndex].right = nodes[rightChildIndex];
+
+                    nodesNonNullInCurrentLevel++;
+                }
+            }
+
+            firstIndexInCurrentLevel += nodesInCurrentLevel;
+            nodesInCurrentLevel = nodesNonNullInCurrentLevel * 2;
+        }
+
+        return nodes[0];
+    }
+
+    [TestMethod]
+    public void Ex2096_GetDirections_TwoDfs()
+    {
+        var tree = BuildTree(5, 1, 2, 3, null, 6, 4, 7, 8, null, 9, 10, null, 11, 12, 13, null, null, null, 14, null, null, null, 15);
+        Assert.AreEqual("U", Leetcode.Ex2096_GetDirections_TwoDfs(tree, 7, 3));
+        Assert.AreEqual("UUURL", Leetcode.Ex2096_GetDirections_TwoDfs(tree, 7, 6));
+        Assert.AreEqual("", Leetcode.Ex2096_GetDirections_TwoDfs(tree, 7, 7));
+        Assert.AreEqual("UUURRLL", Leetcode.Ex2096_GetDirections_TwoDfs(tree, 7, 14));
+        Assert.AreEqual("UUURLR", Leetcode.Ex2096_GetDirections_TwoDfs(tree, 7, 9));
+    }
+
+    [TestMethod]
+    public void Ex2096_GetDirections_SingleDfs()
+    {
+        var tree = BuildTree(5, 1, 2, 3, null, 6, 4, 7, 8, null, 9, 10, null, 11, 12, 13, null, null, null, 14, null, null, null, 15);
+        Assert.AreEqual("U", Leetcode.Ex2096_GetDirections_SingleDfs(tree, 7, 3));
+        Assert.AreEqual("UUURL", Leetcode.Ex2096_GetDirections_SingleDfs(tree, 7, 6));
+        Assert.AreEqual("", Leetcode.Ex2096_GetDirections_SingleDfs(tree, 7, 7));
+        Assert.AreEqual("UUURRLL", Leetcode.Ex2096_GetDirections_SingleDfs(tree, 7, 14));
+        Assert.AreEqual("UUURLR", Leetcode.Ex2096_GetDirections_SingleDfs(tree, 7, 9));
+    }
+
+    [TestMethod]
+    public void Ex2096_GetDirections_WithStringBuffer()
+    {
+        var tree = BuildTree(5, 1, 2, 3, null, 6, 4, 7, 8, null, 9, 10, null, 11, 12, 13, null, null, null, 14, null, null, null, 15);
+        Assert.AreEqual("U", Leetcode.Ex2096_GetDirections_WithStringBuffer(tree, 7, 3));
+        Assert.AreEqual("UUURL", Leetcode.Ex2096_GetDirections_WithStringBuffer(tree, 7, 6));
+        Assert.AreEqual("", Leetcode.Ex2096_GetDirections_WithStringBuffer(tree, 7, 7));
+        Assert.AreEqual("UUURRLL", Leetcode.Ex2096_GetDirections_WithStringBuffer(tree, 7, 14));
+        Assert.AreEqual("UUURLR", Leetcode.Ex2096_GetDirections_WithStringBuffer(tree, 7, 9));
     }
 
     [TestMethod]
