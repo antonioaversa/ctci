@@ -141,6 +141,98 @@ public static class Leetcode
         return nums.Length + 1;
     }
 
+    public static int Ex42_Trap_Quadratic(int[] height)
+    {
+        var n = height.Length;
+        if (n < 3) return 0;
+
+        // Find first max (or decreasing start edge)
+        var i = 0;
+        while (i < n - 1 && height[i] <= height[i + 1])
+            i++;
+
+        // Find next max bigger or equal than height[i]
+        var j = i + 1;
+        var totalWater = 0;
+        while (i < n && j < n)
+        {
+            var currentWater = 0;
+            var highestMaxIndex = int.MinValue;
+            var highestMaxIndexWater = 0;
+            while (j < n)
+            {
+                Console.WriteLine($"i = {i}, j = {j}, currentWater = {currentWater}, highestMaxIndex = {highestMaxIndex}, totalWater = {totalWater}");
+
+                currentWater += Math.Max(0, height[i] - height[j]);
+
+                var localMax = j < n - 1 && height[j - 1] <= height[j] && height[j] >= height[j + 1];
+                var endEdgeIncreasing = j == n - 1 && height[j - 1] <= height[j];
+                if ((localMax || endEdgeIncreasing) && height[i] <= height[j])
+                {
+                    // j points to a local max at least as high as i
+                    i = j;
+                    j = i + 1;
+                    totalWater += currentWater;
+                    highestMaxIndex = int.MinValue;
+                    break;
+                }
+
+                if (highestMaxIndex == int.MinValue || height[highestMaxIndex] < height[j])
+                {
+                    // j points to a height lower than i, but higher than any other height lower than i
+                    highestMaxIndex = j;
+                    highestMaxIndexWater = currentWater;
+                }
+
+                j++;
+            }
+
+            if (highestMaxIndex != int.MinValue)
+            {
+                totalWater += highestMaxIndexWater - (highestMaxIndex - i) * (height[i] - height[highestMaxIndex]);
+                i = highestMaxIndex;
+                j = i + 1;
+            }
+        }
+
+        return totalWater;
+    }
+
+    public static int Ex42_TrapDP(int[] height)
+    {
+        var leftMaxes = new Dictionary<int, int> { };
+        var rightMaxes = new Dictionary<int, int> { };
+
+        var totalWater = 0;
+        for (var i = 0; i < height.Length; i++)
+            totalWater += Trap(i);
+        return totalWater;
+
+        int LeftMax(int i)
+        {
+            if (i == 0) return height[i];
+            if (leftMaxes.TryGetValue(i, out var solution)) return solution;
+            solution = Math.Max(height[i], LeftMax(i - 1));
+            return leftMaxes[i] = solution;
+        }
+
+        int RightMax(int i)
+        {
+            if (i == height.Length - 1) return height[i];
+            if (rightMaxes.TryGetValue(i, out var solution)) return solution;
+            solution = Math.Max(height[i], RightMax(i + 1));
+            return rightMaxes[i] = solution;
+        }
+
+        int Trap(int i)
+        {
+            var leftMax = LeftMax(i);
+            var rightMax = RightMax(i);
+            var minMax = Math.Min(leftMax, rightMax);
+            return Math.Max(0, minMax - height[i]);
+        }
+    }
+
     public static int Ex45_Jump(int[] nums)
     {
         var n = nums.Length;
