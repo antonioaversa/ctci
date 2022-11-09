@@ -63,6 +63,40 @@ public static class Leetcode
         }
     }
 
+    public static bool Ex10_IsMatch(string s, string p)
+    {
+        var n = s.Length;
+        var m = p.Length;
+        var solutions = new Dictionary<(int, int), bool> { };
+        return IsMatch(0, 0);
+
+        bool IsMatch(int i, int j)
+        {
+            if (i >= n && j >= m) return true;
+            if (j >= m) return false;
+            if (solutions.TryGetValue((i, j), out var solution)) return solution;
+
+            if (j == m - 1 || p[j + 1] != '*')
+            {
+                if (i < n && (p[j] == '.' || p[j] == s[i]))
+                    solution = IsMatch(i + 1, j + 1);
+                else
+                    solution = false;
+            }
+            else
+            {
+                if (i < n && (p[j] == '.' || p[j] == s[i]))
+                    solution = IsMatch(i + 1, j);
+
+                if (!solution)
+                    solution = IsMatch(i, j + 2);
+            }
+
+            solutions[(i, j)] = solution;
+            return solution;
+        }
+    }
+
     public static IList<string> Ex22_GenerateParenthesis(int n)
     {
         return GenerateParenthesis(0, 0).ToList();
@@ -900,6 +934,25 @@ public static class Leetcode
         return new TreeNode(root.val, right, left);
     }
 
+    public static int[] Ex238_ProductExceptSelf(int[] nums)
+    {
+        var n = nums.Length;
+        var leftProducts = new int[n];
+        var rightProducts = new int[n];
+        leftProducts[0] = 1;
+        rightProducts[n - 1] = 1;
+        for (var i = 1; i < n; i++)
+        {
+            leftProducts[i] = leftProducts[i - 1] * nums[i - 1];
+            rightProducts[n - 1 - i] = rightProducts[n - i] * nums[n - i];
+        }
+
+        var result = new int[n];
+        for (var i = 0; i < n; i++)
+            result[i] = leftProducts[i] * rightProducts[i];
+        return result;
+    }
+
     public class Ex295_MedianFinder
     {
         private PriorityQueue<int, int> SmallerHalf { get; } = new PriorityQueue<int, int>();
@@ -1350,6 +1403,29 @@ public static class Leetcode
             (values[i], values[e]) = (values[e], values[i]);
 
             return i;
+        }
+    }
+
+    public static IList<IList<int>> Ex366_FindLeaves(TreeNode root)
+    {
+        var result = new Dictionary<int, IList<int>> { };
+        var maxLevel = Dfs(root, 0);
+        return Enumerable.Range(1, maxLevel).Select(l => result[l]).ToList();
+
+        int Dfs(TreeNode node, int level)
+        {
+            if (node == null) return level;
+
+            int maxLevelLeft = Dfs(node.left, level + 1);
+            int maxLevelRight = Dfs(node.right, level + 1);
+            int maxLevelChildren = Math.Max(maxLevelLeft, maxLevelRight);
+
+            if (!result.TryGetValue(maxLevelChildren - level, out var list))
+                result[maxLevelChildren - level] = new List<int> { node.val };
+            else
+                list.Add(node.val);
+
+            return Math.Max(level, maxLevelChildren);
         }
     }
 

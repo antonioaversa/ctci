@@ -35,6 +35,32 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex10_IsMatch()
+    {
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("a", "a"));
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("a", "."));
+        Assert.IsFalse(Leetcode.Ex10_IsMatch("a", "a."));
+
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("ab", "ab"));
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("ab", "a."));
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("ab", ".."));
+
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("", "a*"));
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("a", "a*"));
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("aaaa", "a*"));
+        Assert.IsFalse(Leetcode.Ex10_IsMatch("", "aa*"));
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("a", "aa*"));
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("aa", "aa*"));
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("aaa", "aa*"));
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("aa", "aa*a"));
+        Assert.IsFalse(Leetcode.Ex10_IsMatch("a", "aa*a"));
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("", "a*a*a*"));
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("aabbb", "a*b*"));
+        Assert.IsTrue(Leetcode.Ex10_IsMatch("aabbb", "aa*abb*b"));
+        Assert.IsFalse(Leetcode.Ex10_IsMatch("aabbb", "aa*aabb*b"));
+    }
+
+    [TestMethod]
     public void Ex22_GenerateParenthesis()
     {
         Assert.IsTrue(new HashSet<string> {
@@ -483,6 +509,13 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex238_ProductExceptSelf()
+    {
+        Assert.IsTrue(new[] { 24, 12, 8, 6 }.SequenceEqual(Leetcode.Ex238_ProductExceptSelf(new int[] { 1, 2, 3, 4})));
+        Assert.IsTrue(new[] { 0, 0, 9, 0, 0 }.SequenceEqual(Leetcode.Ex238_ProductExceptSelf(new int[] { -1, 1, 0, -3, 3 })));
+    }
+
+    [TestMethod]
     public void Ex295_MedianFinder()
     {
         var finder = new Ex295_MedianFinder();
@@ -605,6 +638,24 @@ public class LeetcodeTests
         Assert.IsTrue(new[] { 1 }.SequenceEqual(Leetcode.Ex347_TopKFrequent_PartialSort(new[] { 1, 1, 1, 1, 2, 3, 4, 4, 4 }, 1)));
         Assert.IsTrue(new[] { 1, 4 }.SequenceEqual(Leetcode.Ex347_TopKFrequent_PartialSort(new[] { 1, 1, 1, 2, 2, 3, 4, 4, 4 }, 2)));
         Assert.IsTrue(new[] { 1, 2, 3 }.SequenceEqual(Leetcode.Ex347_TopKFrequent_PartialSort(new[] { 1, 1, 1, 2, 2, 2, 3, 3, 3 }, 3)));
+    }
+
+    [TestMethod]
+    public void Ex366_FindLeaves()
+    {
+        Assert.IsTrue(
+            new[] 
+            { 
+                new[] { 12, 13, 14, 15, 16, 17 }, 
+                new[] { 7, 9, 10, 11 }, 
+                new[] { 4, 5, 6 }, 
+                new[] { 2, 3 }, 
+                new[] { 1 } 
+            }
+            .Zip(
+                Leetcode.Ex366_FindLeaves(BuildTree(1, 2, 3, 4, 5, 6, null, 7, null, null, 9, 10, 11, null, 12, 13, 14, 15, null, 16, 17)),
+                (first, second) => first.SequenceEqual(second))
+            .All(b => b));
     }
 
     [TestMethod]
