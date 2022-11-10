@@ -267,6 +267,26 @@ public static class Leetcode
         }
     }
 
+    public static int Ex42_TrapDPBottomUp(int[] height)
+    {
+        var n = height.Length;
+        var leftMaxes = new int[n];
+        var rightMaxes = new int[n];
+
+        leftMaxes[0] = height[0];
+        rightMaxes[n - 1] = height[n - 1];
+        for (var i = 1; i < n; i++)
+        {
+            leftMaxes[i] = Math.Max(leftMaxes[i - 1], height[i]);
+            rightMaxes[n - 1 - i] = Math.Max(rightMaxes[n - i], height[n - 1 - i]);
+        }
+
+        var totalWater = 0;
+        for (var i = 0; i < n; i++)
+            totalWater += Math.Max(0, Math.Min(leftMaxes[i], rightMaxes[i]) - height[i]);
+        return totalWater;
+    }
+
     public static int Ex45_Jump(int[] nums)
     {
         var n = nums.Length;
@@ -2228,6 +2248,36 @@ public static class Leetcode
         }
 
         return true;
+    }
+
+    public static int Ex1293_ShortestPath(int[][] grid, int kMax)
+    {
+        var m = grid.Length;
+        var n = grid[0].Length;
+
+        var queue = new Queue<(int, int, int, int)> { };
+        var visited = new HashSet<(int, int, int)> { };
+        queue.Enqueue((0, 0, kMax, 0));
+        while (queue.Count > 0)
+        {
+            var (i, j, k, d) = queue.Dequeue();
+            if (i == m - 1 && j == n - 1) return d;
+
+            var vertex = (i, j, k);
+            if (visited.Contains(vertex)) continue;
+            visited.Add(vertex);
+
+            if (i > 0 && k - grid[i - 1][j] is var k1 and >= 0)
+                queue.Enqueue((i - 1, j, k1, d + 1));
+            if (i < m - 1 && k - grid[i + 1][j] is var k2 and >= 0)
+                queue.Enqueue((i + 1, j, k2, d + 1));
+            if (j > 0 && k - grid[i][j - 1] is var k3 and >= 0)
+                queue.Enqueue((i, j - 1, k3, d + 1));
+            if (j < n - 1 && k - grid[i][j + 1] is var k4 and >= 0)
+                queue.Enqueue((i, j + 1, k4, d + 1));
+        }
+
+        return -1;
     }
 
     public static int Ex1423_MaxScore_DP(int[] cardPoints, int k)

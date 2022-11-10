@@ -125,6 +125,16 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex42_TrapDPBottomUp()
+    {
+        Assert.AreEqual(6, Leetcode.Ex42_TrapDPBottomUp(new[] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 }));
+        Assert.AreEqual(9, Leetcode.Ex42_TrapDPBottomUp(new[] { 4, 2, 0, 3, 2, 5 }));
+        Assert.AreEqual(50, Leetcode.Ex42_TrapDPBottomUp(new[] { 4, 1, 2, 1, 3, 1, 5, 1, 2, 1, 6, 1, 5, 3, 4, 2, 1, 1, 5, 5, 6, 6 }));
+        Assert.AreEqual(1, Leetcode.Ex42_TrapDPBottomUp(new[] { 4, 2, 3 }));
+        Assert.AreEqual(1, Leetcode.Ex42_TrapDPBottomUp(new[] { 5, 4, 1, 2 }));
+    }
+
+    [TestMethod]
     public void Ex45_Jump()
     {
         Assert.AreEqual(2, Leetcode.Ex45_Jump(new int[] { 2, 3, 1, 9, 4 }));
@@ -970,6 +980,7 @@ public class LeetcodeTests
         Assert.AreEqual(10, Leetcode.Ex992_SubarraysWithKDistinct_ForAndWhile(new[] { 2, 1, 2, 1, 2 }, 2));
         Assert.AreEqual(23, Leetcode.Ex992_SubarraysWithKDistinct_ForAndWhile(new[] { 2, 2, 1, 2, 2, 2, 1, 1 }, 2));
     }
+    
     [TestMethod]
     public void Ex1138_AlphabetBoardPath()
     {
@@ -1001,6 +1012,36 @@ public class LeetcodeTests
 
         Assert.IsTrue(Leetcode.Ex1153_CanConvert("aabcc", "ccdee", 26));
         Assert.IsFalse(Leetcode.Ex1153_CanConvert("leetcode", "codeleet", 26));
+    }
+
+    [TestMethod]
+    public void Ex1293_ShortestPath()
+    {
+        var maze1 = new[]
+        {
+            new[] { 0, 0, 0 },
+            new[] { 1, 1, 0 },
+            new[] { 0, 0, 0 },
+            new[] { 0, 1, 1 },
+            new[] { 0, 0, 0 }
+        };
+
+        Assert.AreEqual(6, Leetcode.Ex1293_ShortestPath(maze1, 1));
+        Assert.AreEqual(10, Leetcode.Ex1293_ShortestPath(maze1, 0));
+        Assert.AreEqual(6, Leetcode.Ex1293_ShortestPath(maze1, 2));
+
+        var maze2 = new[]
+        {
+            new[] { 0, 0, 0 },
+            new[] { 1, 1, 1 },
+            new[] { 0, 0, 0 },
+            new[] { 0, 1, 1 },
+            new[] { 0, 1, 0 }
+        };
+
+        Assert.AreEqual(-1, Leetcode.Ex1293_ShortestPath(maze2, 1));
+        Assert.AreEqual(-1, Leetcode.Ex1293_ShortestPath(maze2, 0));
+        Assert.AreEqual(6, Leetcode.Ex1293_ShortestPath(maze2, 2));
     }
 
     [TestMethod]
