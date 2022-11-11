@@ -187,6 +187,21 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex56_Merge()
+    {
+        Assert.IsTrue(new[] { new[] { 1, 6 }, new[] { 8, 10 }, new[] { 15, 18 } }
+            .Zip(
+                Leetcode.Ex56_Merge(new[] { new[] { 1, 3 }, new[] { 2, 6 }, new[] { 8, 10 }, new[] { 15, 18 } }),
+                (first, second) => first.SequenceEqual(second))
+            .All(b => b));
+        Assert.IsTrue(new[] { new[] { 1, 5 }, new[] { 6, 11 }, new[] { 12, 12 }, new[] { 13, 16 } }
+            .Zip(
+                Leetcode.Ex56_Merge(new[] { new[] { 1, 4 }, new[] { 4, 5 }, new[] { 7, 10 }, new[] { 6, 8 }, new[] { 8, 9 }, new[] { 9, 11 }, new[] { 12, 12 }, new[] { 13, 16 }, new[] { 13, 14 }, new[] { 13, 15 } }),
+                (first, second) => first.SequenceEqual(second))
+            .All(b => b));
+    }
+
+    [TestMethod]
     public void Ex69_MySqrt()
     {
         Assert.AreEqual(46339, Leetcode.Ex69_MySqrt(2147395599));
@@ -1349,5 +1364,15 @@ public class LeetcodeTests
         Assert.AreEqual(7, Leetcode.Ex2374_EdgeScore(new[] { 1, 0, 0, 0, 0, 7, 7, 5 }));
         Assert.AreEqual(0, Leetcode.Ex2374_EdgeScore(new[] { 2, 0, 0, 2 }));
         Assert.AreEqual(1, Leetcode.Ex2374_EdgeScore(new[] { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 }));
+    }
+
+    [TestMethod]
+    public void Ex2387_MatrixMedian()
+    {
+        Assert.AreEqual(2, Leetcode.Ex2387_MatrixMedian(new[] { new[] { 1, 1, 2 }, new[] { 2, 3, 3 }, new[] { 1, 3, 4 } }));
+        Assert.AreEqual(1, Leetcode.Ex2387_MatrixMedian(new[] { new[] { 1 } }));
+        Assert.AreEqual(3, Leetcode.Ex2387_MatrixMedian(new[] { new[] { 1, 1, 3, 3, 4 } }));
+        Assert.AreEqual(3, Leetcode.Ex2387_MatrixMedian(new[] { new[] { 1 }, new[] { 3 }, new[] { 4 } }));
+        Assert.AreEqual(4, Leetcode.Ex2387_MatrixMedian(new[] { new[] { 1, 1, 3, 3, 4 }, new[] {0, 5, 5, 5, 6 }, new[] { 2, 2, 4, 4, 4 } }));
     }
 }

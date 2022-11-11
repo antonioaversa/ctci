@@ -396,6 +396,32 @@ public static class Leetcode
         return max > 0 ? maxSum : max;
     }
 
+    public static int[][] Ex56_Merge(int[][] intervals)
+    {
+        var events = intervals
+            .SelectMany(i => new[] { (i[0], 1), (i[1], -1) })
+            .OrderBy(i => (i.Item1, -i.Item2));
+
+        var results = new List<int[]> { };
+        var n = 0;
+        var currentIntervalLeft = int.MinValue;
+        foreach (var event1 in events)
+        {
+            n += event1.Item2;
+            if (currentIntervalLeft == int.MinValue && n == 1)
+            {
+                currentIntervalLeft = event1.Item1;
+            }
+            else if (currentIntervalLeft != int.MinValue && n == 0)
+            {
+                results.Add(new[] { currentIntervalLeft, event1.Item1 });
+                currentIntervalLeft = int.MinValue;
+            }
+        }
+
+        return results.ToArray();
+    }
+
     public static int Ex69_MySqrt(int x)
     {
         if (x <= 1) return x;
@@ -3244,5 +3270,54 @@ public static class Leetcode
             }
 
         return maxScoreNode;
+    }
+
+    public static int Ex2387_MatrixMedian(int[][] grid)
+    {
+        var m = grid.Length;
+        var n = grid[0].Length;
+        var mid = m * n / 2 + 1;
+
+        int minResult = 0;
+        int maxResult = (int)Math.Round(Math.Pow(10, 6)) + 1;
+
+        while (minResult <= maxResult)
+        {
+            var midResult = minResult + (maxResult - minResult) / 2;
+            var midCount = CountInMatrix(midResult);
+
+            if (midCount < mid)
+                minResult = midResult + 1;
+            else
+                maxResult = midResult - 1;
+        }
+
+        return minResult;
+
+        // # values in matrix <= v
+        int CountInMatrix(int v)
+        {
+            var count = 0;
+            for (var i = 0; i < m; i++)
+                count += CountInRow(grid[i], v);
+            return count;
+        }
+
+        // # values in row <= v
+        int CountInRow(int[] row, int v)
+        {
+            var left = 0;
+            var right = row.Length - 1;
+            while (left <= right)
+            {
+                var middle = left + (right - left) / 2;
+                if (row[middle] <= v)
+                    left = middle + 1;
+                else
+                    right = middle - 1;
+            }
+
+            return left;
+        }
     }
 }
