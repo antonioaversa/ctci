@@ -2,6 +2,7 @@
 using System.Data;
 using System.Diagnostics.Metrics;
 using System.Text;
+using static CTCI.Exercises4;
 
 namespace CTCI;
 
@@ -97,6 +98,123 @@ public static class Leetcode
         }
     }
 
+    public static int Ex11_MaxArea(int[] height)
+    {
+        var n = height.Length;
+        var i = 0;
+        var j = n - 1;
+        var max = (j - i) * Math.Min(height[i], height[j]);
+        while (i < j)
+        {
+            if (height[j] <= height[i])
+            {
+                max = Math.Max(max, (j - i - 1) * Math.Min(height[i], height[j - 1]));
+                j--;
+            }
+            else
+            {
+                max = Math.Max(max, (j - i - 1) * Math.Min(height[i + 1], height[j]));
+                i++;
+            }
+        }
+        return max;
+    }
+
+    public static string Ex12_IntToRoman_Recursive(int num)
+    {
+        if (num == 0) return string.Empty;
+        if (num >= 1000) return "M" + Ex12_IntToRoman_Recursive(num - 1000);
+        if (num >= 900) return "C" + Ex12_IntToRoman_Recursive(num + 100);
+        if (num >= 500) return "D" + Ex12_IntToRoman_Recursive(num - 500);
+        if (num >= 400) return "C" + Ex12_IntToRoman_Recursive(num + 100);
+        if (num >= 100) return "C" + Ex12_IntToRoman_Recursive(num - 100);
+        if (num >= 90) return "X" + Ex12_IntToRoman_Recursive(num + 10);
+        if (num >= 50) return "L" + Ex12_IntToRoman_Recursive(num - 50);
+        if (num >= 40) return "X" + Ex12_IntToRoman_Recursive(num + 10);
+        if (num >= 10) return "X" + Ex12_IntToRoman_Recursive(num - 10);
+        if (num >= 9) return "I" + Ex12_IntToRoman_Recursive(num + 1);
+        if (num >= 5) return "V" + Ex12_IntToRoman_Recursive(num - 5);
+        if (num >= 4) return "I" + Ex12_IntToRoman_Recursive(num + 1);
+        return "I" + Ex12_IntToRoman_Recursive(num - 1);
+    }
+
+    public static string Ex12_IntToRoman_Iterative(int num)
+    {
+        var result = new StringBuilder();
+
+        while (num > 0)
+        {
+            var (numeral, delta) = (num) switch
+            {
+                >= 1000 => ('M', -1000),
+                >= 900 => ('C', +100),
+                >= 500 => ('D', -500),
+                >= 400 => ('C', +100),
+                >= 100 => ('C', -100),
+                >= 90 => ('X', +10),
+                >= 50 => ('L', -50),
+                >= 40 => ('X', +10),
+                >= 10 => ('X', -10),
+                >= 9 => ('I', +1),
+                >= 5 => ('V', -5),
+                >= 4 => ('I', +1),
+                _ => ('I', -1),
+            };
+            result.Append(numeral);
+            num += delta;
+        }
+        return result.ToString();
+    }
+
+    public static ListNode Ex19_RemoveNthFromEnd_TreePointers(ListNode head, int n)
+    {
+        var current = head;
+        int i;
+        for (i = 0; i < n && current != null; i++)
+            current = current.next;
+
+        if (i < n) // Reached end of the list before n items => nothing to remove
+            return head;
+
+        ListNode previous = null;
+        ListNode toDelete = head;
+        while (current != null)
+        {
+            current = current.next;
+            previous = toDelete;
+            toDelete = toDelete.next;
+        }
+
+        if (previous == null) return head.next;
+        previous.next = toDelete.next;
+        toDelete.next = null;
+
+        return head;
+    }
+
+    public static ListNode Ex19_RemoveNthFromEnd_TwoPointers(ListNode head, int n)
+    {
+        var current = head;
+        int i;
+        for (i = 0; i < n + 1 && current != null; i++)
+            current = current.next;
+
+        if (i < n) // Reached end of the list before n items => nothing to remove
+            return head;
+        else if (i == n)
+            return head.next;
+
+        ListNode previous = head;
+        while (current != null)
+        {
+            current = current.next;
+            previous = previous.next;
+        }
+
+        previous.next = previous.next.next;
+        return head;
+    }
+
     public static IList<string> Ex22_GenerateParenthesis(int n)
     {
         return GenerateParenthesis(0, 0).ToList();
@@ -111,6 +229,42 @@ public static class Leetcode
             foreach (var s in GenerateParenthesis(opened + 1, closed))
                 yield return '(' + s;
         }
+    }
+
+    public class ListNode {
+        public int val;
+        public ListNode next;
+        public ListNode(int val=0, ListNode next=null) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+
+    public static ListNode Ex23_MergeKLists(ListNode[] lists)
+    {
+        // list index to priority of its first item
+        var currentItems = new PriorityQueue<int, int>();
+        for (var i = 0; i < lists.Length; i++)
+            if (lists[i] != null)
+                currentItems.Enqueue(i, lists[i].val);
+
+        if (currentItems.Count == 0)
+            return null;
+
+        var result = new ListNode(0);
+        var head = result;
+        while (currentItems.Count > 0)
+        {
+            int listIndex = currentItems.Dequeue();
+            result.next = new ListNode(lists[listIndex].val);
+            result = result.next;
+
+            lists[listIndex] = lists[listIndex].next;
+            if (lists[listIndex] != null)
+                currentItems.Enqueue(listIndex, lists[listIndex].val);
+        }
+
+        return head.next;
     }
 
     public static bool Ex36_ValidSudoku(char[][] board)
@@ -418,6 +572,37 @@ public static class Leetcode
                 currentIntervalLeft = int.MinValue;
             }
         }
+
+        return results.ToArray();
+    }
+
+    private class IntervalsComparer : IComparer<int[]>
+    {
+        public int Compare(int[] x, int[] y) => x[0] - y[0];
+    }
+
+    public static int[][] Ex56_Merge_InputSort(int[][] intervals)
+    {
+        Array.Sort(intervals, new IntervalsComparer());
+
+        var results = new List<int[]> { };
+        var currentMin = intervals[0][0];
+        var currentMax = intervals[0][1];
+        for (var i = 1; i < intervals.Length; i++)
+        {
+            if (currentMax >= intervals[i][0])
+            {
+                currentMax = Math.Max(currentMax, intervals[i][1]);
+            }
+            else
+            {
+                results.Add(new[] { currentMin, currentMax });
+                currentMin = intervals[i][0];
+                currentMax = intervals[i][1];
+            }
+        }
+
+        results.Add(new[] { currentMin, currentMax });
 
         return results.ToArray();
     }
@@ -997,6 +1182,58 @@ public static class Leetcode
         for (var i = 0; i < n; i++)
             result[i] = leftProducts[i] * rightProducts[i];
         return result;
+    }
+
+    public static int Ex264_NthUglyNumber_TripleQueue(int n)
+    {
+        if (n == 1) return 1;
+
+        var priorityQueue = new PriorityQueue<long, long>[3]
+        {
+            new PriorityQueue<long, long>(),
+            new PriorityQueue<long, long>(),
+            new PriorityQueue<long, long>(),
+        };
+
+        TripleEnqueue(0, 1);
+
+        long result = 0;
+        for (var i = 1; i < n; i++)
+        {
+            var min0 = priorityQueue[0].Peek();
+            var min1 = priorityQueue[1].Peek();
+            var min2 = priorityQueue[2].Peek();
+
+            if (min0 <= min1 && min0 <= min2)
+            {
+                result = priorityQueue[0].Dequeue();
+                TripleEnqueue(0, min0);
+            }
+            else if (min1 <= min0 && min1 <= min2)
+            {
+                result = priorityQueue[1].Dequeue();
+                TripleEnqueue(1, min1);
+            }
+            else
+            {
+                result = priorityQueue[2].Dequeue();
+                TripleEnqueue(2, min2);
+            }
+        }
+
+        return (int)result;
+
+        void TripleEnqueue(int queueIndex, long k)
+        {
+            if (queueIndex <= 0)
+                priorityQueue[0].Enqueue(k * 2, k * 2);
+
+            if (queueIndex <= 1)
+                priorityQueue[1].Enqueue(k * 3, k * 3);
+
+            if (queueIndex <= 2)
+                priorityQueue[2].Enqueue(k * 5, k * 5);
+        }
     }
 
     public class Ex295_MedianFinder
@@ -3278,8 +3515,16 @@ public static class Leetcode
         var n = grid[0].Length;
         var mid = m * n / 2 + 1;
 
-        int minResult = 0;
-        int maxResult = (int)Math.Round(Math.Pow(10, 6)) + 1;
+        var min = int.MaxValue;
+        var max = int.MinValue;
+        for (var i = 0; i < m; i++)
+        {
+            min = Math.Min(min, grid[i][0]);
+            max = Math.Max(max, grid[i][n - 1]);
+        }
+
+        int minResult = min;
+        int maxResult = max;
 
         while (minResult <= maxResult)
         {

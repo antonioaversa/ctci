@@ -1,16 +1,81 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-
-namespace CTCI.Tests;
+﻿namespace CTCI.Tests;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using static CTCI.Leetcode;
 
 [TestClass]
 public class LeetcodeTests
 {
+
+    private static TreeNode? BuildTree(params int?[] numbers)
+    {
+        if (numbers.Length == 0 || numbers[0] == null)
+            throw new ArgumentException($"{nameof(numbers)} is empty.");
+
+        var nodes = Enumerable
+            .Range(0, numbers.Length)
+            .Select(i => numbers[i] != null ? new TreeNode(numbers[i].Value) : null)
+            .ToArray();
+
+        var nodesInCurrentLevel = 1;
+        var firstIndexInCurrentLevel = 0;
+
+        while (firstIndexInCurrentLevel < numbers.Length)
+        {
+            var nodesNonNullInCurrentLevel = 0;
+            for (
+                var currentIndex = firstIndexInCurrentLevel;
+                currentIndex < firstIndexInCurrentLevel + nodesInCurrentLevel && currentIndex < numbers.Length;
+                currentIndex++)
+            {
+                if (nodes[currentIndex] != null)
+                {
+                    var leftChildIndex = firstIndexInCurrentLevel + nodesInCurrentLevel + 2 * nodesNonNullInCurrentLevel;
+                    if (leftChildIndex < nodes.Length)
+                        nodes[currentIndex].left = nodes[leftChildIndex];
+
+                    var rightChildIndex = firstIndexInCurrentLevel + nodesInCurrentLevel + 2 * nodesNonNullInCurrentLevel + 1;
+                    if (rightChildIndex < nodes.Length)
+                        nodes[currentIndex].right = nodes[rightChildIndex];
+
+                    nodesNonNullInCurrentLevel++;
+                }
+            }
+
+            firstIndexInCurrentLevel += nodesInCurrentLevel;
+            nodesInCurrentLevel = nodesNonNullInCurrentLevel * 2;
+        }
+
+        return nodes[0];
+    }
+
+    private static ListNode? BuildLinkedList(params int[] numbers)
+    {
+        if (numbers == null || numbers.Length == 0) return null;
+
+        var head = new ListNode(numbers[0]);
+        var current = head;
+        for (var i = 1; i < numbers.Length; i++)
+        {
+            current.next = new ListNode(numbers[i]);
+            current = current.next;
+        }
+
+        return head;
+    }
+
+    private static int[] LinkedListToArray(ListNode? list)
+    {
+        var result = new List<int> { };
+        while (list != null)
+        {
+            result.Add(list.val);
+            list = list.next;
+        }
+
+        return result.ToArray();
+    }
+
     [TestMethod]
     public void Ex3_LengthOfLongestSubstring()
     {
@@ -61,6 +126,64 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex11_MaxArea()
+    {
+        Assert.AreEqual(49, Leetcode.Ex11_MaxArea(new[] { 1, 8, 6, 2, 5, 4, 8, 3, 7 }));
+        Assert.AreEqual(1, Leetcode.Ex11_MaxArea(new[] { 1, 1 }));
+        Assert.AreEqual(16, Leetcode.Ex11_MaxArea(new[] { 2, 1, 10, 5, 8 }));
+    }
+
+    [TestMethod]
+    public void Ex12_IntToRoman_Recursive()
+    {
+        Assert.AreEqual("III", Leetcode.Ex12_IntToRoman_Recursive(3));
+        Assert.AreEqual("LVIII", Leetcode.Ex12_IntToRoman_Recursive(58));
+        Assert.AreEqual("MCMXCIV", Leetcode.Ex12_IntToRoman_Recursive(1994));
+        Assert.AreEqual("DLXXXIX", Leetcode.Ex12_IntToRoman_Recursive(589));
+        Assert.AreEqual("MMMCDXLIX", Leetcode.Ex12_IntToRoman_Recursive(3449));
+    }
+
+    [TestMethod]
+    public void Ex12_IntToRoman_Iterative()
+    {
+        Assert.AreEqual("III", Leetcode.Ex12_IntToRoman_Iterative(3));
+        Assert.AreEqual("LVIII", Leetcode.Ex12_IntToRoman_Iterative(58));
+        Assert.AreEqual("MCMXCIV", Leetcode.Ex12_IntToRoman_Iterative(1994));
+        Assert.AreEqual("DLXXXIX", Leetcode.Ex12_IntToRoman_Iterative(589));
+        Assert.AreEqual("MMMCDXLIX", Leetcode.Ex12_IntToRoman_Iterative(3449));
+    }
+
+    [TestMethod]
+    public void Ex19_RemoveNthFromEnd_TreePointers()
+    {
+        Assert.IsTrue(new[] { 1, 2, 3, 4 }.SequenceEqual(LinkedListToArray(
+            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildLinkedList(1, 2, 3, 4, 5 ), 1))));
+        Assert.IsTrue(new[] { 1, 2, 3, 5 }.SequenceEqual(LinkedListToArray(
+            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildLinkedList(1, 2, 3, 4, 5), 2))));
+        Assert.IsTrue(new[] { 2, 3, 4, 5 }.SequenceEqual(LinkedListToArray(
+            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildLinkedList(1, 2, 3, 4, 5), 5))));
+        Assert.IsTrue(new[] { 1, 2, 3, 4, 5 }.SequenceEqual(LinkedListToArray(
+            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildLinkedList(1, 2, 3, 4, 5), 6))));
+        Assert.IsTrue(new int[] { }.SequenceEqual(LinkedListToArray(
+            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildLinkedList(1), 1))));
+    }
+
+    [TestMethod]
+    public void Ex19_RemoveNthFromEnd_TwoPointers()
+    {
+        Assert.IsTrue(new[] { 1, 2, 3, 4 }.SequenceEqual(LinkedListToArray(
+            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildLinkedList(1, 2, 3, 4, 5), 1))));
+        Assert.IsTrue(new[] { 1, 2, 3, 5 }.SequenceEqual(LinkedListToArray(
+            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildLinkedList(1, 2, 3, 4, 5), 2))));
+        Assert.IsTrue(new[] { 2, 3, 4, 5 }.SequenceEqual(LinkedListToArray(
+            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildLinkedList(1, 2, 3, 4, 5), 5))));
+        Assert.IsTrue(new[] { 1, 2, 3, 4, 5 }.SequenceEqual(LinkedListToArray(
+            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildLinkedList(1, 2, 3, 4, 5), 6))));
+        Assert.IsTrue(new int[] { }.SequenceEqual(LinkedListToArray(
+            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildLinkedList(1), 1))));
+    }
+
+    [TestMethod]
     public void Ex22_GenerateParenthesis()
     {
         Assert.IsTrue(new HashSet<string> {
@@ -71,6 +194,17 @@ public class LeetcodeTests
             "()()()()", "()()(())", "()(())()", "()(()())", "()((()))", "(())()()", "(())(())", "(()())()", "(()()())", 
             "(()(()))", "((()))()", "((())())", "((()()))", "(((())))" }
             .SetEquals(Leetcode.Ex22_GenerateParenthesis(4)));
+    }
+
+    [TestMethod]
+    public void Ex23_MergeKLists()
+    {
+        var list1 = BuildLinkedList(0, 2, 3, 3, 6, 6, 6, 9, 10);
+        var list2 = BuildLinkedList(1, 1, 2, 2, 4, 5, 7, 11, 11);
+        var merged = Leetcode.Ex23_MergeKLists(new[] { list1, list2 });
+        Assert.IsTrue(
+            new[] { 0, 1, 1, 2, 2, 2, 3, 3, 4, 5, 6, 6, 6, 7, 9, 10, 11, 11 }.SequenceEqual(
+                LinkedListToArray(merged)));
     }
 
     [TestMethod]
@@ -197,6 +331,21 @@ public class LeetcodeTests
         Assert.IsTrue(new[] { new[] { 1, 5 }, new[] { 6, 11 }, new[] { 12, 12 }, new[] { 13, 16 } }
             .Zip(
                 Leetcode.Ex56_Merge(new[] { new[] { 1, 4 }, new[] { 4, 5 }, new[] { 7, 10 }, new[] { 6, 8 }, new[] { 8, 9 }, new[] { 9, 11 }, new[] { 12, 12 }, new[] { 13, 16 }, new[] { 13, 14 }, new[] { 13, 15 } }),
+                (first, second) => first.SequenceEqual(second))
+            .All(b => b));
+    }
+
+    [TestMethod]
+    public void Ex56_Merge_InputSort()
+    {
+        Assert.IsTrue(new[] { new[] { 1, 6 }, new[] { 8, 10 }, new[] { 15, 18 } }
+            .Zip(
+                Leetcode.Ex56_Merge_InputSort(new[] { new[] { 1, 3 }, new[] { 2, 6 }, new[] { 8, 10 }, new[] { 15, 18 } }),
+                (first, second) => first.SequenceEqual(second))
+            .All(b => b));
+        Assert.IsTrue(new[] { new[] { 1, 5 }, new[] { 6, 11 }, new[] { 12, 12 }, new[] { 13, 16 } }
+            .Zip(
+                Leetcode.Ex56_Merge_InputSort(new[] { new[] { 1, 4 }, new[] { 4, 5 }, new[] { 7, 10 }, new[] { 6, 8 }, new[] { 8, 9 }, new[] { 9, 11 }, new[] { 12, 12 }, new[] { 13, 16 }, new[] { 13, 14 }, new[] { 13, 15 } }),
                 (first, second) => first.SequenceEqual(second))
             .All(b => b));
     }
@@ -337,7 +486,7 @@ public class LeetcodeTests
     [TestMethod]
     public void Ex200_NumIslands_WithoutAdjs()
     {
-        Assert.AreEqual(1, Leetcode.Ex200_NumIslands_WithAdjs(
+        Assert.AreEqual(1, Leetcode.Ex200_NumIslands_WithoutAdjs(
             new[]
             {
                 new[] {'1', '1', '1', '1', '0'},
@@ -346,7 +495,7 @@ public class LeetcodeTests
                 new[] {'0', '0', '0', '0', '0'}
             }));
 
-        Assert.AreEqual(3, Leetcode.Ex200_NumIslands_WithAdjs(
+        Assert.AreEqual(3, Leetcode.Ex200_NumIslands_WithoutAdjs(
             new[]
             {
                 new[] { '1', '1', '0', '0', '0' },
@@ -355,7 +504,7 @@ public class LeetcodeTests
                 new[] { '0', '0', '0', '1', '1' }
             }));
 
-        Assert.AreEqual(3, Leetcode.Ex200_NumIslands_WithAdjs(
+        Assert.AreEqual(3, Leetcode.Ex200_NumIslands_WithoutAdjs(
             new[]
             {
                 new[] {'1','1','1','1','0'},
@@ -538,6 +687,21 @@ public class LeetcodeTests
     {
         Assert.IsTrue(new[] { 24, 12, 8, 6 }.SequenceEqual(Leetcode.Ex238_ProductExceptSelf(new int[] { 1, 2, 3, 4})));
         Assert.IsTrue(new[] { 0, 0, 9, 0, 0 }.SequenceEqual(Leetcode.Ex238_ProductExceptSelf(new int[] { -1, 1, 0, -3, 3 })));
+    }
+
+    [TestMethod]
+    public void Ex264_NthUglyNumber_TripleQueue()
+    {
+        Assert.AreEqual(1, Leetcode.Ex264_NthUglyNumber_TripleQueue(1));
+        Assert.AreEqual(2, Leetcode.Ex264_NthUglyNumber_TripleQueue(2));
+        Assert.AreEqual(3, Leetcode.Ex264_NthUglyNumber_TripleQueue(3));
+        Assert.AreEqual(4, Leetcode.Ex264_NthUglyNumber_TripleQueue(4));
+        Assert.AreEqual(5, Leetcode.Ex264_NthUglyNumber_TripleQueue(5));
+        Assert.AreEqual(6, Leetcode.Ex264_NthUglyNumber_TripleQueue(6));
+        Assert.AreEqual(12, Leetcode.Ex264_NthUglyNumber_TripleQueue(10));
+        Assert.AreEqual(15, Leetcode.Ex264_NthUglyNumber_TripleQueue(11));
+        Assert.AreEqual(16, Leetcode.Ex264_NthUglyNumber_TripleQueue(12));
+        Assert.AreEqual(18, Leetcode.Ex264_NthUglyNumber_TripleQueue(13));
     }
 
     [TestMethod]
@@ -1263,48 +1427,6 @@ public class LeetcodeTests
     {
         Assert.AreEqual(8, Leetcode.Ex2050_MinimumTime_ShortestPathViaDfs(
             3, new[] { new[] { 1, 3 }, new[] { 2, 3 } }, new[] { 3, 2, 5 }));
-    }
-
-    private TreeNode? BuildTree(params int?[] numbers)
-    {
-        if (numbers.Length == 0 || numbers[0] == null)
-            throw new ArgumentException($"{nameof(numbers)} is empty.");
-
-        var nodes = Enumerable
-            .Range(0, numbers.Length)
-            .Select(i => numbers[i] != null ? new TreeNode(numbers[i].Value) : null)
-            .ToArray();
-
-        var nodesInCurrentLevel = 1;
-        var firstIndexInCurrentLevel = 0;
-
-        while (firstIndexInCurrentLevel < numbers.Length)
-        {
-            var nodesNonNullInCurrentLevel = 0;
-            for (
-                var currentIndex = firstIndexInCurrentLevel; 
-                currentIndex < firstIndexInCurrentLevel + nodesInCurrentLevel && currentIndex < numbers.Length;
-                currentIndex++)
-            {
-                if (nodes[currentIndex] != null)
-                {
-                    var leftChildIndex = firstIndexInCurrentLevel + nodesInCurrentLevel + 2 * nodesNonNullInCurrentLevel;
-                    if (leftChildIndex < nodes.Length)
-                        nodes[currentIndex].left = nodes[leftChildIndex];
-
-                    var rightChildIndex = firstIndexInCurrentLevel + nodesInCurrentLevel + 2 * nodesNonNullInCurrentLevel + 1;
-                    if (rightChildIndex < nodes.Length)
-                        nodes[currentIndex].right = nodes[rightChildIndex];
-
-                    nodesNonNullInCurrentLevel++;
-                }
-            }
-
-            firstIndexInCurrentLevel += nodesInCurrentLevel;
-            nodesInCurrentLevel = nodesNonNullInCurrentLevel * 2;
-        }
-
-        return nodes[0];
     }
 
     [TestMethod]
