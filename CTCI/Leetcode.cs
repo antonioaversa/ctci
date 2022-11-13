@@ -1277,6 +1277,36 @@ public static class Leetcode
         return result;
     }
 
+    public static int Ex253_MinMeetingRooms_UsingLINQ(int[][] intervals)
+    {
+        var events = intervals
+            .SelectMany(i => new[] { (i[0], +1), (i[1], -1) })
+            .OrderBy(c => c);
+        var max = 0;
+        var current = 0;
+        foreach (var ev in events)
+        {
+            current += ev.Item2;
+            max = Math.Max(max, current);
+        }
+        return max;
+    }
+
+    public static int Ex253_MinMeetingRooms_UsingMinHeap(int[][] intervals)
+    {
+        Array.Sort(intervals, (x, y) => x[0] - y[0]);
+
+        var endIntervalsQueue = new PriorityQueue<int, int>();
+        endIntervalsQueue.Enqueue(intervals[0][1], intervals[0][1]);
+        for (var i = 1; i < intervals.Length; i++)
+        {
+            if (intervals[i][0] >= endIntervalsQueue.Peek())
+                endIntervalsQueue.Dequeue();
+            endIntervalsQueue.Enqueue(intervals[i][1], intervals[i][1]);
+        }
+        return endIntervalsQueue.Count;
+    }
+
     public static int Ex264_NthUglyNumber_TripleQueue(int n)
     {
         if (n == 1) return 1;

@@ -722,6 +722,28 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex253_MinMeetingRooms_UsingLINQ()
+    {
+        Assert.AreEqual(2, Leetcode.Ex253_MinMeetingRooms_UsingLINQ(
+            new[] { new[] { 0, 30 }, new[] { 5, 10 }, new[] { 15, 20 } }));
+        Assert.AreEqual(1, Leetcode.Ex253_MinMeetingRooms_UsingLINQ(
+            new[] { new[] { 7, 10 }, new[] { 2, 4 } }));
+        Assert.AreEqual(1, Leetcode.Ex253_MinMeetingRooms_UsingLINQ(
+            new[] { new[] { 13, 15 }, new[] { 1, 13 } }));
+    }
+
+    [TestMethod]
+    public void Ex253_MinMeetingRooms_UsingMinHeap()
+    {
+        Assert.AreEqual(2, Leetcode.Ex253_MinMeetingRooms_UsingMinHeap(
+            new[] { new[] { 0, 30 }, new[] { 5, 10 }, new[] { 15, 20 } }));
+        Assert.AreEqual(1, Leetcode.Ex253_MinMeetingRooms_UsingMinHeap(
+            new[] { new[] { 7, 10 }, new[] { 2, 4 } }));
+        Assert.AreEqual(1, Leetcode.Ex253_MinMeetingRooms_UsingMinHeap(
+            new[] { new[] { 13, 15 }, new[] { 1, 13 } }));
+    }    
+
+    [TestMethod]
     public void Ex264_NthUglyNumber_TripleQueue()
     {
         Assert.AreEqual(1, Leetcode.Ex264_NthUglyNumber_TripleQueue(1));
