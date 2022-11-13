@@ -3,10 +3,24 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using static CTCI.Leetcode;
 
+internal static class Extensions
+{
+    public static int[] ToArray(this ListNode? list)
+    {
+        var result = new List<int> { };
+        while (list != null)
+        {
+            result.Add(list.val);
+            list = list.next;
+        }
+
+        return result.ToArray();
+    }
+}
+
 [TestClass]
 public class LeetcodeTests
 {
-
     private static TreeNode? BuildTree(params int?[] numbers)
     {
         if (numbers.Length == 0 || numbers[0] == null)
@@ -49,7 +63,7 @@ public class LeetcodeTests
         return nodes[0];
     }
 
-    private static ListNode? BuildLinkedList(params int[] numbers)
+    private static ListNode? BuildListNode(params int[] numbers)
     {
         if (numbers == null || numbers.Length == 0) return null;
 
@@ -62,18 +76,6 @@ public class LeetcodeTests
         }
 
         return head;
-    }
-
-    private static int[] LinkedListToArray(ListNode? list)
-    {
-        var result = new List<int> { };
-        while (list != null)
-        {
-            result.Add(list.val);
-            list = list.next;
-        }
-
-        return result.ToArray();
     }
 
     [TestMethod]
@@ -156,31 +158,31 @@ public class LeetcodeTests
     [TestMethod]
     public void Ex19_RemoveNthFromEnd_TreePointers()
     {
-        Assert.IsTrue(new[] { 1, 2, 3, 4 }.SequenceEqual(LinkedListToArray(
-            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildLinkedList(1, 2, 3, 4, 5 ), 1))));
-        Assert.IsTrue(new[] { 1, 2, 3, 5 }.SequenceEqual(LinkedListToArray(
-            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildLinkedList(1, 2, 3, 4, 5), 2))));
-        Assert.IsTrue(new[] { 2, 3, 4, 5 }.SequenceEqual(LinkedListToArray(
-            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildLinkedList(1, 2, 3, 4, 5), 5))));
-        Assert.IsTrue(new[] { 1, 2, 3, 4, 5 }.SequenceEqual(LinkedListToArray(
-            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildLinkedList(1, 2, 3, 4, 5), 6))));
-        Assert.IsTrue(new int[] { }.SequenceEqual(LinkedListToArray(
-            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildLinkedList(1), 1))));
+        Assert.IsTrue(new[] { 1, 2, 3, 4 }.SequenceEqual(
+            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildListNode(1, 2, 3, 4, 5 ), 1).ToArray()));
+        Assert.IsTrue(new[] { 1, 2, 3, 5 }.SequenceEqual(
+            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildListNode(1, 2, 3, 4, 5), 2).ToArray()));
+        Assert.IsTrue(new[] { 2, 3, 4, 5 }.SequenceEqual(
+            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildListNode(1, 2, 3, 4, 5), 5).ToArray()));
+        Assert.IsTrue(new[] { 1, 2, 3, 4, 5 }.SequenceEqual(
+            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildListNode(1, 2, 3, 4, 5), 6).ToArray()));
+        Assert.IsTrue(new int[] { }.SequenceEqual(
+            Leetcode.Ex19_RemoveNthFromEnd_TreePointers(BuildListNode(1), 1).ToArray()));
     }
 
     [TestMethod]
     public void Ex19_RemoveNthFromEnd_TwoPointers()
     {
-        Assert.IsTrue(new[] { 1, 2, 3, 4 }.SequenceEqual(LinkedListToArray(
-            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildLinkedList(1, 2, 3, 4, 5), 1))));
-        Assert.IsTrue(new[] { 1, 2, 3, 5 }.SequenceEqual(LinkedListToArray(
-            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildLinkedList(1, 2, 3, 4, 5), 2))));
-        Assert.IsTrue(new[] { 2, 3, 4, 5 }.SequenceEqual(LinkedListToArray(
-            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildLinkedList(1, 2, 3, 4, 5), 5))));
-        Assert.IsTrue(new[] { 1, 2, 3, 4, 5 }.SequenceEqual(LinkedListToArray(
-            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildLinkedList(1, 2, 3, 4, 5), 6))));
-        Assert.IsTrue(new int[] { }.SequenceEqual(LinkedListToArray(
-            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildLinkedList(1), 1))));
+        Assert.IsTrue(new[] { 1, 2, 3, 4 }.SequenceEqual(
+            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildListNode(1, 2, 3, 4, 5), 1).ToArray()));
+        Assert.IsTrue(new[] { 1, 2, 3, 5 }.SequenceEqual(
+            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildListNode(1, 2, 3, 4, 5), 2).ToArray()));
+        Assert.IsTrue(new[] { 2, 3, 4, 5 }.SequenceEqual(
+            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildListNode(1, 2, 3, 4, 5), 5).ToArray()));
+        Assert.IsTrue(new[] { 1, 2, 3, 4, 5 }.SequenceEqual(
+            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildListNode(1, 2, 3, 4, 5), 6).ToArray()));
+        Assert.IsTrue(new int[] { }.SequenceEqual(
+            Leetcode.Ex19_RemoveNthFromEnd_TwoPointers(BuildListNode(1), 1).ToArray()));
     }
 
     [TestMethod]
@@ -199,12 +201,42 @@ public class LeetcodeTests
     [TestMethod]
     public void Ex23_MergeKLists()
     {
-        var list1 = BuildLinkedList(0, 2, 3, 3, 6, 6, 6, 9, 10);
-        var list2 = BuildLinkedList(1, 1, 2, 2, 4, 5, 7, 11, 11);
+        var list1 = BuildListNode(0, 2, 3, 3, 6, 6, 6, 9, 10);
+        var list2 = BuildListNode(1, 1, 2, 2, 4, 5, 7, 11, 11);
         var merged = Leetcode.Ex23_MergeKLists(new[] { list1, list2 });
         Assert.IsTrue(
             new[] { 0, 1, 1, 2, 2, 2, 3, 3, 4, 5, 6, 6, 6, 7, 9, 10, 11, 11 }.SequenceEqual(
-                LinkedListToArray(merged)));
+                merged.ToArray()));
+    }
+
+    [TestMethod]
+    public void Ex24_SwapPairs()
+    {
+        Assert.IsTrue(new int[] { }.SequenceEqual(
+            Leetcode.Ex24_SwapPairs(BuildListNode()).ToArray()));
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(
+            Leetcode.Ex24_SwapPairs(BuildListNode(1)).ToArray()));
+        Assert.IsTrue(new[] { 2, 1, 4, 3 }.SequenceEqual(
+            Leetcode.Ex24_SwapPairs(BuildListNode(1, 2, 3, 4)).ToArray()));
+        Assert.IsTrue(new[] { 2, 1, 4, 3, 5 }.SequenceEqual( 
+            Leetcode.Ex24_SwapPairs(BuildListNode(1, 2, 3, 4, 5)).ToArray()));
+    }
+
+    [TestMethod]
+    public void Ex25_ReverseKGroup_TwoPasses()
+    {
+        Assert.IsTrue(new[] { 1, 2, 3, 4, 5 }.SequenceEqual(
+            Leetcode.Ex25_ReverseKGroup_TwoPasses(BuildListNode(1, 2, 3, 4, 5), 1).ToArray()));
+        Assert.IsTrue(new[] { 2, 1, 4, 3, 5 }.SequenceEqual(
+            Leetcode.Ex25_ReverseKGroup_TwoPasses(BuildListNode(1, 2, 3, 4, 5), 2).ToArray()));
+        Assert.IsTrue(new[] { 3, 2, 1, 4, 5 }.SequenceEqual(
+            Leetcode.Ex25_ReverseKGroup_TwoPasses(BuildListNode(1, 2, 3, 4, 5), 3).ToArray()));
+        Assert.IsTrue(new[] { 4, 3, 2, 1, 5 }.SequenceEqual(
+            Leetcode.Ex25_ReverseKGroup_TwoPasses(BuildListNode(1, 2, 3, 4, 5), 4).ToArray()));
+        Assert.IsTrue(new[] { 5, 4, 3, 2, 1 }.SequenceEqual(
+            Leetcode.Ex25_ReverseKGroup_TwoPasses(BuildListNode(1, 2, 3, 4, 5), 5).ToArray()));
+        Assert.IsTrue(new[] { 1, 2, 3, 4, 5 }.SequenceEqual(
+            Leetcode.Ex25_ReverseKGroup_TwoPasses(BuildListNode(1, 2, 3, 4, 5), 6).ToArray()));
     }
 
     [TestMethod]
@@ -1364,6 +1396,26 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex1721_SwapNodes()
+    {
+        Assert.IsTrue(new[] { 1, 2, 3, 4, 5 }.SequenceEqual(
+            Leetcode.Ex1721_SwapNodes(BuildListNode(1, 2, 3, 4, 5), 0).ToArray()));
+        Assert.IsTrue(new[] { 1, 2, 3, 4, 5 }.SequenceEqual(
+            Leetcode.Ex1721_SwapNodes(BuildListNode(1, 2, 3, 4, 5), 10).ToArray()));
+
+        Assert.IsTrue(new[] { 5, 2, 3, 4, 1 }.SequenceEqual(
+            Leetcode.Ex1721_SwapNodes(BuildListNode(1, 2, 3, 4, 5), 1).ToArray()));
+        Assert.IsTrue(new[] { 1, 4, 3, 2, 5 }.SequenceEqual(
+            Leetcode.Ex1721_SwapNodes(BuildListNode(1, 2, 3, 4, 5), 2).ToArray()));
+        Assert.IsTrue(new[] { 1, 2, 3, 4, 5 }.SequenceEqual(
+            Leetcode.Ex1721_SwapNodes(BuildListNode(1, 2, 3, 4, 5), 3).ToArray()));
+        Assert.IsTrue(new[] { 1, 4, 3, 2, 5 }.SequenceEqual(
+            Leetcode.Ex1721_SwapNodes(BuildListNode(1, 2, 3, 4, 5), 4).ToArray()));
+        Assert.IsTrue(new[] { 5, 2, 3, 4, 1 }.SequenceEqual(
+            Leetcode.Ex1721_SwapNodes(BuildListNode(1, 2, 3, 4, 5), 5).ToArray()));
+    }
+
+    [TestMethod]
     public void Ex1834_GetOrder()
     {
         Assert.IsTrue(new[] { 0, 2, 3, 1 }.SequenceEqual(Leetcode.Ex1834_GetOrder(
@@ -1438,6 +1490,19 @@ public class LeetcodeTests
         Assert.AreEqual("", Leetcode.Ex2096_GetDirections_TwoDfs(tree, 7, 7));
         Assert.AreEqual("UUURRLL", Leetcode.Ex2096_GetDirections_TwoDfs(tree, 7, 14));
         Assert.AreEqual("UUURLR", Leetcode.Ex2096_GetDirections_TwoDfs(tree, 7, 9));
+    }
+
+    [TestMethod]
+    public void Ex2095_DeleteMiddle()
+    {
+        Assert.IsTrue(new[] { 1, 2, 4, 5 }.SequenceEqual(
+            Leetcode.Ex2095_DeleteMiddle(BuildListNode(1, 2, 3, 4, 5 )).ToArray()));
+        Assert.IsTrue(new[] { 1, 2, 4 }.SequenceEqual(
+            Leetcode.Ex2095_DeleteMiddle(BuildListNode(1, 2, 3, 4)).ToArray()));
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(
+            Leetcode.Ex2095_DeleteMiddle(BuildListNode(1, 2)).ToArray()));
+        Assert.IsTrue(new int[] { }.SequenceEqual(
+            Leetcode.Ex2095_DeleteMiddle(BuildListNode(1)).ToArray()));
     }
 
     [TestMethod]

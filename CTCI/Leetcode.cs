@@ -231,6 +231,73 @@ public static class Leetcode
         }
     }
 
+    public static ListNode Ex25_ReverseKGroup_TwoPasses(ListNode head, int k)
+    {
+        if (k == 1) return head;
+
+        var (last, lastKNode, afterLastKNode) = Reverse(head, k);
+
+        if (lastKNode == null)
+        {
+            Reverse(last, 1);
+            return head;
+        }
+
+        if (afterLastKNode != null)
+        {
+            afterLastKNode.next = null;
+            Reverse(last, 1);
+        }
+
+        var currentKNode = lastKNode;
+        var firstOfGroupBeforeCurrentKNode = MoveKNodes(lastKNode, k - 1);
+        var previousKNode = firstOfGroupBeforeCurrentKNode.next;
+        firstOfGroupBeforeCurrentKNode.next = afterLastKNode;
+
+        while (currentKNode.next != null)
+        {
+            var firstPreviousGroup = MoveKNodes(previousKNode, k - 1);
+
+            if (firstPreviousGroup == null)
+                break;
+
+            (firstPreviousGroup.next, currentKNode, previousKNode) =
+                (currentKNode, previousKNode, firstPreviousGroup.next);
+        }
+
+        return currentKNode;
+
+        static ListNode MoveKNodes(ListNode node, int k)
+        {
+            for (var i = 0; i < k && node != null; i++)
+                node = node.next;
+            return node;
+        }
+
+        static (ListNode last, ListNode lastKNode, ListNode afterLastKNode) Reverse(ListNode head, int k)
+        {
+            ListNode previous = null, current = head, next = head.next;
+            ListNode lastKNode = null, afterLastKNode = null;
+            int i = 0;
+            while (current != null)
+            {
+                if ((i + 1) % k == 0)
+                {
+                    lastKNode = current;
+                    afterLastKNode = next;
+                }
+
+                current.next = previous;
+                previous = current;
+                current = next;
+                next = current?.next;
+                i++;
+            }
+
+            return (previous, lastKNode, afterLastKNode);
+        }
+    }
+
     public class ListNode {
         public int val;
         public ListNode next;
@@ -238,6 +305,8 @@ public static class Leetcode
             this.val = val;
             this.next = next;
         }
+
+        public override string ToString() => val.ToString();
     }
 
     public static ListNode Ex23_MergeKLists(ListNode[] lists)
@@ -265,6 +334,30 @@ public static class Leetcode
         }
 
         return head.next;
+    }
+
+    public static ListNode Ex24_SwapPairs(ListNode head)
+    {
+        if (head?.next == null) return head;
+
+        ListNode current = head, previous = null;
+        head = current.next;
+
+        while (current?.next != null)
+        {
+            var next = current.next;
+            var nextNext = current.next.next;
+
+            if (previous != null)
+                previous.next = next;
+            next.next = current;
+            current.next = nextNext;
+
+            previous = current;
+            current = nextNext;
+        }
+
+        return head;
     }
 
     public static bool Ex36_ValidSudoku(char[][] board)
@@ -2891,6 +2984,29 @@ public static class Leetcode
         return solutions[0];
     }
 
+    public static ListNode Ex1721_SwapNodes(ListNode head, int k)
+    {
+        var first = head;
+
+        int i;
+        for (i = 1; i < k && first != null; i++)
+            first = first.next;
+
+        if (i != k)
+            return head;
+
+        var current = first;
+        var second = head;
+        while (current.next != null)
+        {
+            current = current.next;
+            second = second.next;
+        }
+
+        (first.val, second.val) = (second.val, first.val);
+        return head;
+    }
+
     public static int[] Ex1834_GetOrder(int[][] tasks)
     {
         var waitingTasks = new PriorityQueue<int, (int enqueueTime, int taskId)>();
@@ -3335,6 +3451,22 @@ public static class Leetcode
                     yield return rightPathNode;
             }
         }
+    }
+
+    public static ListNode Ex2095_DeleteMiddle(ListNode head)
+    {
+        if (head?.next == null) return null;
+
+        var slow = head;
+        var fast = head.next?.next;
+        while (fast?.next != null)
+        {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        slow.next = slow.next.next;
+        return head;
     }
 
     public static string Ex2096_GetDirections_SingleDfs(TreeNode root, int startValue, int destValue)
