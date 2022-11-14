@@ -427,6 +427,13 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex72_MinDistance_DP()
+    {
+        Assert.AreEqual(3, Leetcode.Ex72_MinDistance_DP("horse", "ros"));
+        Assert.AreEqual(5, Leetcode.Ex72_MinDistance_DP("intention", "execution"));
+    }
+
+    [TestMethod]
     public void Ex74_SearchMatrix()
     {
         Assert.IsTrue(Leetcode.Ex74_SearchMatrix(

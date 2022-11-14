@@ -802,6 +802,31 @@ public static class Leetcode
         return hi;
     }
 
+    public static int Ex72_MinDistance_DP(string word1, string word2)
+    {
+        var solutions = new Dictionary<(int, int), int> { };
+        var n = word1.Length;
+        var m = word2.Length;
+        return MinDistance(0, 0);
+
+        int MinDistance(int i, int j)
+        {
+            if (i == n) return m - j;
+            if (j == m) return n - i;
+            if (solutions.TryGetValue((i, j), out var solution)) return solution;
+
+            // Match or Replace
+            solution = (word1[i] == word2[j] ? 0 : 1) + MinDistance(i + 1, j + 1);
+            // Insert 
+            solution = Math.Min(solution, 1 + MinDistance(i, j + 1));
+            // Delete
+            solution = Math.Min(solution, 1 + MinDistance(i + 1, j));
+
+            solutions[(i, j)] = solution;
+            return solution;
+        }
+    }
+
     public static bool Ex74_SearchMatrix(int[][] matrix, int target)
     {
         var m = matrix.Length;
