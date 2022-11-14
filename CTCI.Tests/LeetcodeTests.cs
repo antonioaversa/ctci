@@ -336,6 +336,33 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex51_SolveNQueens()
+    {
+        Assert.AreEqual(
+            "Q",
+            Leetcode.Ex51_SolveNQueens(1)
+                .Aggregate((l1, l2) => l1.Concat(l2).ToList())
+                .Aggregate((s1, s2) => s1 + s2));
+        Assert.AreEqual(
+            "",
+            Leetcode.Ex51_SolveNQueens(2)
+                .Aggregate(new List<string>(), (l1, l2) => l1.Concat(l2).ToList())
+                .Aggregate("", (s1, s2) => s1 + s2));
+        Assert.AreEqual(
+            "..Q.Q......Q.Q...Q.....QQ.....Q.",
+            Leetcode.Ex51_SolveNQueens(4)
+                .Aggregate((l1, l2) => l1.Concat(l2).ToList())
+                .Aggregate((s1, s2) => s1 + s2));
+        Assert.AreEqual(
+            "...Q..Q.......Q..Q..Q......Q......Q.Q......Q.Q........Q..Q..Q.......Q..Q......Q.Q......Q......Q.Q....." +
+            "..Q.Q......Q.Q......Q..Q.......Q..Q.......Q..Q...Q.......Q..Q..Q.......Q.Q......Q......Q.Q......Q...Q." +
+            ".Q.......Q..Q.......Q.Q......Q.Q......Q......Q",
+            Leetcode.Ex51_SolveNQueens(5)
+                .Aggregate((l1, l2) => l1.Concat(l2).ToList())
+                .Aggregate((s1, s2) => s1 + s2));
+    }
+
+    [TestMethod]
     public void Ex53_MaximumSubarray()
     {
         Assert.AreEqual(10, Leetcode.Ex53_MaximumSubarray_Quadratic(

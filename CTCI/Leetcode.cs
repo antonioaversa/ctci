@@ -387,6 +387,7 @@ public static class Leetcode
                 else
                 {
                     stack.Clear();
+                    validIntervals.Clear();
                 }
             }
         }
@@ -635,6 +636,54 @@ public static class Leetcode
         }
 
         return breath;
+    }
+
+    public static IList<IList<string>> Ex51_SolveNQueens(int n)
+    {
+        var solutions = SolveNQueens(n - 1);
+        return Convert(solutions).ToList();
+
+        IEnumerable<IList<string>> Convert(IList<IList<(int, int)>> configurations)
+        {
+            foreach (var configuration in configurations)
+            {
+                var strConfiguration = new List<string>();
+                for (var i = 0; i < configuration.Count; i++)
+                {
+                    var qPosition = configuration[i].Item2;
+                    strConfiguration.Add(
+                        new string('.', qPosition) + 'Q' + new string('.', n - 1 - qPosition));
+                }
+
+                yield return strConfiguration;
+            }
+        }
+
+        IList<IList<(int, int)>> SolveNQueens(int i)
+        {
+            if (i == 0) return Enumerable
+                .Range(0, n)
+                .Select(j => new List<(int, int)> { (i, j) } as IList<(int, int)>)
+                .ToList();
+
+            var configurations = SolveNQueens(i - 1);
+            var result = new List<IList<(int, int)>> { };
+            for (var q = 0; q < n; q++) // Queen in position (i, q)
+            {
+                foreach (var configuration in configurations)
+                {
+                    if (configuration.All(position =>
+                        position.Item2 != q &&
+                        position.Item1 + position.Item2 != i + q &&
+                        position.Item1 - position.Item2 != i - q))
+                    {
+                        result.Add(configuration.Append((i, q)).ToList());
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 
     public static int Ex53_MaximumSubarray_Quadratic(int[] nums)
