@@ -240,6 +240,17 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex32_LongestValidParentheses()
+    {
+        Assert.AreEqual(2, Leetcode.Ex32_LongestValidParentheses("(()"));
+        Assert.AreEqual(4, Leetcode.Ex32_LongestValidParentheses(")()())"));
+        Assert.AreEqual(14, Leetcode.Ex32_LongestValidParentheses("(()(()()(()))))()()((())(())"));
+        Assert.AreEqual(2, Leetcode.Ex32_LongestValidParentheses("()(()"));
+        Assert.AreEqual(6, Leetcode.Ex32_LongestValidParentheses("()(())"));
+        Assert.AreEqual(8, Leetcode.Ex32_LongestValidParentheses("(()()(())(("));
+    }
+
+    [TestMethod]
     public void Ex36_ValidSudoku()
     {
         var board = new char[][]

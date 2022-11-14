@@ -360,6 +360,40 @@ public static class Leetcode
         return head;
     }
 
+    public static int Ex32_LongestValidParentheses(string s)
+    {
+        var stack = new Stack<int>();
+        var maxLength = 0;
+        var validIntervals = new Dictionary<int, int>();
+        for (var i = 0; i < s.Length; i++)
+        {
+            if (s[i] == '(')
+            {
+                stack.Push(i);
+            }
+            else
+            {
+                if (stack.Count > 0)
+                {
+                    var minIndex = stack.Pop();
+                    var maxIndex = i;
+                    var length = maxIndex - minIndex + 1;
+
+                    if (validIntervals.TryGetValue(minIndex - 1, out var d))
+                        length += d;
+                    validIntervals[maxIndex] = length;
+                    maxLength = Math.Max(maxLength, length);
+                }
+                else
+                {
+                    stack.Clear();
+                }
+            }
+        }
+
+        return maxLength;
+    }
+
     public static bool Ex36_ValidSudoku(char[][] board)
     {
         var n = board.Length;
