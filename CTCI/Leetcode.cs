@@ -802,6 +802,24 @@ public static class Leetcode
         return hi;
     }
 
+    public static bool Ex74_SearchMatrix(int[][] matrix, int target)
+    {
+        var m = matrix.Length;
+        var n = matrix[0].Length;
+        int start = 0, end = n * m - 1;
+        while (start <= end)
+        {
+            var middle = start + (end - start) / 2;
+            var middleEl = matrix[middle / n][middle % n];
+            if (middleEl == target) return true;
+            if (middleEl > target)
+                end = middle - 1;
+            else
+                start = middle + 1;
+        }
+        return false;
+    }
+
     public static IList<IList<string>> Ex131_PalindromePartition(string s)
     {
         var solutions = new IList<IList<string>>[s.Length];

@@ -427,6 +427,19 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex74_SearchMatrix()
+    {
+        Assert.IsTrue(Leetcode.Ex74_SearchMatrix(
+            new[] { new[] { 1, 3, 5, 7 }, new[] { 10, 11, 16, 20 }, new[] { 23, 30, 34, 60 } }, 1));
+        Assert.IsTrue(Leetcode.Ex74_SearchMatrix(
+            new[] { new[] { 1, 3, 5, 7 }, new[] { 10, 11, 16, 20 }, new[] { 23, 30, 34, 60 } }, 11));
+        Assert.IsTrue(Leetcode.Ex74_SearchMatrix(
+            new[] { new[] { 1, 3, 5, 7 }, new[] { 10, 11, 16, 20 }, new[] { 23, 30, 34, 60 } }, 60));
+        Assert.IsFalse(Leetcode.Ex74_SearchMatrix(
+            new[] { new[] { 1, 3, 5, 7 }, new[] { 10, 11, 16, 20 }, new[] { 23, 30, 34, 60 } }, 2));
+    }
+
+    [TestMethod]
     public void Ex131_PalindromePartition()
     {
         var partitions1 = Leetcode.Ex131_PalindromePartition("aab");
