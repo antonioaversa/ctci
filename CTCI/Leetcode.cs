@@ -2737,6 +2737,62 @@ public static class Leetcode
         }
     }
 
+    public static IList<string> Ex1152_MostVisitedPattern(string[] username, int[] timestamp, string[] website)
+    {
+        // group by username => sort each group by timestamp
+        // go through each group (in timestamp order)
+        // consider each triple of indices (i, j, k) where i < j < k and increase occurrence of that pattern by 1
+        // gather in a priority queue of patterns prioritized by their occurrence
+        // get the pattern with max priority
+        // if multiple have same prio => take the one with lowest lexicographic order
+        var visitsByUser =
+            from e in Enumerable.Zip(username, timestamp, website)
+            group e by e.First into userVisits
+            select new
+            {
+                username = userVisits.Key,
+                visits = userVisits.OrderBy(e => e.Second).Select(e => e.Third).ToList(),
+            };
+
+        //foreach (var userVisits in visitsByUser)
+        //    Console.WriteLine($"{userVisits.username} => {string.Join(" ", userVisits.visits)}");
+
+        var scores = new Dictionary<(string, string, string), int>();
+        (string, string, string) maxScorePattern = ("", "", "");
+        int maxScore = 0;
+        foreach (var userVisits in visitsByUser)
+        {
+            var distinctPatterns = new HashSet<(string, string, string)>();
+            var visits = userVisits.visits;
+            for (var i = 0; i < visits.Count; i++)
+                for (var j = i + 1; j < visits.Count; j++)
+                    for (var k = j + 1; k < visits.Count; k++)
+                    {
+                        var pattern = (visits[i], visits[j], visits[k]);
+                        if (distinctPatterns.Contains(pattern)) continue;
+                        distinctPatterns.Add(pattern);
+                        if (!scores.TryGetValue(pattern, out var score))
+                            score = 0;
+                        score++;
+                        scores[pattern] = score;
+                        if (score > maxScore || (score == maxScore &&
+                            Compare(pattern, maxScorePattern) < 0))
+                        {
+                            maxScore = score;
+                            maxScorePattern = pattern;
+                        }
+                    }
+        }
+
+        //foreach (var (pattern, score) in scores)
+        //    Console.WriteLine($"{pattern} => {score}");
+
+        return new string[] { maxScorePattern.Item1, maxScorePattern.Item2, maxScorePattern.Item3 };
+
+        static int Compare((string, string, string) x, (string, string, string) y) =>
+            string.Compare($"{x.Item1} {x.Item2} {x.Item3}", $"{y.Item1} {y.Item2} {y.Item3}");
+    }
+
     public static bool Ex1153_CanConvert(string s1, string s2, int alphabetSize = 26)
     {
         var n = s1.Length;

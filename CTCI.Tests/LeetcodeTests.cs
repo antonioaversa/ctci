@@ -1281,6 +1281,38 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex1152_MostVisitedPattern()
+    {
+        Assert.IsTrue(new[] { "home", "about", "career" }.SequenceEqual(
+            Leetcode.Ex1152_MostVisitedPattern(
+                new[] { "joe", "joe", "joe", "james", "james", "james", "james", "mary", "mary", "mary" },
+                new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 },
+                new[] { "home", "about", "career", "home", "cart", "maps", "home", "home", "about", "career" }
+            )));
+
+        Assert.IsTrue(new[] { "a", "b", "a" }.SequenceEqual(
+            Leetcode.Ex1152_MostVisitedPattern(
+                new[] { "ua", "ua", "ua", "ub", "ub", "ub" },
+                new[] { 1, 2, 3, 4, 5, 6 },
+                new[] { "a", "b", "a", "a", "b", "c" }
+            )));
+
+        Assert.IsTrue(new[] { "a", "b", "b" }.SequenceEqual(
+            Leetcode.Ex1152_MostVisitedPattern(
+                new[] { "ua", "ua", "ua", "ub", "ub", "ub", "ua", "uc", "uc", "uc", "ub", "ub", "ub", "ua" },
+                new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 },
+                new[] { "a", "b", "a", "a", "b", "c", "a", "a", "b", "b", "a", "b", "b", "b" }
+            )));
+
+        Assert.IsTrue(new[] { "a", "a", "b" }.SequenceEqual(
+            Leetcode.Ex1152_MostVisitedPattern(
+                new[] { "a", "b", "c", "a", "c", "d", "c", "d", "a", "c", "c" },
+                new[] { 9, 5, 8, 2, 10, 3, 1, 7, 11, 4, 6 },
+                new[] { "a", "a", "a", "a", "a", "a", "a", "a", "b", "a", "b" }
+            )));
+    }
+
+    [TestMethod]
     public void Ex1153_CanConvert()
     {
         Assert.IsTrue(Leetcode.Ex1153_CanConvert("ab", "ba", 3));
