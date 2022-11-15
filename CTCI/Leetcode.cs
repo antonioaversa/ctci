@@ -1036,6 +1036,58 @@ public static class Leetcode
         }
     }
 
+    public static void Ex143_ReorderList(ListNode head)
+    {
+        if (head.next == null) return;
+
+        var beforeMiddlePoint = BeforeMiddlePoint(head);
+        var secondHalf = beforeMiddlePoint.next;
+        beforeMiddlePoint.next = null;
+
+        Merge(head, Reverse(secondHalf));
+
+        void Merge(ListNode first, ListNode second)
+        {
+            while (first != null)
+            {
+                var firstNext = first.next;
+                var secondNext = second?.next;
+                first.next = second;
+                if (second != null)
+                    second.next = firstNext;
+
+                first = firstNext;
+                second = secondNext;
+            }
+        }
+
+        ListNode BeforeMiddlePoint(ListNode head)
+        {
+            var slow = head;
+            var fast = head.next;
+            while (fast?.next != null)
+            {
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+
+            return slow;
+        }
+
+        ListNode Reverse(ListNode head)
+        {
+            ListNode previous = null, current = head, next = head.next;
+            while (current != null)
+            {
+                current.next = previous;
+                previous = current;
+                current = next;
+                next = current?.next;
+            }
+            return previous;
+        }
+    }
+
     public static int Ex149_MaxPoints(int[][] points)
     {
         var X = 0;

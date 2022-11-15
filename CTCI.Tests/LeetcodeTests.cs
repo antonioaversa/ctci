@@ -531,6 +531,25 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex143_ReorderList()
+    {
+        var list = BuildListNode(1); Leetcode.Ex143_ReorderList(list);
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(list.ToArray()));
+
+        list = BuildListNode(1, 2); Leetcode.Ex143_ReorderList(list);
+        Assert.IsTrue(new[] { 1, 2 }.SequenceEqual(list.ToArray()));
+
+        list = BuildListNode(1, 2, 3); Leetcode.Ex143_ReorderList(list);
+        Assert.IsTrue(new[] { 1, 3, 2 }.SequenceEqual(list.ToArray()));
+
+        list = BuildListNode(1, 2, 3, 4); Leetcode.Ex143_ReorderList(list);
+        Assert.IsTrue(new[] { 1, 4, 2, 3 }.SequenceEqual(list.ToArray()));
+
+        list = BuildListNode(1, 2, 3, 4, 5); Leetcode.Ex143_ReorderList(list);
+        Assert.IsTrue(new[] { 1, 5, 2, 4, 3 }.SequenceEqual(list.ToArray()));
+    }
+
+    [TestMethod]
     public void Ex149_MaxPoints()
     {
         Assert.AreEqual(0, Leetcode.Ex149_MaxPoints(
