@@ -292,6 +292,16 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex38_CountAndSay()
+    {
+        Assert.AreEqual("1", Leetcode.Ex38_CountAndSay(1));
+        Assert.AreEqual("11", Leetcode.Ex38_CountAndSay(2));
+        Assert.AreEqual("21", Leetcode.Ex38_CountAndSay(3));
+        Assert.AreEqual("1211", Leetcode.Ex38_CountAndSay(4));
+        Assert.AreEqual("111221", Leetcode.Ex38_CountAndSay(5));
+    }
+
+    [TestMethod]
     public void Ex41_FirstMissingPositive()
     {
         Assert.AreEqual(3, Leetcode.Ex41_FirstMissingPositive(new[] { 1, 2 }));
@@ -480,6 +490,13 @@ public class LeetcodeTests
     {
         Assert.AreEqual(3, Leetcode.Ex72_MinDistance_DP("horse", "ros"));
         Assert.AreEqual(5, Leetcode.Ex72_MinDistance_DP("intention", "execution"));
+    }
+
+    [TestMethod]
+    public void Ex72_MinDistance_DPBottomUp()
+    {
+        Assert.AreEqual(3, Leetcode.Ex72_MinDistance_DPBottomUp("horse", "ros"));
+        Assert.AreEqual(5, Leetcode.Ex72_MinDistance_DPBottomUp("intention", "execution"));
     }
 
     [TestMethod]
@@ -1686,6 +1703,15 @@ public class LeetcodeTests
         Assert.AreEqual("", Leetcode.Ex2096_GetDirections_WithStringBuffer(tree, 7, 7));
         Assert.AreEqual("UUURRLL", Leetcode.Ex2096_GetDirections_WithStringBuffer(tree, 7, 14));
         Assert.AreEqual("UUURLR", Leetcode.Ex2096_GetDirections_WithStringBuffer(tree, 7, 9));
+    }
+
+    [TestMethod]
+    public void Ex2128_RemoveOnes()
+    {
+        Assert.IsTrue(Leetcode.Ex2128_RemoveOnes(new[] { new[] { 0, 1, 0 }, new[] { 1, 0, 1 }, new[] { 0, 1, 0 } }));
+        Assert.IsFalse(Leetcode.Ex2128_RemoveOnes(new[] { new[] { 1, 1, 0 }, new[] { 0, 0, 0 }, new[] { 0, 0, 0 } }));
+        Assert.IsTrue(Leetcode.Ex2128_RemoveOnes(new[] { new[] { 1 } }));
+        Assert.IsFalse(Leetcode.Ex2128_RemoveOnes(new[] { new[] { 1, 0, 0 }, new[] { 0, 0, 0 }, new[] { 0, 0, 0 } }));
     }
 
     [TestMethod]

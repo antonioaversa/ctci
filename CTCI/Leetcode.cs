@@ -491,6 +491,34 @@ public static class Leetcode
         return true;
     }
 
+    public static string Ex38_CountAndSay(int n)
+    {
+        var result = new StringBuilder(1);
+        result.Append('1');
+        for (var j = 1; j < n; j++)
+        {
+            var next = new StringBuilder(result.Length * 2);
+            var currentDigit = result[0];
+            var currentCount = 1;
+            for (var i = 1; i < result.Length; i++)
+            {
+                if (result[i] == currentDigit)
+                    currentCount++;
+                else
+                {
+                    next.Append(currentCount);
+                    next.Append(currentDigit);
+                    currentDigit = result[i];
+                    currentCount = 1;
+                }
+            }
+            next.Append(currentCount);
+            next.Append(currentDigit);
+            result = next;
+        }
+        return result.ToString();
+    }
+
     public static int Ex41_FirstMissingPositive(int[] nums)
     {
         for (var i = 0; i < nums.Length; i++)
@@ -926,6 +954,26 @@ public static class Leetcode
             solutions[(i, j)] = solution;
             return solution;
         }
+    }
+
+    public static int Ex72_MinDistance_DPBottomUp(string word1, string word2)
+    {
+        var n = word1.Length;
+        var m = word2.Length;
+        var solutions = new int[n + 1, m + 1];
+
+        for (var j = 0; j <= m; j++)
+            solutions[n, j] = m - j;
+        for (var i = 0; i <= n; i++)
+            solutions[i, m] = n - i;
+
+        for (var i = n - 1; i >= 0; i--)
+            for (var j = m - 1; j >= 0; j--)
+                solutions[i, j] = Math.Min(
+                    (word1[i] == word2[j] ? 0 : 1) + solutions[i + 1, j + 1],
+                    1 + Math.Min(solutions[i, j + 1], solutions[i + 1, j])
+                );
+        return solutions[0, 0];
     }
 
     public static bool Ex74_SearchMatrix(int[][] matrix, int target)
@@ -3856,6 +3904,31 @@ public static class Leetcode
 
             return null;
         }
+    }
+
+    public static bool Ex2128_RemoveOnes(int[][] grid)
+    {
+        var m = grid.Length;
+        var n = grid[0].Length;
+
+        var swappedRows = new bool?[m];
+        var swappedCols = new bool?[n];
+
+        for (var i = 0; i < m; i++)
+        {
+            var rowToSwap = grid[i][0] != 0;
+            if (swappedRows[i] == !rowToSwap) return false;
+            swappedRows[i] = rowToSwap;
+
+            for (var j = 0; j < n; j++)
+            {
+                var colToSwap = rowToSwap ? (grid[i][j] == 0) : (grid[i][j] != 0);
+                if (swappedCols[j] == !colToSwap) return false;
+                swappedCols[j] = colToSwap;
+            }
+        }
+
+        return true;
     }
 
     public static int Ex2359_ClosestMeetingNode_TwoSimplifiedBfs(int[] edges, int node1, int node2)
