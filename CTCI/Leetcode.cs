@@ -395,6 +395,61 @@ public static class Leetcode
         return maxLength;
     }
 
+    public static int Ex32_LongestValidParentheses_WithArray(string s)
+    {
+        var stack = new Stack<int>();
+        var maxLength = 0;
+        var validIntervals = new int[s.Length + 1];
+        for (var i = 0; i < s.Length; i++)
+        {
+            if (s[i] == '(')
+            {
+                stack.Push(i);
+            }
+            else
+            {
+                if (stack.Count > 0)
+                {
+                    var minIndex = stack.Pop();
+                    var maxIndex = i;
+                    var length = maxIndex - minIndex + 1 + validIntervals[minIndex];
+                    validIntervals[maxIndex + 1] = length;
+                    maxLength = Math.Max(maxLength, length);
+                }
+                else
+                {
+                    stack.Clear();
+                }
+            }
+        }
+
+        return maxLength;
+    }
+
+    public static int Ex32_LongestValidParentheses_TwoCounters(string s)
+    {
+        int n = s.Length;
+        int maxLength = 0;
+        int openF = 0, closedF = 0, openB = 0, closedB = 0;
+        for (var i = 0; i < n; i++)
+        {
+            if (s[i] == '(') openF++; else closedF++;
+            if (s[n - 1 - i] == '(') openB++; else closedB++;
+
+            if (openF == closedF)
+                maxLength = Math.Max(maxLength, openF * 2);
+            else if (openF < closedF)
+                openF = closedF = 0;
+
+            if (openB == closedB)
+                maxLength = Math.Max(maxLength, openB * 2);
+            else if (openB > closedB)
+                openB = closedB = 0;
+        }
+
+        return maxLength;
+    }
+
     public static bool Ex36_ValidSudoku(char[][] board)
     {
         var n = board.Length;
@@ -638,7 +693,7 @@ public static class Leetcode
         return breath;
     }
 
-    public static IList<IList<string>> Ex51_SolveNQueens(int n)
+    public static IList<IList<string>> Ex51_SolveNQueens_Recursive(int n)
     {
         var solutions = SolveNQueens(n - 1);
         return Convert(solutions).ToList();
@@ -683,6 +738,52 @@ public static class Leetcode
             }
 
             return result;
+        }
+    }
+
+    public static IList<IList<string>> Ex51_SolveNQueens_Iterative(int n)
+    {
+        var configurations = new List<IList<string>>();
+        for (var q = 0; q < n; q++)
+            configurations.Add(new List<string> { Line(q) });
+
+        for (var i = 1; i < n; i++)
+        {
+            var newConfigurations = new List<IList<string>>();
+            foreach (var configuration in configurations)
+            {
+                for (var q = 0; q < n; q++)
+                {
+                    if (Compatible(i, q, configuration))
+                        newConfigurations.Add(configuration.Append(Line(q)).ToList());
+                }
+            }
+            configurations = newConfigurations;
+        }
+
+        return configurations;
+
+        bool Compatible(int row, int col, IList<string> configuration)
+        {
+            for (var lineIndex = 0; lineIndex < configuration.Count; lineIndex++)
+            {
+                var configurationLine = configuration[lineIndex];
+                if (
+                    configurationLine[col] == 'Q' ||
+                    (col + row - lineIndex < n && configurationLine[col + row - lineIndex] == 'Q' ||
+                    (col - row + lineIndex >= 0 && configurationLine[col - row + lineIndex] == 'Q')))
+                    return false;
+            }
+            return true;
+        }
+
+        string Line(int q)
+        {
+            var stringBuilder = new StringBuilder(n);
+            stringBuilder.Append('.', q);
+            stringBuilder.Append('Q');
+            stringBuilder.Append('.', n - 1 - q);
+            return stringBuilder.ToString();
         }
     }
 

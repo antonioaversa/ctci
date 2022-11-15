@@ -251,6 +251,28 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex32_LongestValidParentheses_WithArray()
+    {
+        Assert.AreEqual(2, Leetcode.Ex32_LongestValidParentheses_WithArray("(()"));
+        Assert.AreEqual(4, Leetcode.Ex32_LongestValidParentheses_WithArray(")()())"));
+        Assert.AreEqual(14, Leetcode.Ex32_LongestValidParentheses_WithArray("(()(()()(()))))()()((())(())"));
+        Assert.AreEqual(2, Leetcode.Ex32_LongestValidParentheses_WithArray("()(()"));
+        Assert.AreEqual(6, Leetcode.Ex32_LongestValidParentheses_WithArray("()(())"));
+        Assert.AreEqual(8, Leetcode.Ex32_LongestValidParentheses_WithArray("(()()(())(("));
+    }
+
+    [TestMethod]
+    public void Ex32_LongestValidParentheses_TwoCounters()
+    {
+        Assert.AreEqual(2, Leetcode.Ex32_LongestValidParentheses_TwoCounters("(()"));
+        Assert.AreEqual(4, Leetcode.Ex32_LongestValidParentheses_TwoCounters(")()())"));
+        Assert.AreEqual(14, Leetcode.Ex32_LongestValidParentheses_TwoCounters("(()(()()(()))))()()((())(())"));
+        Assert.AreEqual(2, Leetcode.Ex32_LongestValidParentheses_TwoCounters("()(()"));
+        Assert.AreEqual(6, Leetcode.Ex32_LongestValidParentheses_TwoCounters("()(())"));
+        Assert.AreEqual(8, Leetcode.Ex32_LongestValidParentheses_TwoCounters("(()()(())(("));
+    }
+
+    [TestMethod]
     public void Ex36_ValidSudoku()
     {
         var board = new char[][]
@@ -336,30 +358,57 @@ public class LeetcodeTests
     }
 
     [TestMethod]
-    public void Ex51_SolveNQueens()
+    public void Ex51_SolveNQueens_Recursive()
     {
         Assert.AreEqual(
             "Q",
-            Leetcode.Ex51_SolveNQueens(1)
-                .Aggregate((l1, l2) => l1.Concat(l2).ToList())
-                .Aggregate((s1, s2) => s1 + s2));
+            Leetcode.Ex51_SolveNQueens_Recursive(1)
+                .Aggregate((l1, l2) => l1.Concat(l2).OrderBy(s => s).ToList())
+                .Aggregate((s1, s2) => string.Compare(s1, s2) <= 0 ? s1 + s2 : s2 + s1));
         Assert.AreEqual(
             "",
-            Leetcode.Ex51_SolveNQueens(2)
+            Leetcode.Ex51_SolveNQueens_Recursive(2)
                 .Aggregate(new List<string>(), (l1, l2) => l1.Concat(l2).ToList())
                 .Aggregate("", (s1, s2) => s1 + s2));
         Assert.AreEqual(
-            "..Q.Q......Q.Q...Q.....QQ.....Q.",
-            Leetcode.Ex51_SolveNQueens(4)
-                .Aggregate((l1, l2) => l1.Concat(l2).ToList())
-                .Aggregate((s1, s2) => s1 + s2));
+            "...Q...Q..Q...Q..Q...Q..Q...Q...",
+            Leetcode.Ex51_SolveNQueens_Recursive(4)
+                .Aggregate((l1, l2) => l1.Concat(l2).OrderBy(s => s).ToList())
+                .Aggregate((s1, s2) => string.Compare(s1, s2) <= 0 ? s1 + s2 : s2 + s1));
         Assert.AreEqual(
-            "...Q..Q.......Q..Q..Q......Q......Q.Q......Q.Q........Q..Q..Q.......Q..Q......Q.Q......Q......Q.Q....." +
-            "..Q.Q......Q.Q......Q..Q.......Q..Q.......Q..Q...Q.......Q..Q..Q.......Q.Q......Q......Q.Q......Q...Q." +
-            ".Q.......Q..Q.......Q.Q......Q.Q......Q......Q",
-            Leetcode.Ex51_SolveNQueens(5)
-                .Aggregate((l1, l2) => l1.Concat(l2).ToList())
-                .Aggregate((s1, s2) => s1 + s2));
+            "....Q....Q....Q....Q....Q....Q....Q....Q....Q....Q...Q....Q....Q....Q....Q....Q....Q....Q....Q....Q..." +
+            "Q....Q....Q....Q....Q....Q....Q....Q....Q....Q...Q....Q....Q....Q....Q....Q....Q....Q....Q....Q...Q..." +
+            ".Q....Q....Q....Q....Q....Q....Q....Q....Q....",
+            Leetcode.Ex51_SolveNQueens_Recursive(5)
+                .Aggregate((l1, l2) => l1.Concat(l2).OrderBy(s => s).ToList())
+                .Aggregate((s1, s2) => string.Compare(s1, s2) <= 0 ? s1 + s2 : s2 + s1));
+    }
+
+    [TestMethod]
+    public void Ex51_SolveNQueens_Iterative()
+    {
+        Assert.AreEqual(
+            "Q",
+            Leetcode.Ex51_SolveNQueens_Iterative(1)
+                .Aggregate((l1, l2) => l1.Concat(l2).OrderBy(s => s).ToList())
+                .Aggregate((s1, s2) => string.Compare(s1, s2) <= 0 ? s1 + s2 : s2 + s1));
+        Assert.AreEqual(
+            "",
+            Leetcode.Ex51_SolveNQueens_Iterative(2)
+                .Aggregate(new List<string>(), (l1, l2) => l1.Concat(l2).ToList())
+                .Aggregate("", (s1, s2) => s1 + s2));
+        Assert.AreEqual(
+            "...Q...Q..Q...Q..Q...Q..Q...Q...",
+            Leetcode.Ex51_SolveNQueens_Iterative(4)
+                .Aggregate((l1, l2) => l1.Concat(l2).OrderBy(s => s).ToList())
+                .Aggregate((s1, s2) => string.Compare(s1, s2) <= 0 ? s1 + s2 : s2 + s1));
+        Assert.AreEqual(
+            "....Q....Q....Q....Q....Q....Q....Q....Q....Q....Q...Q....Q....Q....Q....Q....Q....Q....Q....Q....Q..." +
+            "Q....Q....Q....Q....Q....Q....Q....Q....Q....Q...Q....Q....Q....Q....Q....Q....Q....Q....Q....Q...Q..." +
+            ".Q....Q....Q....Q....Q....Q....Q....Q....Q....",
+            Leetcode.Ex51_SolveNQueens_Iterative(5)
+                .Aggregate((l1, l2) => l1.Concat(l2).OrderBy(s => s).ToList())
+                .Aggregate((s1, s2) => string.Compare(s1, s2) <= 0 ? s1 + s2 : s2 + s1));
     }
 
     [TestMethod]
