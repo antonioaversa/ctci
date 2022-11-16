@@ -480,6 +480,26 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex68_FullJustify()
+    {
+        Assert.IsTrue(
+            new[] { "This    is    an", "example  of text", "justification.  " }.SequenceEqual(
+                Leetcode.Ex68_FullJustify(
+                    new[] { "This", "is", "an", "example", "of", "text", "justification." }, 16)));
+        Assert.IsTrue(
+            new[] { "What   must   be", "acknowledgment  ", "shall be        " }.SequenceEqual(
+                Leetcode.Ex68_FullJustify(
+                    new[] { "What", "must", "be", "acknowledgment", "shall be" }, 16)));
+
+        Assert.IsTrue(
+            new[] { "Science  is  what we", "understand      well", "enough to explain to", "a  computer.  Art is", 
+                "everything  else  we", "do                  " }.SequenceEqual(
+                Leetcode.Ex68_FullJustify(
+                    new[] { "Science", "is", "what", "we", "understand", "well", "enough", "to", "explain", "to", "a", 
+                        "computer.", "Art", "is", "everything", "else", "we", "do" }, 20)));
+    }
+
+    [TestMethod]
     public void Ex69_MySqrt()
     {
         Assert.AreEqual(46339, Leetcode.Ex69_MySqrt(2147395599));
@@ -1731,6 +1751,34 @@ public class LeetcodeTests
         Assert.IsFalse(Leetcode.Ex2128_RemoveOnes(new[] { new[] { 1, 1, 0 }, new[] { 0, 0, 0 }, new[] { 0, 0, 0 } }));
         Assert.IsTrue(Leetcode.Ex2128_RemoveOnes(new[] { new[] { 1 } }));
         Assert.IsFalse(Leetcode.Ex2128_RemoveOnes(new[] { new[] { 1, 0, 0 }, new[] { 0, 0, 0 }, new[] { 0, 0, 0 } }));
+    }
+
+    [TestMethod]
+    public void Ex2158_AmountPainted_SortedSet()
+    {
+        Assert.IsTrue(new[] { 3, 3, 1 }.SequenceEqual(
+            Leetcode.Ex2158_AmountPainted_SortedSet(new[] { new[] { 1, 4 }, new[] { 4, 7 }, new[] { 5, 8 } })));
+        Assert.IsTrue(new[] { 3, 3, 1 }.SequenceEqual(
+            Leetcode.Ex2158_AmountPainted_SortedSet(new[] { new[] { 1, 4 }, new[] { 5, 8 }, new[] { 4, 7 } })));
+        Assert.IsTrue(new[] { 4, 0 }.SequenceEqual(
+            Leetcode.Ex2158_AmountPainted_SortedSet(new[] { new[] { 1, 5 }, new[] { 2, 4 } })));
+        Assert.IsTrue(new[] { 1, 3, 1, 1, 1, 0, 2, 3, 1 }.SequenceEqual(
+            Leetcode.Ex2158_AmountPainted_SortedSet(new[] { new[] { 3, 4 }, new[] { 4, 7 }, new[] { 5, 8 }, new[] { 1, 2 }, 
+                new[] { 1, 4 }, new[] { 1, 5 }, new[] { 1, 10 }, new[] { 12, 15 }, new[] { 15, 16 } })));
+    }
+
+    [TestMethod]
+    public void Ex2158_AmountPainted_JumpArray()
+    {
+        Assert.IsTrue(new[] { 3, 3, 1 }.SequenceEqual(
+            Leetcode.Ex2158_AmountPainted_JumpArray(new[] { new[] { 1, 4 }, new[] { 4, 7 }, new[] { 5, 8 } })));
+        Assert.IsTrue(new[] { 3, 3, 1 }.SequenceEqual(
+            Leetcode.Ex2158_AmountPainted_JumpArray(new[] { new[] { 1, 4 }, new[] { 5, 8 }, new[] { 4, 7 } })));
+        Assert.IsTrue(new[] { 4, 0 }.SequenceEqual(
+            Leetcode.Ex2158_AmountPainted_JumpArray(new[] { new[] { 1, 5 }, new[] { 2, 4 } })));
+        Assert.IsTrue(new[] { 1, 3, 1, 1, 1, 0, 2, 3, 1 }.SequenceEqual(
+            Leetcode.Ex2158_AmountPainted_JumpArray(new[] { new[] { 3, 4 }, new[] { 4, 7 }, new[] { 5, 8 }, new[] { 1, 2 },
+                new[] { 1, 4 }, new[] { 1, 5 }, new[] { 1, 10 }, new[] { 12, 15 }, new[] { 15, 16 } })));
     }
 
     [TestMethod]

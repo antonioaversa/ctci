@@ -912,6 +912,46 @@ public static class Leetcode
         return results.ToArray();
     }
 
+    public static IList<string> Ex68_FullJustify(string[] words, int maxWidth)
+    {
+        var result = new List<string>();
+
+        int indexFirstWordOfLine = 0;
+        int currentLineCharsWithoutSpaces = words[0].Length;
+        int currentLineChars = words[0].Length;
+        for (var i = 1; i < words.Length; i++)
+        {
+            if (currentLineChars + 1 + words[i].Length > maxWidth)
+            {
+                if (i - indexFirstWordOfLine == 1)
+                {
+                    result.Add(words[indexFirstWordOfLine] + new string(' ', maxWidth - words[indexFirstWordOfLine].Length));
+                }
+                else
+                {
+                    var equiSpaces = (maxWidth - currentLineCharsWithoutSpaces) / (i - indexFirstWordOfLine - 1);
+                    var numberOfWordsWithAdditionalSpaces = maxWidth - currentLineCharsWithoutSpaces - equiSpaces * (i - indexFirstWordOfLine - 1);
+
+                    for (var j = indexFirstWordOfLine; j < indexFirstWordOfLine + numberOfWordsWithAdditionalSpaces; j++)
+                        words[j] += " ";
+                    result.Add(string.Join(new string(' ', equiSpaces), words[indexFirstWordOfLine..i]));
+                }
+                indexFirstWordOfLine = i;
+                currentLineChars = words[i].Length;
+                currentLineCharsWithoutSpaces = words[i].Length;
+            }
+            else
+            {
+                currentLineChars = currentLineChars + 1 + words[i].Length; ;
+                currentLineCharsWithoutSpaces = currentLineCharsWithoutSpaces + words[i].Length;
+            }
+        }
+
+        var lastLine = string.Join(' ', words[indexFirstWordOfLine..]);
+        result.Add(lastLine + new string(' ', maxWidth - lastLine.Length));
+        return result;
+    }
+
     public static int Ex69_MySqrt(int x)
     {
         if (x <= 1) return x;
@@ -3981,6 +4021,78 @@ public static class Leetcode
         }
 
         return true;
+    }
+
+    public static int[] Ex2158_AmountPainted_SortedSet(int[][] paint)
+    {
+        var results = new int[paint.Length];
+        var events = new SortedSet<(int, int)>();
+
+        for (var i = 0; i < paint.Length; i++)
+        {
+            var overlappingEvents = events.GetViewBetween((paint[i][0], -1), (paint[i][1], +1)).ToList();
+            //Console.WriteLine($"{i}: Events: {string.Join(" ", overlappingEvents)}");
+
+            if (overlappingEvents.Count == 0 &&
+                events.GetViewBetween((paint[i][1], +1), (int.MaxValue, +1)).FirstOrDefault((-1, +1)).Item2 < 0)
+                continue;
+
+            var addStart = overlappingEvents.Count == 0 || overlappingEvents[0].Item2 > 0;
+            var addEnd = overlappingEvents.Count == 0 || overlappingEvents[^1].Item2 < 0;
+
+            results[i] = paint[i][1] - paint[i][0];
+            var current = !addStart ? paint[i][0] : int.MinValue;
+            foreach (var overlappingEvent in overlappingEvents)
+            {
+                if (overlappingEvent.Item2 < 0)
+                {
+                    results[i] -= overlappingEvent.Item1 - current;
+                    current = int.MinValue;
+                }
+                else
+                {
+                    current = overlappingEvent.Item1;
+                }
+
+                events.Remove(overlappingEvent);
+            }
+
+            if (current != int.MinValue)
+                results[i] -= paint[i][1] - current;
+
+            if (addStart) events.Add((paint[i][0], +1));
+            if (addEnd) events.Add((paint[i][1], -1));
+        }
+
+        return results;
+    }
+
+    public static int[] Ex2158_AmountPainted_JumpArray(int[][] paint)
+    {
+        int n = paint.Length, m = 100001;
+        var wall = new int[m];
+        var result = new int[n];
+        for (var i = 0; i < paint.Length; i++)
+        {
+            var j = paint[i][0];
+            var end = paint[i][1];
+            var painted = 0;
+            while (j < end)
+            {
+                if (wall[j] > 0)
+                {
+                    (j, wall[j]) = (wall[j], end);
+                }
+                else
+                {
+                    painted++;
+                    (j, wall[j]) = (j + 1, end);
+                }
+            }
+            result[i] = painted;
+        }
+
+        return result;
     }
 
     public static int Ex2359_ClosestMeetingNode_TwoSimplifiedBfs(int[] edges, int node1, int node2)
