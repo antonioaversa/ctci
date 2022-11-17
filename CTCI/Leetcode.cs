@@ -2690,6 +2690,58 @@ public static class Leetcode
         public bool IsFull() => count == k;
     }
 
+    public class Ex715_RangeModule
+    {
+        private readonly SortedSet<(int, int)> intervals = new();
+
+        public void AddRange(int left, int right)
+        {
+            var overlaps = intervals.GetViewBetween((left, -1), (right, +1)).ToList();
+            if (overlaps.Count == 0 &&
+                intervals.GetViewBetween((right, +1), (int.MaxValue, +1)).FirstOrDefault((-1, +1)).Item2 < 0)
+                return;
+
+            var addStart = overlaps.Count == 0 || overlaps[0].Item2 > 0;
+            var addEnd = overlaps.Count == 0 || overlaps[^1].Item2 < 0;
+
+            foreach (var overlap in overlaps)
+                intervals.Remove(overlap);
+
+            if (addStart) intervals.Add((left, +1));
+            if (addEnd) intervals.Add((right, -1));
+        }
+
+        public bool QueryRange(int left, int right)
+        {
+            var overlaps = intervals.GetViewBetween((left, +1), (right, -1)).ToList();
+            if (overlaps.Count > 2)
+                return false;
+            if (overlaps.Count == 2)
+                return overlaps[0].Item1 == left && overlaps[^1].Item1 == right;
+            if (overlaps.Count == 1)
+                return overlaps[0].Item1 == left || overlaps[^1].Item1 == right;
+
+            return intervals.GetViewBetween((right, +1), (int.MaxValue, +1)).FirstOrDefault((-1, +1)).Item2 < 0;
+        }
+
+        public void RemoveRange(int left, int right)
+        {
+            var overlaps = intervals.GetViewBetween((left, +1), (right, -1)).ToList();
+            if (overlaps.Count == 0 &&
+                intervals.GetViewBetween((right, +1), (int.MaxValue, +1)).FirstOrDefault((-1, +1)).Item2 > 0)
+                return;
+
+            var addEnd = overlaps.Count == 0 || overlaps[0].Item2 < 0;
+            var addStart = overlaps.Count == 0 || overlaps[^1].Item2 > 0;
+
+            foreach (var overlap in overlaps)
+                intervals.Remove(overlap);
+
+            if (addEnd) intervals.Add((left, -1));
+            if (addStart) intervals.Add((right, +1));
+        }
+    }
+
     public static int Ex718_FindLength_DP(int[] nums1, int[] nums2)
     {
         var solutions = new Dictionary<(int, int), int> { };

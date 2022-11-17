@@ -1253,7 +1253,25 @@ public class LeetcodeTests
         Assert.AreEqual(true, deque.DeleteLast());
         Assert.AreEqual(true, deque.DeleteFront());
     }
-    
+
+    [TestMethod]
+    public void Ex715_RangeModule()
+    {
+        var range = new Ex715_RangeModule();
+        range.AddRange(10, 20);
+        range.RemoveRange(14, 16);
+        Assert.IsTrue(range.QueryRange(10, 14));
+        Assert.IsFalse(range.QueryRange(13, 15));
+        Assert.IsTrue(range.QueryRange(16, 17));
+        range.AddRange(1, 3);
+        range.AddRange(2, 4);
+        Assert.IsTrue(range.QueryRange(2, 3));
+        range.RemoveRange(2, 3);
+        Assert.IsFalse(range.QueryRange(2, 3));
+        range.AddRange(6, 10);
+        Assert.IsFalse(range.QueryRange(1, 11));
+    }
+
     [TestMethod]
     public void Ex718_FindLength_DP()
     {
