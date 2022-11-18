@@ -2247,7 +2247,7 @@ public static class Leetcode
         }
     }
 
-    public class Ex352_SummaryRanges
+    public class Ex352_SummaryRanges_SortedSet
     {
         private SortedSet<(int value, int type)> events = new();
         // type: 1 = end of interval, -1 = start of interval
@@ -2311,6 +2311,57 @@ public static class Leetcode
             }
 
             return results;
+        }
+    }
+
+    public class Ex352_SummaryRanges_JumpListAndHeap
+    {
+        private int[] values = new int[10001];
+        private PriorityQueue<int, int> sortedValues = new PriorityQueue<int, int>();
+
+        public Ex352_SummaryRanges_JumpListAndHeap()
+        {
+            for (var i = 0; i < values.Length; i++)
+                values[i] = -1;
+        }
+
+        public void AddNum(int value)
+        {
+            if (values[value] >= 0) return;
+
+            if (value < values.Length - 1 && values[value + 1] >= 0)
+                values[value] = values[value + 1];
+            else
+                values[value] = value;
+
+            if (value > 0 && values[value - 1] >= 0)
+            {
+                values[value - 1] = values[value];
+            }
+
+            sortedValues.Enqueue(value, value);
+            //Console.WriteLine(string.Join(" ", values.Take(20)));
+        }
+
+        public int[][] GetIntervals()
+        {
+            var newSortedValues = new PriorityQueue<int, int>();
+
+            var result = new List<int[]>();
+            var j = int.MinValue;
+            while (sortedValues.Count > 0)
+            {
+                var s = sortedValues.Dequeue();
+                if (s <= j) continue;
+
+                j = s;
+                while (values[j] >= 0 && values[j] != j)
+                    j = values[j];
+                result.Add(new[] { s, j });
+                newSortedValues.Enqueue(s, s);
+            }
+            sortedValues = newSortedValues;
+            return result.ToArray();
         }
     }
 

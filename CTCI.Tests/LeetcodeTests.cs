@@ -1076,9 +1076,25 @@ public class LeetcodeTests
     }
 
     [TestMethod]
-    public void Ex352_SummaryRanges()
+    public void Ex352_SummaryRanges_SortedSet()
     {
-        var ds = new Ex352_SummaryRanges();
+        var ds = new Ex352_SummaryRanges_SortedSet();
+        ds.AddNum(1);
+        Assert.IsTrue(new[] { new[] { 1, 1 } }.SequenceEqual2d(ds.GetIntervals()));
+        ds.AddNum(3);
+        Assert.IsTrue(new[] { new[] { 1, 1 }, new[] { 3, 3 } }.SequenceEqual2d(ds.GetIntervals()));
+        ds.AddNum(7);
+        Assert.IsTrue(new[] { new[] { 1, 1 }, new[] { 3, 3 }, new[] { 7, 7 } }.SequenceEqual2d(ds.GetIntervals()));
+        ds.AddNum(2);
+        Assert.IsTrue(new[] { new[] { 1, 3 }, new[] { 7, 7 } }.SequenceEqual2d(ds.GetIntervals()));
+        ds.AddNum(6);
+        Assert.IsTrue(new[] { new[] { 1, 3 }, new[] { 6, 7 } }.SequenceEqual2d(ds.GetIntervals()));
+    }
+
+    [TestMethod]
+    public void Ex352_SummaryRanges_JumpListAndHeap()
+    {
+        var ds = new Ex352_SummaryRanges_JumpListAndHeap();
         ds.AddNum(1);
         Assert.IsTrue(new[] { new[] { 1, 1 } }.SequenceEqual2d(ds.GetIntervals()));
         ds.AddNum(3);
