@@ -533,6 +533,30 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex75_SortColors_Counting()
+    {
+        var a1 = new[] { 0, 1, 1, 2, 2, 0, 1, 0, 2, 2, 2, 1 };
+        Leetcode.Ex75_SortColors_Counting(a1);
+        Assert.IsTrue(new[] { 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2 }.SequenceEqual(a1));
+    }
+
+    [TestMethod]
+    public void Ex75_SortColors_Lomuto()
+    {
+        var a1 = new[] { 0, 1, 1, 2, 2, 0, 1, 0, 2, 2, 2, 1 };
+        Leetcode.Ex75_SortColors_Lomuto(a1);
+        Assert.IsTrue(new[] { 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2 }.SequenceEqual(a1));
+    }
+
+    [TestMethod]
+    public void Ex75_SortColors_DutchFlag()
+    {
+        var a1 = new[] { 0, 1, 1, 2, 2, 0, 1, 0, 2, 2, 2, 1 };
+        Leetcode.Ex75_SortColors_DutchFlag(a1);
+        Assert.IsTrue(new[] { 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2 }.SequenceEqual(a1));
+    }
+
+    [TestMethod]
     public void Ex131_PalindromePartition()
     {
         var partitions1 = Leetcode.Ex131_PalindromePartition("aab");

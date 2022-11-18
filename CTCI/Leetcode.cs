@@ -1034,6 +1034,74 @@ public static class Leetcode
         return false;
     }
 
+    public static void Ex75_SortColors_Counting(int[] nums)
+    {
+        var counts = new int[3];
+        for (var i = 0; i < nums.Length; i++)
+            counts[nums[i]]++;
+
+        var k = 0;
+        for (var i = 0; i < nums.Length; i++)
+        {
+            while (counts[k] == 0) k++;
+            nums[i] = k;
+            counts[k]--;
+        }
+    }
+
+    public static void Ex75_SortColors_Lomuto(int[] nums)
+    {
+        var lastSmallerPivot = -1; // last smaller than the pivot
+        var lastEqualToPivot = -1;
+        var pivot = 1;
+        for (var i = 0; i < nums.Length; i++)
+        {
+            if (nums[i] < pivot)
+            {
+                var v1 = nums[++lastSmallerPivot];
+                var v2 = nums[++lastEqualToPivot];
+                var v3 = nums[i];
+
+                nums[i] = v2;
+                nums[lastEqualToPivot] = v1;
+                nums[lastSmallerPivot] = v3;
+            }
+            else if (nums[i] == pivot)
+            {
+                var v2 = nums[++lastEqualToPivot];
+                var v3 = nums[i];
+
+                nums[i] = v2;
+                nums[lastEqualToPivot] = v3;
+            }
+        }
+    }
+
+    public static void Ex75_SortColors_DutchFlag(int[] nums)
+    {
+        var i = 0; // first item non < p
+        var j = 0; // first item non == p
+        var k = nums.Length - 1; // last item non > p
+
+        while (j <= k)
+        {
+            if (nums[j] == 1)
+            {
+                j++;
+            }
+            else if (nums[j] == 2)
+            {
+                (nums[j], nums[k]) = (nums[k], nums[j]);
+                k--;
+            }
+            else
+            {
+                (nums[i], nums[j]) = (nums[j], nums[i]);
+                i++; j++;
+            }
+        }
+    }
+
     public static IList<IList<string>> Ex131_PalindromePartition(string s)
     {
         var solutions = new IList<IList<string>>[s.Length];
