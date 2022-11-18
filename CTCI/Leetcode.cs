@@ -2247,6 +2247,73 @@ public static class Leetcode
         }
     }
 
+    public class Ex352_SummaryRanges
+    {
+        private SortedSet<(int value, int type)> events = new();
+        // type: 1 = end of interval, -1 = start of interval
+
+        public void AddNum(int value)
+        {
+            var nextEvent = events
+                .GetViewBetween((value, -1), (int.MaxValue, +1))
+                .FirstOrDefault((int.MaxValue, -1));
+            var previousEvent = events
+                .GetViewBetween((int.MinValue, -1), (value, +1))
+                .LastOrDefault((int.MinValue, +1));
+
+            if (nextEvent.Item1 == value || previousEvent.Item1 == value) return;
+
+            if (previousEvent.Item2 < 0 || nextEvent.Item2 > 0) return;
+
+            if (previousEvent.Item1 == value - 1)
+            {
+                if (nextEvent.Item1 == value + 1)
+                {
+                    events.Remove(previousEvent);
+                    events.Remove(nextEvent);
+                }
+                else
+                {
+                    events.Remove(previousEvent);
+                    events.Add((value, +1));
+                }
+            }
+            else
+            {
+                if (nextEvent.Item1 == value + 1)
+                {
+                    events.Add((value, -1));
+                    events.Remove(nextEvent);
+                }
+                else
+                {
+                    events.Add((value, -1));
+                    events.Add((value, +1));
+                }
+            }
+        }
+
+        public int[][] GetIntervals()
+        {
+            var results = new int[events.Count / 2][];
+            int[] current = null;
+            int i = 0;
+            foreach (var (eventValue, eventType) in events)
+            {
+                if (current == null)
+                    current = new int[] { eventValue, 0 };
+                else
+                {
+                    current[1] = eventValue;
+                    results[i++] = current;
+                    current = null;
+                }
+            }
+
+            return results;
+        }
+    }
+
     public static IList<IList<int>> Ex366_FindLeaves(TreeNode root)
     {
         var result = new Dictionary<int, IList<int>> { };

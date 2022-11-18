@@ -5,6 +5,11 @@ using static CTCI.Leetcode;
 
 internal static class Extensions
 {
+    public static bool SequenceEqual2d(this IList<int[]> first, IList<int[]> second)
+    {
+        return first.Count == second.Count && Enumerable.Zip(first, second).All(c => c.First.SequenceEqual(c.Second));
+    }
+
     public static int[] ToArray(this ListNode? list)
     {
         var result = new List<int> { };
@@ -1068,6 +1073,22 @@ public class LeetcodeTests
         Assert.IsTrue(new[] { 1 }.SequenceEqual(Leetcode.Ex347_TopKFrequent_PartialSort(new[] { 1, 1, 1, 1, 2, 3, 4, 4, 4 }, 1)));
         Assert.IsTrue(new[] { 1, 4 }.SequenceEqual(Leetcode.Ex347_TopKFrequent_PartialSort(new[] { 1, 1, 1, 2, 2, 3, 4, 4, 4 }, 2)));
         Assert.IsTrue(new[] { 1, 2, 3 }.SequenceEqual(Leetcode.Ex347_TopKFrequent_PartialSort(new[] { 1, 1, 1, 2, 2, 2, 3, 3, 3 }, 3)));
+    }
+
+    [TestMethod]
+    public void Ex352_SummaryRanges()
+    {
+        var ds = new Ex352_SummaryRanges();
+        ds.AddNum(1);
+        Assert.IsTrue(new[] { new[] { 1, 1 } }.SequenceEqual2d(ds.GetIntervals()));
+        ds.AddNum(3);
+        Assert.IsTrue(new[] { new[] { 1, 1 }, new[] { 3, 3 } }.SequenceEqual2d(ds.GetIntervals()));
+        ds.AddNum(7);
+        Assert.IsTrue(new[] { new[] { 1, 1 }, new[] { 3, 3 }, new[] { 7, 7 } }.SequenceEqual2d(ds.GetIntervals()));
+        ds.AddNum(2);
+        Assert.IsTrue(new[] { new[] { 1, 3 }, new[] { 7, 7 } }.SequenceEqual2d(ds.GetIntervals()));
+        ds.AddNum(6);
+        Assert.IsTrue(new[] { new[] { 1, 3 }, new[] { 6, 7 } }.SequenceEqual2d(ds.GetIntervals()));
     }
 
     [TestMethod]
