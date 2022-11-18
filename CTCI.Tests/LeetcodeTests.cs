@@ -1344,6 +1344,21 @@ public class LeetcodeTests
         Assert.AreEqual("xayyyyybz", Leetcode.Ex727_MinWindow("xxxxxxxayyyyybzzzzzz", "xyz"));
     }
 
+    [TestMethod]
+    public void Ex729_MyCalendar()
+    {
+        var calendar = new Ex729_MyCalendar();
+        Assert.IsTrue(calendar.Book(1, 3));
+        Assert.IsTrue(calendar.Book(5, 7));
+        Assert.IsTrue(calendar.Book(-2, 0));
+        Assert.IsTrue(calendar.Book(0, 1));
+        Assert.IsFalse(calendar.Book(2, 6));
+        Assert.IsFalse(calendar.Book(2, 5));
+        Assert.IsFalse(calendar.Book(3, 6));
+        Assert.IsTrue(calendar.Book(3, 5));
+        Assert.IsFalse(calendar.Book(3, 5));
+    }
+
     private record Ex843_Master(string Secret) : Ex843_IMaster
     {
         public int Count { get; private set; } = 0;

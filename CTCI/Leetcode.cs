@@ -2925,6 +2925,28 @@ public static class Leetcode
         }
     }
 
+    public class Ex729_MyCalendar
+    {
+        private SortedSet<(int value, int type)> events = new();
+
+        public bool Book(int start, int end)
+        {
+            var firstOverlap = events
+                .GetViewBetween((start, +1), (end, -1))
+                .FirstOrDefault((int.MinValue, -1));
+            if (firstOverlap.Item1 != int.MinValue) return false;
+
+            firstOverlap = events
+                .GetViewBetween((end, +1), (int.MaxValue, +1))
+                .FirstOrDefault((int.MaxValue, +1));
+            if (firstOverlap.Item2 == -1) return false;
+
+            events.Add((start, +1));
+            events.Add((end, -1));
+            return true;
+        }
+    }
+
     public interface Ex843_IMaster
     {
         public abstract int Guess(string word);
