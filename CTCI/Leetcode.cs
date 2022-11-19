@@ -1778,6 +1778,61 @@ public static class Leetcode
         return result;
     }
 
+    public static int[] Ex239_MaxSlidingWindow_MinHeap(int[] nums, int k)
+    {
+        var n = nums.Length;
+        var maxs = new PriorityQueue<int, int>();
+
+        for (var i = 0; i < k - 1; i++)
+            maxs.Enqueue(i, -nums[i]);
+
+        var result = new int[n - k + 1];
+        for (var i = k - 1; i < n; i++)
+        {
+            maxs.Enqueue(i, -nums[i]);
+
+            while (maxs.TryPeek(out var maxIndex, out var maxValue) && maxIndex <= i - k)
+                maxs.Dequeue();
+
+            result[i - k + 1] = nums[maxs.Peek()];
+        }
+
+        return result;
+    }
+
+    public static int[] Ex239_MaxSlidingWindow_Deque(int[] nums, int k)
+    {
+        var n = nums.Length;
+        var maxes = new LinkedList<int>();
+
+        var result = new int[n - k + 1];
+        for (var i = 0; i < n; i++)
+        {
+            // Clean out-of-window values from the front
+            while (maxes.Count > 0 && maxes.First.Value <= i - k)
+                maxes.RemoveFirst();
+
+            // Remove smaller-than-new values from the rear
+            var node = maxes.Last;
+            while (node != null)
+            {
+                var next = node.Previous;
+                if (nums[node.Value] <= nums[i])
+                    maxes.Remove(node);
+                else
+                    break;
+                node = next;
+            }
+
+            maxes.AddLast(i);
+
+            if (i >= k - 1)
+                result[i - k + 1] = nums[maxes.First.Value];
+        }
+
+        return result;
+    }
+
     public static int Ex253_MinMeetingRooms_UsingLINQ(int[][] intervals)
     {
         var events = intervals

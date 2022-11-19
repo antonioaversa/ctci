@@ -927,6 +927,28 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex239_MaxSlidingWindow_MinHeap()
+    {
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(
+            Leetcode.Ex239_MaxSlidingWindow_MinHeap(new[] { 1 }, 1)));
+        Assert.IsTrue(new[] { 3, 3, 5, 5, 6, 7 }.SequenceEqual(
+            Leetcode.Ex239_MaxSlidingWindow_MinHeap(new[] { 1, 3, -1, -3, 5, 3, 6, 7 }, 3)));
+        Assert.IsTrue(new[] { 3, 3, 2, 5 }.SequenceEqual(
+            Leetcode.Ex239_MaxSlidingWindow_MinHeap(new[] { 1, 3, 1, 2, 0, 5 }, 3)));
+    }
+
+    [TestMethod]
+    public void Ex239_MaxSlidingWindow_Deque()
+    {
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(
+            Leetcode.Ex239_MaxSlidingWindow_Deque(new[] { 1 }, 1)));
+        Assert.IsTrue(new[] { 3, 3, 5, 5, 6, 7 }.SequenceEqual(
+            Leetcode.Ex239_MaxSlidingWindow_Deque(new[] { 1, 3, -1, -3, 5, 3, 6, 7 }, 3)));
+        Assert.IsTrue(new[] { 3, 3, 2, 5 }.SequenceEqual(
+            Leetcode.Ex239_MaxSlidingWindow_Deque(new[] { 1, 3, 1, 2, 0, 5 }, 3)));
+    }
+
+    [TestMethod]
     public void Ex253_MinMeetingRooms_UsingLINQ()
     {
         Assert.AreEqual(2, Leetcode.Ex253_MinMeetingRooms_UsingLINQ(
