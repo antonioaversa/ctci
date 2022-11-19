@@ -1684,6 +1684,72 @@ public static class Leetcode
         }
     }
 
+    public static int Ex224_Calculate(string s)
+    {
+        s = s.Replace(" ", "");
+        return Expression(0).Item2;
+
+        Tuple<int, int> Expression(int i)
+        {
+            var result = SimpleExpression(i);
+            if (result != null) return result;
+            return Parentheses(i);
+        }
+
+        Tuple<int, int> Parentheses(int i)
+        {
+            if (i >= s.Length || s[i] != '(') return null;
+            var result = Expression(i + 1);
+            if (result == null) return null;
+            if (result.Item1 >= s.Length || s[result.Item1] != ')') return null;
+            return Tuple.Create(result.Item1 + 1, result.Item2);
+        }
+
+        Tuple<int, int> SimpleExpression(int i)
+        {
+            var result = Factor(i);
+            if (result == null) return null;
+            while (result.Item1 < s.Length && (s[result.Item1] == '+' || s[result.Item1] == '-'))
+            {
+                var nextFactor = Factor(result.Item1 + 1);
+                var sign = s[result.Item1] == '+' ? 1 : -1;
+                result = Tuple.Create(nextFactor.Item1, result.Item2 + nextFactor.Item2 * sign);
+            }
+            return result;
+        }
+
+        Tuple<int, int> Factor(int i)
+        {
+            var result = Parentheses(i);
+            if (result != null) return result;
+            result = SignedExpression(i);
+            if (result != null) return result;
+            result = Number(i);
+            if (result != null) return result;
+            return null;
+        }
+
+        Tuple<int, int> SignedExpression(int i)
+        {
+            if (i >= s.Length || s[i] != '-') return null;
+            var result = Parentheses(i + 1);
+            if (result != null) return Tuple.Create(result.Item1, -result.Item2);
+            result = Number(i + 1);
+            if (result != null) return Tuple.Create(result.Item1, -result.Item2);
+            return null;
+        }
+
+        Tuple<int, int> Number(int i)
+        {
+            var value = 0;
+            if (i < s.Length && s[i] >= '0' && s[i] <= '9')
+                value = s[i++] - '0';
+            while (i < s.Length && s[i] >= '0' && s[i] <= '9')
+                value = value * 10 + (s[i++] - '0');
+            return Tuple.Create(i, value);
+        }
+    }
+
     public static TreeNode Ex226_InvertTree(TreeNode root)
     {
         if (root == null) return null;
@@ -3062,6 +3128,40 @@ public static class Leetcode
             events.Add((start, +1));
             events.Add((end, -1));
             return true;
+        }
+    }
+
+    public static bool Ex737_AreSentencesSimilarTwo(
+        string[] sentence1, string[] sentence2, IList<IList<string>> similarPairs)
+    {
+        if (sentence1.Length != sentence2.Length) return false;
+
+        var simParents = new Dictionary<string, string>();
+
+        foreach (var similarPair in similarPairs)
+            AreSimilar(similarPair[0], similarPair[1]);
+
+        for (var i = 0; i < sentence1.Length; i++)
+            if (Root(sentence1[i]) != Root(sentence2[i]))
+                return false;
+        return true;
+
+        void AreSimilar(string word1, string word2)
+        {
+            if (word1 == word2) return;
+
+            var root1 = Root(word1);
+            var root2 = Root(word2);
+            if (root1 == root2) return;
+            simParents[root1] = root2;
+        }
+
+        string Root(string word)
+        {
+            var root = word;
+            while (simParents.TryGetValue(root, out var parent))
+                root = parent;
+            return root;
         }
     }
 

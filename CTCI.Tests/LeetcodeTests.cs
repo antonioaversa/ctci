@@ -1,11 +1,11 @@
-﻿namespace CTCI.Tests;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using static CTCI.Leetcode;
 
+namespace CTCI.Tests;
 internal static class Extensions
 {
-    public static bool SequenceEqual2d(this IList<int[]> first, IList<int[]> second)
+    public static bool SequenceEqual2d<T>(this IList<T[]> first, IList<T[]> second)
     {
         return first.Count == second.Count && Enumerable.Zip(first, second).All(c => c.First.SequenceEqual(c.Second));
     }
@@ -877,6 +877,19 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex224_Calculate()
+    {
+        Assert.AreEqual(1 + 1, Leetcode.Ex224_Calculate("1 + 1"));
+        Assert.AreEqual(2 - 1 + 2, Leetcode.Ex224_Calculate(" 2-1 + 2 "));
+        Assert.AreEqual((1+(4+5+2)-3)+(6+8), Leetcode.Ex224_Calculate("(1+(4+5+2)-3)+(6+8)"));
+        Assert.AreEqual(-2 + 1, Leetcode.Ex224_Calculate("-2+ 1"));
+        Assert.AreEqual(2, Leetcode.Ex224_Calculate("-(-1)-(-1)"));
+        Assert.AreEqual(0, Leetcode.Ex224_Calculate("(-1)-(-1)"));
+        Assert.AreEqual(0, Leetcode.Ex224_Calculate("-(-1)+(-1)"));
+        Assert.AreEqual(-2, Leetcode.Ex224_Calculate("-(-( -1))- (-(-1))"));
+    }
+
+    [TestMethod]
     public void Ex226_InvertTree()
     {
         var input = ArrayToTree(new[] { 4, 2, 7, 1, 3, 6, 9 }, 0);
@@ -1394,6 +1407,40 @@ public class LeetcodeTests
         Assert.IsFalse(calendar.Book(3, 6));
         Assert.IsTrue(calendar.Book(3, 5));
         Assert.IsFalse(calendar.Book(3, 5));
+    }
+
+    [TestMethod]
+    public void Ex737_AreSentencesSimilarTwo()
+    {
+        Assert.IsTrue(
+            Leetcode.Ex737_AreSentencesSimilarTwo(
+                new[] { "great", "acting", "skills" }, 
+                new[] { "fine", "drama", "talent" },
+                new[] 
+                {
+                    new[] { "great", "good" }, new[] { "fine", "good" }, new[] { "drama", "acting" },
+                    new[] { "skills", "talent" } 
+                }));
+
+        Assert.IsTrue(
+            Leetcode.Ex737_AreSentencesSimilarTwo(
+                new[] { "I", "love", "leetcode" }, 
+                new[] { "I", "love", "onepiece" }, 
+                new[] 
+                { 
+                    new[] { "manga", "onepiece" }, new[] { "platform", "anime" }, new[] { "leetcode", "platform" }, 
+                    new[] { "anime", "manga" } 
+                }));
+
+        Assert.IsFalse(
+            Leetcode.Ex737_AreSentencesSimilarTwo(
+                new[] { "I", "love", "leetcode" }, 
+                new[] { "I", "love", "onepiece" }, 
+                new[] 
+                { 
+                    new[] { "manga", "hunterXhunter" }, new[] { "platform", "anime" }, new[] { "leetcode", "platform" }, 
+                    new[] { "anime", "manga" } 
+                }));
     }
 
     private record Ex843_Master(string Secret) : Ex843_IMaster
