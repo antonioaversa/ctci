@@ -562,6 +562,41 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex84_LargestRectangleArea()
+    {
+        Assert.AreEqual(10, Leetcode.Ex84_LargestRectangleArea(new[] { 2, 1, 5, 6, 2, 3 }));
+        Assert.AreEqual(4, Leetcode.Ex84_LargestRectangleArea(new[] { 2, 4 }));
+        Assert.AreEqual(18, Leetcode.Ex84_LargestRectangleArea(new[] { 1, 1, 2, 4, 4, 3, 3, 5, 5, 1, 1, 4 }));
+    }
+
+    [TestMethod]
+    public void Ex85_MaximalRectangle_Quadratic()
+    {
+        Assert.AreEqual(6, Leetcode.Ex85_MaximalRectangle_Quadratic(new[] { 
+            new[] { '1', '0', '1', '0', '0' }, 
+            new[] { '1', '0', '1', '1', '1' }, 
+            new[] { '1', '1', '1', '1', '1' }, 
+            new[] { '1', '0', '0', '1', '0' } }));
+        Assert.AreEqual(0, Leetcode.Ex85_MaximalRectangle_Quadratic(new[] { new[] { '0' } }));
+        Assert.AreEqual(1, Leetcode.Ex85_MaximalRectangle_Quadratic(new[] { new[] { '1' } }));
+        Assert.AreEqual(5, Leetcode.Ex85_MaximalRectangle_Quadratic(new[] {
+            new[] { '1', '0', '1', '0', '0' },
+            new[] { '1', '0', '1', '0', '1' },
+            new[] { '1', '1', '1', '1', '1' },
+            new[] { '1', '0', '0', '1', '0' } }));
+        Assert.AreEqual(4, Leetcode.Ex85_MaximalRectangle_Quadratic(new[] {
+            new[] { '1', '0', '1', '0', '0' },
+            new[] { '1', '0', '1', '0', '1' },
+            new[] { '1', '1', '0', '1', '1' },
+            new[] { '1', '0', '0', '1', '0' } }));
+        Assert.AreEqual(2, Leetcode.Ex85_MaximalRectangle_Quadratic(new[] {
+            new[] { '1', '0', '1', '0', '0' },
+            new[] { '1', '0', '1', '0', '1' },
+            new[] { '0', '1', '0', '1', '1' },
+            new[] { '1', '0', '0', '1', '0' } }));
+    }
+
+    [TestMethod]
     public void Ex131_PalindromePartition()
     {
         var partitions1 = Leetcode.Ex131_PalindromePartition("aab");

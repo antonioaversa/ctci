@@ -1102,6 +1102,127 @@ public static class Leetcode
         }
     }
 
+    public static int Ex84_LargestRectangleArea(int[] heights)
+    {
+        var n = heights.Length;
+
+        var leftQueue = new LinkedList<int>();
+        var leftIndexes = new int[n];
+        var rightQueue = new LinkedList<int>();
+        var rightIndexes = new int[n];
+
+        for (var i = 0; i < n; i++)
+        {
+            while (leftQueue.Count > 0 && heights[leftQueue.Last.Value] >= heights[i])
+                leftQueue.RemoveLast();
+
+            leftIndexes[i] = leftQueue.Count > 0 ? leftQueue.Last.Value + 1 : 0;
+
+            leftQueue.AddLast(i);
+
+            while (rightQueue.Count > 0 && heights[rightQueue.Last.Value] >= heights[n - 1 - i])
+                rightQueue.RemoveLast();
+
+            rightIndexes[n - 1 - i] = rightQueue.Count > 0 ? rightQueue.Last.Value - 1 : n - 1;
+
+            rightQueue.AddLast(n - 1 - i);
+
+            //Console.WriteLine("leftQueue: " + string.Join(" ", leftQueue));
+            //Console.WriteLine("rightQueue: " + string.Join(" ", rightQueue));
+            //Console.WriteLine("leftIndexes: " + string.Join(" ", leftIndexes));
+            //Console.WriteLine("rightIndexes: " + string.Join(" ", rightIndexes));
+            //Console.WriteLine();
+        }
+
+        var max = int.MinValue;
+        for (var i = 0; i < n; i++)
+            max = Math.Max(max, (rightIndexes[i] - leftIndexes[i] + 1) * heights[i]);
+        return max;
+    }
+
+    public static int Ex85_MaximalRectangle_Quadratic(char[][] matrix)
+    {
+        var n = matrix.Length;
+        var m = matrix[0].Length;
+
+        var rowAccs = BuildRowAccs(matrix);
+        var colAccs = BuildColAccs(matrix);
+        var matAccs = BuildMatAccs(matrix, rowAccs, colAccs);
+
+        PrintMatrix(rowAccs);
+        PrintMatrix(colAccs);
+        PrintMatrix(matAccs);
+
+        var max = 0;
+
+        for (var i1 = 0; i1 < n; i1++)
+            for (var j1 = 0; j1 < m; j1++)
+                for (var i2 = i1; i2 < n; i2++)
+                    for (var j2 = j1; j2 < m; j2++)
+                    {
+                        var ones = matAccs[i2, j2]
+                            - (j1 > 0 ? matAccs[i2, j1 - 1] : 0)
+                            - (i1 > 0 ? matAccs[i1 - 1, j2] : 0)
+                            + (i1 > 0 && j1 > 0 ? matAccs[i1 - 1, j1 - 1] : 0);
+                        if (ones == (i2 - i1 + 1) * (j2 - j1 + 1))
+                            max = Math.Max(max, ones);
+                    }
+
+        return max;
+
+        int[,] BuildRowAccs(char[][] matrix)
+        {
+            var rowAccs = new int[n, m];
+            for (var i = 0; i < n; i++)
+            {
+                rowAccs[i, 0] = matrix[i][0] - '0';
+                for (var j = 1; j < m; j++)
+                    rowAccs[i, j] = rowAccs[i, j - 1] + (matrix[i][j] - '0');
+            }
+            return rowAccs;
+        }
+
+        int[,] BuildColAccs(char[][] matrix)
+        {
+            var colAccs = new int[n, m];
+            for (var j = 0; j < m; j++)
+            {
+                colAccs[0, j] = matrix[0][j] - '0';
+                for (var i = 1; i < n; i++)
+                    colAccs[i, j] = colAccs[i - 1, j] + (matrix[i][j] - '0');
+            }
+            return colAccs;
+        }
+
+        int[,] BuildMatAccs(char[][] matrix, int[,] rowAccs, int[,] colAccs)
+        {
+            var matAccs = new int[n, m];
+            for (var i = 0; i < n; i++)
+                matAccs[i, 0] = colAccs[i, 0];
+            for (var j = 0; j < m; j++)
+                matAccs[0, j] = rowAccs[0, j];
+
+            for (var i = 0; i < n - 1; i++)
+                for (var j = 0; j < m - 1; j++)
+                    matAccs[i + 1, j + 1] = matAccs[i, j] + rowAccs[i + 1, j] + colAccs[i, j + 1] + (matrix[i + 1][j + 1] - '0');
+
+            return matAccs;
+        }
+
+        void PrintMatrix<T>(T[,] matrix)
+        {
+            for (var i = 0; i < matrix.GetLength(0); i++)
+            {
+                var sb = new StringBuilder();
+                for (var j = 0; j < matrix.GetLength(1); j++)
+                {
+                    sb.Append(" " + matrix[i, j].ToString());
+                }
+                Console.WriteLine(sb.ToString());
+            }
+        }
+    }
+
     public static IList<IList<string>> Ex131_PalindromePartition(string s)
     {
         var solutions = new IList<IList<string>>[s.Length];
