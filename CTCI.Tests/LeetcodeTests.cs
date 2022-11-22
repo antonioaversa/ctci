@@ -641,6 +641,42 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex155_MinStack_Monotonic()
+    {
+        var stack = new Ex155_MinStack_Monotonic();
+        stack.Push(-2);
+        stack.Push(0);
+        stack.Push(-3);
+        Assert.AreEqual(-3, stack.GetMin());
+        stack.Pop();
+        Assert.AreEqual(0, stack.Top());
+        Assert.AreEqual(-2, stack.GetMin());
+        stack.Push(4);
+        Assert.AreEqual(-2, stack.GetMin());
+        stack.Push(3);
+        Assert.AreEqual(3, stack.Top());
+        Assert.AreEqual(-2, stack.GetMin());
+    }
+
+    [TestMethod]
+    public void Ex155_MinStack_StrictlyMonotonic()
+    {
+        var stack = new Ex155_MinStack_StrictlyMonotonic();
+        stack.Push(-2);
+        stack.Push(0);
+        stack.Push(-3);
+        Assert.AreEqual(-3, stack.GetMin());
+        stack.Pop();
+        Assert.AreEqual(0, stack.Top());
+        Assert.AreEqual(-2, stack.GetMin());
+        stack.Push(4);
+        Assert.AreEqual(-2, stack.GetMin());
+        stack.Push(3);
+        Assert.AreEqual(3, stack.Top());
+        Assert.AreEqual(-2, stack.GetMin());
+    }
+
+    [TestMethod]
     public void Ex159_LengthOfLongestSubstringTwoDistinct()
     {
         Assert.AreEqual(1, Leetcode.Ex159_LengthOfLongestSubstringTwoDistinct("a"));
@@ -1463,6 +1499,16 @@ public class LeetcodeTests
                     new[] { "manga", "hunterXhunter" }, new[] { "platform", "anime" }, new[] { "leetcode", "platform" }, 
                     new[] { "anime", "manga" } 
                 }));
+    }
+
+    [TestMethod]
+    public void Ex738_MonotoneIncreasingDigits()
+    {
+        Assert.AreEqual(9, Leetcode.Ex738_MonotoneIncreasingDigits(10));
+        Assert.AreEqual(1234, Leetcode.Ex738_MonotoneIncreasingDigits(1234));
+        Assert.AreEqual(299, Leetcode.Ex738_MonotoneIncreasingDigits(332));
+        Assert.AreEqual(234999999, Leetcode.Ex738_MonotoneIncreasingDigits(235554586));
+        Assert.AreEqual(11, Leetcode.Ex738_MonotoneIncreasingDigits(11));
     }
 
     private record Ex843_Master(string Secret) : Ex843_IMaster

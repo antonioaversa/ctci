@@ -1282,6 +1282,67 @@ public static class Leetcode
         }
     }
 
+    public class Ex155_MinStack_Monotonic
+    {
+        private readonly IList<int> values = new List<int>();
+        private readonly IList<int> mins = new List<int>();
+
+        public void Push(int val)
+        {
+            values.Add(val);
+            var lastMin = mins.Count == 0 ? int.MaxValue : mins[^1];
+            if (val <= lastMin)
+                mins.Add(Math.Min(lastMin, val));
+        }
+
+        public void Pop()
+        {
+            if (values[^1] == mins[^1])
+                mins.RemoveAt(mins.Count - 1);
+            values.RemoveAt(values.Count - 1);
+        }
+
+        public int Top()
+        {
+            return values[^1];
+        }
+
+        public int GetMin()
+        {
+            return mins[^1];
+        }
+    }
+
+    public class Ex155_MinStack_StrictlyMonotonic
+    {
+        private readonly IList<int> values = new List<int>();
+        private readonly IList<int> mins = new List<int>();
+
+        public void Push(int val)
+        {
+            if (mins.Count == 0 || values[mins[^1]] > val)
+                mins.Add(values.Count);
+            values.Add(val);
+        }
+
+        public void Pop()
+        {
+            if (mins[^1] == values.Count - 1)
+                mins.RemoveAt(mins.Count - 1);
+            values.RemoveAt(values.Count - 1);
+        }
+
+        public int Top()
+        {
+            return values[^1];
+        }
+
+        public int GetMin()
+        {
+            return values[mins[^1]];
+        }
+    }
+
     public static int Ex159_LengthOfLongestSubstringTwoDistinct(string s)
     {
         if (s.Length <= 2) return s.Length;
@@ -3218,6 +3279,27 @@ public static class Leetcode
                 root = parent;
             return root;
         }
+    }
+
+    public static int Ex738_MonotoneIncreasingDigits(int n)
+    {
+        var digits = n.ToString();
+        var lastStrictlyIncreasing = 0;
+        int i;
+        for (i = 1; i < digits.Length; i++)
+        {
+            if (digits[i - 1] > digits[i])
+                break;
+            if (digits[i - 1] < digits[i])
+                lastStrictlyIncreasing = i;
+        }
+
+        if (i == digits.Length)
+            return n;
+        return int.Parse(
+            digits[..lastStrictlyIncreasing] +
+            (char)(digits[lastStrictlyIncreasing] - 1) +
+            new string('9', digits.Length - 1 - lastStrictlyIncreasing));
     }
 
     public interface Ex843_IMaster
