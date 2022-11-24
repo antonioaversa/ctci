@@ -3491,6 +3491,49 @@ public static class Leetcode
         }
     }
 
+    public static int Ex907_SumSubarrayMins(int[] arr)
+    {
+        var n = arr.Length;
+
+        var result = 0L;
+        var (leftIndices, rightIndices) = CalculateSideIndices();
+        for (var i = 0; i < n; i++)
+        {
+            var leftIndex = leftIndices[i];
+            var rightIndex = rightIndices[i];
+
+            var numberOfIntervals = (i - leftIndex + 1) * (rightIndex - i + 1);
+            Console.WriteLine($"i = {i}, leftIndex = {leftIndex}, rightIndex = {rightIndex}, numberOfIntervals = {numberOfIntervals}");
+
+            result = (result + (long)arr[i] * numberOfIntervals) % 1_000_000_007;
+        }
+
+        return (int)(result);
+
+        (int[], int[]) CalculateSideIndices()
+        {
+            var leftStack = new List<int>();
+            var leftIndices = new int[n];
+            var rightStack = new List<int>();
+            var rightIndices = new int[n];
+
+            for (var i = 0; i < n; i++)
+            {
+                while (leftStack.Count > 0 && arr[leftStack[^1]] > arr[i])
+                    leftStack.RemoveAt(leftStack.Count - 1);
+                leftIndices[i] = leftStack.Count > 0 ? leftStack[^1] + 1 : 0;
+                leftStack.Add(i);
+
+                while (rightStack.Count > 0 && arr[rightStack[^1]] >= arr[n - 1 - i])
+                    rightStack.RemoveAt(rightStack.Count - 1);
+                rightIndices[n - 1 - i] = rightStack.Count > 0 ? rightStack[^1] - 1 : n - 1;
+                rightStack.Add(n - 1 - i);
+            }
+
+            return (leftIndices, rightIndices);
+        }
+    }
+
     public static int Ex992_SubarraysWithKDistinct_Quadratic(int[] nums, int k)
     {
         var n = nums.Length;

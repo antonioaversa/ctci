@@ -1604,6 +1604,14 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex907_SumSubarrayMins()
+    {
+        Assert.AreEqual(17, Leetcode.Ex907_SumSubarrayMins(new[] {3,1,2,4}));
+        Assert.AreEqual(444, Leetcode.Ex907_SumSubarrayMins(new[] {11,81,94,43,3}));
+        Assert.AreEqual(33, Leetcode.Ex907_SumSubarrayMins(new[] { 3, 5, 3, 4 }));
+    }
+
+    [TestMethod]
     public void Ex992_SubarraysWithKDistinct_Quadratic()
     {
         Assert.AreEqual(7, Leetcode.Ex992_SubarraysWithKDistinct_Quadratic(new[] { 1, 2, 1, 2, 3 }, 2));
