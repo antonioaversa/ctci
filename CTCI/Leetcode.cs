@@ -1223,6 +1223,30 @@ public static class Leetcode
         }
     }
 
+    public static int Ex115_NumDistinct_DPTopDown(string s, string t)
+    {
+        var solutions = new Dictionary<(int, int), int>();
+        var n = s.Length;
+        var m = t.Length;
+        return NumDistinct(0, 0);
+
+        int NumDistinct(int i, int j)
+        {
+            if (j == m) return 1;
+            if (i == n) return 0;
+            if (n - i < m - j) return 0;
+            if (solutions.TryGetValue((i, j), out var solution)) return solution;
+
+            solution = 0;
+            if (s[i] == t[j])
+                solution += NumDistinct(i + 1, j + 1);
+            solution += NumDistinct(i + 1, j);
+
+            solutions[(i, j)] = solution;
+            return solution;
+        }
+    }
+
     public static IList<IList<string>> Ex131_PalindromePartition(string s)
     {
         var solutions = new IList<IList<string>>[s.Length];

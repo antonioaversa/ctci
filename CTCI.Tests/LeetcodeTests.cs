@@ -597,6 +597,14 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex115_NumDistinct_DPTopDown()
+    {
+        Assert.AreEqual(3, Leetcode.Ex115_NumDistinct_DPTopDown("rabbbit", "rabbit"));
+        Assert.AreEqual(5, Leetcode.Ex115_NumDistinct_DPTopDown("babgbag", "bag"));
+        Assert.AreEqual(32, Leetcode.Ex115_NumDistinct_DPTopDown("aaabbcccdabbc", "abc"));
+    }
+
+    [TestMethod]
     public void Ex131_PalindromePartition()
     {
         var partitions1 = Leetcode.Ex131_PalindromePartition("aab");
