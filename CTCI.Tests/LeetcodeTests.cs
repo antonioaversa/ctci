@@ -2034,6 +2034,13 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex2281_TotalStrength()
+    {
+        Assert.AreEqual(121473332, Leetcode.Ex2281_TotalStrength(
+            File.ReadAllText("Resources/Ex2281_Input.txt").Split(",").Select(s => int.Parse(s)).ToArray()));
+    }
+
+    [TestMethod]
     public void Ex2359_ClosestMeetingNode_TwoSimplifiedBfs()
     {
         Assert.AreEqual(2, Leetcode.Ex2359_ClosestMeetingNode_TwoSimplifiedBfs(new[] { 2, 2, 3, -1 }, 0, 1));

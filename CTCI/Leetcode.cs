@@ -4756,6 +4756,115 @@ public static class Leetcode
         return result;
     }
 
+    public static int Ex2281_TotalStrength(int[] strength)
+    {
+        var n = strength.Length;
+        var mod = 1_000_000_007;
+
+        var result = 0L;
+        var (leftIndices, rightIndices) = CalculateSideIndices();
+        var (sumLeftPrefixes, sumRightPrefixes) = CalculateSumPrefixes();
+        var (multLeftPrefixes, multRightPrefixes) = CalculateMultPrefixes();
+
+        for (var i = 0; i < n; i++)
+        {
+            // All sub-arrays of [leftIndices[i]..rightIndices[i]] have min = strength[i].
+            // So I can factor out min and focus on sum of all sub-arrays in the range containing item at index i.
+            var leftIndex = leftIndices[i];
+            var leftSize = i - leftIndex + 1;
+            var rightIndex = rightIndices[i];
+            var rightSize = rightIndex - i + 1;
+
+            var sumOfLeftSubArrays = CalculateSumOfSubArraysLeft(leftIndex, i) % mod;
+            var sumofRightSubArrays = CalculateSumOfSubArraysRight(i, rightIndex) % mod;
+            var sumOfSubArrays = (sumOfLeftSubArrays * rightSize + sumofRightSubArrays * leftSize - (long)leftSize * rightSize * strength[i]) % mod;
+
+            //Console.WriteLine($"i = {i}, leftIndex = {leftIndex}, leftSize = {leftSize}, rightIndex = {rightIndex}, rightSize = {rightSize}");
+            //Console.WriteLine($"sumOfLeftSubArrays = {sumOfLeftSubArrays}, sumofRightSubArrays = {sumofRightSubArrays}, sumOfSubArrays = {sumOfSubArrays}");
+
+            result = (result + strength[i] * sumOfSubArrays) % mod;
+        }
+
+        return (int)result;
+
+        long CalculateSumOfSubArraysLeft(int s, int e)
+        {
+            var result = multLeftPrefixes[e + 1] - multLeftPrefixes[s]
+                - s * (sumLeftPrefixes[e + 1] - sumLeftPrefixes[s]);
+
+            //Console.WriteLine($"CalculateSumOfSubArraysLeft {s} {e} = {result}");
+            return result;
+        }
+
+        long CalculateSumOfSubArraysRight(int s, int e)
+        {
+            var result = multRightPrefixes[s] - multRightPrefixes[e + 1]
+                - (n - 1 - e) * (sumRightPrefixes[s] - sumRightPrefixes[e + 1]);
+
+            //Console.WriteLine($"CalculateSumOfSubArraysRight {s} {e} = {result}");
+            return result;
+        }
+
+        (int[], int[]) CalculateSideIndices()
+        {
+            var leftIndices = new int[n];
+            var leftStack = new List<int>();
+            var rightIndices = new int[n];
+            var rightStack = new List<int>();
+
+            for (var i = 0; i < n; i++)
+            {
+                while (leftStack.Count > 0 && strength[leftStack[^1]] > strength[i])
+                    leftStack.RemoveAt(leftStack.Count - 1);
+                leftIndices[i] = leftStack.Count > 0 ? leftStack[^1] + 1 : 0;
+                leftStack.Add(i);
+
+                while (rightStack.Count > 0 && strength[rightStack[^1]] >= strength[n - 1 - i])
+                    rightStack.RemoveAt(rightStack.Count - 1);
+                rightIndices[n - 1 - i] = rightStack.Count > 0 ? rightStack[^1] - 1 : n - 1;
+                rightStack.Add(n - 1 - i);
+            }
+            //Console.WriteLine($"leftIndices = [{string.Join(" ", leftIndices)}]");
+            //Console.WriteLine($"rightIndices = [{string.Join(" ", rightIndices)}]");
+
+            return (leftIndices, rightIndices);
+        }
+
+        (long[], long[]) CalculateSumPrefixes()
+        {
+            var leftSumPrefixes = new long[n + 1];
+            var rightSumPrefixes = new long[n + 1];
+            leftSumPrefixes[0] = 0;
+            rightSumPrefixes[^1] = 0;
+            for (var i = 1; i <= n; i++)
+            {
+                leftSumPrefixes[i] = leftSumPrefixes[i - 1] + strength[i - 1];
+                rightSumPrefixes[n - i] = rightSumPrefixes[n - i + 1] + strength[n - i];
+            }
+            //Console.WriteLine($"leftSumPrefixes = [{string.Join(" ", leftSumPrefixes)}]");
+            //Console.WriteLine($"rightSumPrefixes = [{string.Join(" ", rightSumPrefixes)}]");
+
+            return (leftSumPrefixes, rightSumPrefixes);
+        }
+
+        (long[], long[]) CalculateMultPrefixes()
+        {
+            var leftMultPrefixes = new long[n + 1];
+            var rightMultPrefixes = new long[n + 1];
+            leftMultPrefixes[0] = 0;
+            rightMultPrefixes[^1] = 0;
+            for (var i = 1; i <= n; i++)
+            {
+                leftMultPrefixes[i] = leftMultPrefixes[i - 1] + (long)i * strength[i - 1];
+                rightMultPrefixes[n - i] = rightMultPrefixes[n - i + 1] + (long)i * strength[n - i];
+            }
+            //Console.WriteLine($"leftMultPrefixes = [{string.Join(" ", leftMultPrefixes)}]");
+            //Console.WriteLine($"rightMultPrefixes = [{string.Join(" ", rightMultPrefixes)}]");
+
+            return (leftMultPrefixes, rightMultPrefixes);
+        }
+    }
+
     public static int Ex2359_ClosestMeetingNode_TwoSimplifiedBfs(int[] edges, int node1, int node2)
     {
         var node1Distances = Bfs(node1);

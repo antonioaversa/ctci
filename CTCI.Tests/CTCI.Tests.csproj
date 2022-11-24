@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -17,6 +17,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CTCI\CTCI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\Ex2281_Input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
