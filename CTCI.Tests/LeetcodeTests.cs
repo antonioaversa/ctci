@@ -605,6 +605,22 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex115_NumDistinct_DPBottomUp()
+    {
+        Assert.AreEqual(3, Leetcode.Ex115_NumDistinct_DPBottomUp("rabbbit", "rabbit"));
+        Assert.AreEqual(5, Leetcode.Ex115_NumDistinct_DPBottomUp("babgbag", "bag"));
+        Assert.AreEqual(32, Leetcode.Ex115_NumDistinct_DPBottomUp("aaabbcccdabbc", "abc"));
+    }
+
+    [TestMethod]
+    public void Ex115_NumDistinct_DPBottomUpSpaceOptimized()
+    {
+        Assert.AreEqual(3, Leetcode.Ex115_NumDistinct_DPBottomUpSpaceOptimized("rabbbit", "rabbit"));
+        Assert.AreEqual(5, Leetcode.Ex115_NumDistinct_DPBottomUpSpaceOptimized("babgbag", "bag"));
+        Assert.AreEqual(32, Leetcode.Ex115_NumDistinct_DPBottomUpSpaceOptimized("aaabbcccdabbc", "abc"));
+    }
+
+    [TestMethod]
     public void Ex131_PalindromePartition()
     {
         var partitions1 = Leetcode.Ex131_PalindromePartition("aab");

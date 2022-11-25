@@ -1247,6 +1247,47 @@ public static class Leetcode
         }
     }
 
+    public static int Ex115_NumDistinct_DPBottomUp(string s, string t)
+    {
+        var n = s.Length;
+        var m = t.Length;
+        var solutions = new int[n + 1, m + 1];
+        for (var i = 0; i <= n; i++)
+            solutions[i, m] = 1;
+        for (var j = 0; j < m; j++)
+            solutions[n, j] = 0;
+
+        for (var i = n - 1; i >= 0; i--)
+            for (var j = m - 1; j >= 0; j--)
+                solutions[i, j] = (s[i] == t[j] ? solutions[i + 1, j + 1] : 0) + solutions[i + 1, j];
+
+        return solutions[0, 0];
+    }
+
+    public static int Ex115_NumDistinct_DPBottomUpSpaceOptimized(string s, string t)
+    {
+        var n = s.Length;
+        var m = t.Length;
+
+        var solutions = new int[m + 1];
+        solutions[m] = 1;
+
+        var minJ = m - 1;
+        for (var i = n - 1; i >= 0; i--)
+        {
+            for (var j = minJ; j < m; j++)
+                if (s[i] == t[j])
+                    solutions[j] += solutions[j + 1];
+
+            if (minJ > 0 && solutions[minJ] != 0)
+                minJ--;
+
+            //Console.WriteLine(string.Join(" ", solutions));
+        }
+
+        return solutions[0];
+    }
+
     public static IList<IList<string>> Ex131_PalindromePartition(string s)
     {
         var solutions = new IList<IList<string>>[s.Length];
