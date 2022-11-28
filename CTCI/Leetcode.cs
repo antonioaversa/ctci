@@ -4308,6 +4308,48 @@ public static class Leetcode
         return ans;
     }
 
+    public static int Ex1987_NumberOfUniqueGoodSubsequences(string binary)
+    {
+        var n = binary.Length;
+        var mod = 1_000_000_007;
+
+        var previous = new int[2] { -1, -1 };
+        var results = new int[n];
+        var anyZero = false;
+
+        int i = 0;
+        while (i < n && binary[i] == '0')
+        {
+            anyZero = true;
+            i++;
+        }
+
+        if (i == n)
+            return 1;
+
+        results[i] = 1;
+        previous[1] = i;
+        i++;
+
+        while (i < n)
+        {
+            var value = binary[i] - '0';
+            if (value == 0) anyZero = true;
+
+            results[i] = (results[i - 1] * 2) % mod;
+            if (previous[value] >= 0)
+            {
+                var repetitions = previous[value] > 0 ? results[previous[value] - 1] : 0;
+                results[i] = (results[i] + mod - repetitions) % mod;
+            }
+
+            previous[value] = i;
+            i++;
+        }
+
+        return (results[^1] + (anyZero ? 1 : 0) + mod) % mod;
+    }
+
     public class Ex2034_StockPrice
     {
         private readonly Dictionary<int, int> prices = new();

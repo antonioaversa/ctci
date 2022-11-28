@@ -1949,6 +1949,19 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex1987_NumberOfUniqueGoodSubsequences()
+    {
+        Assert.AreEqual(2, Leetcode.Ex1987_NumberOfUniqueGoodSubsequences("001"));
+        Assert.AreEqual(2, Leetcode.Ex1987_NumberOfUniqueGoodSubsequences("11"));
+        Assert.AreEqual(5, Leetcode.Ex1987_NumberOfUniqueGoodSubsequences("101"));
+        Assert.AreEqual(227, Leetcode.Ex1987_NumberOfUniqueGoodSubsequences("101001101110"));
+        Assert.AreEqual(227, Leetcode.Ex1987_NumberOfUniqueGoodSubsequences("000101001101110"));
+        Assert.AreEqual(1, Leetcode.Ex1987_NumberOfUniqueGoodSubsequences("0"));
+        Assert.AreEqual(1, Leetcode.Ex1987_NumberOfUniqueGoodSubsequences("0000"));
+        Assert.AreEqual(846803618, Leetcode.Ex1987_NumberOfUniqueGoodSubsequences("1100100010101010100100000111110001111001000010000010010111011"));
+    }
+
+    [TestMethod]
     public void Ex2034_StockPrice()
     {
         var stockPrice = new Ex2034_StockPrice();
