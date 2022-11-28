@@ -1969,6 +1969,15 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex1937_MaxPoints_DPTopDown()
+    {
+        Assert.AreEqual(9, Leetcode.Ex1937_MaxPoints_DPTopDown(
+            new[] { new[] { 1, 2, 3 }, new[] { 1, 5, 1 }, new[] { 3, 1, 1 } }));
+        Assert.AreEqual(11, Leetcode.Ex1937_MaxPoints_DPTopDown(
+            new[] { new[] { 1, 5 }, new[] { 2, 3 }, new[] { 4, 2 } }));
+    }
+
+    [TestMethod]
     public void Ex1987_NumberOfUniqueGoodSubsequences()
     {
         Assert.AreEqual(2, Leetcode.Ex1987_NumberOfUniqueGoodSubsequences("001"));

@@ -4368,6 +4368,36 @@ public static class Leetcode
         return ans;
     }
 
+    public static long Ex1937_MaxPoints_DPTopDown(int[][] points)
+    {
+        var solutions = new Dictionary<(int, int), long>();
+        var rows = points.Length;
+        var cols = points[0].Length;
+
+        var result = long.MinValue;
+        for (var col = 0; col < cols; col++)
+            result = Math.Max(result, MaxPoints(0, col));
+        return result;
+
+        long MaxPoints(int row, int col)
+        {
+            if (row == rows) return 0;
+            if (solutions.TryGetValue((row, col), out var solution)) return solution;
+
+            solution = long.MinValue;
+            for (var nextCol = 0; nextCol < cols; nextCol++)
+            {
+                solution = Math.Max(
+                    solution,
+                    points[row][col] + MaxPoints(row + 1, nextCol) - Math.Abs(nextCol - col)
+                );
+            }
+
+            solutions[(row, col)] = solution;
+            return solution;
+        }
+    }
+
     public static int Ex1987_NumberOfUniqueGoodSubsequences(string binary)
     {
         var n = binary.Length;
