@@ -1783,6 +1783,17 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex1243_TransformArray()
+    {
+        Assert.IsTrue(new[] { 6, 3, 3, 4 }.SequenceEqual(
+            Leetcode.Ex1243_TransformArray(new[] { 6, 2, 3, 4 })));
+        Assert.IsTrue(new[] { 1, 4, 4, 4, 4, 5 }.SequenceEqual(
+            Leetcode.Ex1243_TransformArray(new[] { 1, 6, 3, 4, 3, 5 })));
+        Assert.IsTrue(new[] { 2, 2, 1, 1, 1, 2, 2, 1 }.SequenceEqual(
+            Leetcode.Ex1243_TransformArray(new[] { 2, 1, 2, 1, 1, 2, 2, 1 })));
+    }
+
+    [TestMethod]
     public void Ex1423_MaxScore_Window()
     {
         Assert.AreEqual(12, Leetcode.Ex1423_MaxScore_Window(new[] { 1, 2, 3, 4, 5, 6, 1 }, 3));

@@ -3516,13 +3516,7 @@ public static class Leetcode
                 p1++;
             }
 
-            if (heights[p2] < heights[k])
-            {
-                heights[p2]++;
-                continue;
-            }
-
-            heights[k]++;
+            heights[p2]++;
         }
 
         return heights;
@@ -3846,6 +3840,32 @@ public static class Leetcode
         }
 
         return true;
+    }
+
+    public static IList<int> Ex1243_TransformArray(int[] arr)
+    {
+        var n = arr.Length;
+        var changes = 1;
+        while (changes > 0)
+        {
+            changes = 0;
+            var previous = arr[0];
+            for (var i = 1; i < n - 1; i++)
+            {
+                var current = arr[i];
+                if (previous > arr[i] && arr[i + 1] > arr[i])
+                {
+                    arr[i]++; changes++;
+                }
+                else if (previous < arr[i] && arr[i + 1] < arr[i])
+                {
+                    arr[i]--; changes++;
+                }
+                previous = current;
+            }
+        }
+
+        return arr;
     }
 
     public static int Ex1293_ShortestPath(int[][] grid, int kMax)
