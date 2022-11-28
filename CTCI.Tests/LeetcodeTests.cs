@@ -1636,6 +1636,23 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex940_DistinctSubseqII()
+    {
+        Assert.AreEqual(7, Leetcode.Ex940_DistinctSubseqII("abc"));
+        Assert.AreEqual(6, Leetcode.Ex940_DistinctSubseqII("aba"));
+        Assert.AreEqual(3, Leetcode.Ex940_DistinctSubseqII("aaa"));
+        Assert.AreEqual(1057, Leetcode.Ex940_DistinctSubseqII("abcadabccba"));
+        Assert.AreEqual(1000000006, Leetcode.Ex940_DistinctSubseqII(
+            "yezruvnatuipjeohsymapyxgfeczkevoxipckunlqjauvllfpwezhlzpbkfqazhexabomnlxkmoufneninbxxguuktvupmpfspwxiou" +
+            "wlfalexmluwcsbeqrzkivrphtpcoxqsueuxsalopbsgkzaibkpfmsztkwommkvgjjdvvggnvtlwrllcafhfocprnrzfoyehqhrvhpbb" +
+            "pxpsvomdpmksojckgkgkycoynbldkbnrlujegxotgmeyknpmpgajbgwmfftuphfzrywarqkpkfnwtzgdkdcyvwkqawwyjuskpvqomfc" +
+            "hnlojmeltlwvqomucipcwxkgsktjxpwhujaexhejeflpctmjpuguslmzvpykbldcbxqnwgycpfccgeychkxfopixijeypzyryglutxw" +
+            "effyrqtkfrqlhtjweodttchnugybsmacpgperznunffrdavyqgilqlplebbkdopyyxcoamfxhpmdyrtutfxsejkwiyvdwggyhgsdpfx" +
+            "pznrccwdupfzlubkhppmasdbqfzttbhfismeamenyukzqoupbzxashwuvfkmkosgevcjnlpfgxgzumktsexvwhylhiupwfwyxotwnxo" +
+            "dttsrifgzkkedurayjgxlhxjzlxikcgerptpufocymfrkyayvklsalgmtifpiczwnozmgowzchjiop"));
+    }
+
+    [TestMethod]
     public void Ex992_SubarraysWithKDistinct_Quadratic()
     {
         Assert.AreEqual(7, Leetcode.Ex992_SubarraysWithKDistinct_Quadratic(new[] { 1, 2, 1, 2, 3 }, 2));

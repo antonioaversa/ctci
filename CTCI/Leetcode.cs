@@ -3638,6 +3638,29 @@ public static class Leetcode
         return result;
     }
 
+    public static int Ex940_DistinctSubseqII(string s)
+    {
+        var n = s.Length;
+        var mod = 1_000_000_007;
+
+        var results = new long[n];
+        results[0] = 2;
+        var previous = new Dictionary<int, int> { [s[0]] = 0 };
+        for (var i = 1; i < n; i++)
+        {
+            results[i] = 2 * results[i - 1];
+            if (previous.TryGetValue(s[i], out var prevIndex))
+            {
+                var repetitions = prevIndex > 0 ? results[prevIndex - 1] : 1;
+                results[i] = (results[i] + mod - repetitions) % mod;
+            }
+
+            previous[s[i]] = i;
+        }
+
+        return (int)(results[^1] + mod - 1) % mod;
+    }
+
     public static int Ex992_SubarraysWithKDistinct_ForAndWhile(int[] nums, int k)
     {
         var n = nums.Length;
