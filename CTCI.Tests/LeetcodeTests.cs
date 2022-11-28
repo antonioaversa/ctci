@@ -1570,6 +1570,15 @@ public class LeetcodeTests
         Assert.AreEqual(11, Leetcode.Ex738_MonotoneIncreasingDigits(11));
     }
 
+    [TestMethod]
+    public void Ex755_PourWater_Quadratic()
+    {
+        Assert.IsTrue(new[] { 2, 2, 2, 3, 2, 2, 2 }.SequenceEqual(Leetcode.Ex755_PourWater_Quadratic(new[] { 2, 1, 1, 2, 1, 2, 2 }, 4, 3)));
+        Assert.IsTrue(new[] { 2, 3, 3, 4 }.SequenceEqual(Leetcode.Ex755_PourWater_Quadratic(new[] { 1, 2, 3, 4 }, 2, 2)));
+        Assert.IsTrue(new[] { 4, 4, 4 }.SequenceEqual(Leetcode.Ex755_PourWater_Quadratic(new[] { 3, 1, 3 }, 5, 1)));
+        Assert.IsTrue(new[] { 6, 5, 5, 5, 6, 5, 8, 1, 3, 6 }.SequenceEqual(Leetcode.Ex755_PourWater_Quadratic(new[] { 6, 2, 3, 5, 2, 4, 8, 1, 3, 6 }, 10, 4)));
+    }
+
     private record Ex843_Master(string Secret) : Ex843_IMaster
     {
         public int Count { get; private set; } = 0;

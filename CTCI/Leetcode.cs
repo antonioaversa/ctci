@@ -3488,6 +3488,46 @@ public static class Leetcode
             new string('9', digits.Length - 1 - lastStrictlyIncreasing));
     }
 
+    public static int[] Ex755_PourWater_Quadratic(int[] heights, int volume, int k)
+    {
+        var n = heights.Length;
+
+        for (var i = 0; i < volume; i++)
+        {
+            int p1 = k, p2 = k;
+            while (p1 > 0 && heights[p1 - 1] <= heights[p1])
+            {
+                if (heights[p1 - 1] < heights[p1])
+                    p2 = p1 - 1;
+                p1--;
+            }
+
+            if (heights[p2] < heights[k])
+            {
+                heights[p2]++;
+                continue;
+            }
+
+            p1 = k; p2 = k;
+            while (p1 < n - 1 && heights[p1 + 1] <= heights[p1])
+            {
+                if (heights[p1 + 1] < heights[p1])
+                    p2 = p1 + 1;
+                p1++;
+            }
+
+            if (heights[p2] < heights[k])
+            {
+                heights[p2]++;
+                continue;
+            }
+
+            heights[k]++;
+        }
+
+        return heights;
+    }
+
     public interface Ex843_IMaster
     {
         public abstract int Guess(string word);
