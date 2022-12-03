@@ -2060,16 +2060,8 @@ public static class Leetcode
                 maxes.RemoveFirst();
 
             // Remove smaller-than-new values from the rear
-            var node = maxes.Last;
-            while (node != null)
-            {
-                var next = node.Previous;
-                if (nums[node.Value] <= nums[i])
-                    maxes.Remove(node);
-                else
-                    break;
-                node = next;
-            }
+            while (maxes.Count > 0 && nums[maxes.Last.Value] <= nums[i])
+                maxes.RemoveLast();
 
             maxes.AddLast(i);
 
@@ -3718,6 +3710,62 @@ public static class Leetcode
 
         return result;
     }
+
+    private class TimestampComparer : IComparer<int[]>
+    {
+        public int Compare(int[] first, int[] second) => first[0] - second[0];
+    }
+
+    public static int Ex1101_EarliestAcq(int[][] logs, int n)
+    {
+        var parents = new int[n];
+        var ranks = new int[n];
+        var roots = n;
+        for (var i = 0; i < n; i++)
+            parents[i] = i;
+
+        int Root(int i)
+        {
+            if (i == parents[i])
+                return i;
+
+            var root = Root(parents[i]);
+            parents[i] = root;
+            return root;
+        }
+
+        Array.Sort(logs, new TimestampComparer());
+        for (var i = 0; i < logs.Length; i++)
+        {
+            Connect(logs[i][1], logs[i][2]);
+            if (roots == 1)
+                return logs[i][0];
+        }
+
+        return -1;
+
+        void Connect(int i, int j)
+        {
+            var rootI = Root(i);
+            var rootJ = Root(j);
+            if (rootI == rootJ)
+                return;
+
+            if (ranks[rootI] >= ranks[rootJ])
+            {
+                parents[rootJ] = rootI;
+                ranks[rootI] = Math.Max(ranks[rootJ] + 1, ranks[rootI]);
+            }
+            else
+            {
+                parents[rootI] = rootJ;
+                ranks[rootJ] = Math.Max(ranks[rootI] + 1, ranks[rootJ]);
+            }
+
+            roots--;
+        }
+    }
+
     public static string Ex1138_AlphabetBoardPath(string target)
     {
         var moves = new StringBuilder();

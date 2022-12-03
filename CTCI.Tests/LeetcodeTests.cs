@@ -1678,7 +1678,23 @@ public class LeetcodeTests
         Assert.AreEqual(10, Leetcode.Ex992_SubarraysWithKDistinct_ForAndWhile(new[] { 2, 1, 2, 1, 2 }, 2));
         Assert.AreEqual(23, Leetcode.Ex992_SubarraysWithKDistinct_ForAndWhile(new[] { 2, 2, 1, 2, 2, 2, 1, 1 }, 2));
     }
-    
+
+    [TestMethod]
+    public void Ex1101_EarliestAcq()
+    {
+        Assert.AreEqual(20190301, Leetcode.Ex1101_EarliestAcq(
+            new[] 
+            {
+                new[] {20190101,0,1},new[] {20190104,3,4},new[] {20190107,2,3},new[] {20190211,1,5},
+                new[] {20190224,2,4},new[] {20190301,0,3},new[] {20190312,1,2},new[] {20190322,4,5}
+            }, 6));
+        Assert.AreEqual(3, Leetcode.Ex1101_EarliestAcq(
+            new[] 
+            {
+                new[] {0, 2, 0},new[] {1, 0, 1},new[] {3, 0, 3},new[] {4, 1, 2},new[] {7, 3, 1}
+            }, 4));
+    }
+
     [TestMethod]
     public void Ex1138_AlphabetBoardPath()
     {
