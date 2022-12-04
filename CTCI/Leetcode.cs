@@ -1632,6 +1632,28 @@ public static class Leetcode
         return result;
     }
 
+    public static int Ex191_HammingWeight_ViaString(uint n) => Convert.ToString(n, 2).Count(c => c == '1');
+
+    public static int Ex191_HammingWeight_Bit(uint n)
+    {
+        var result = 0;
+        for (var i = 0; i < 32; i++, n >>= 1)
+            if ((n & 1) == 1)
+                result++;
+        return result;
+    }
+
+    public static int Ex191_HammingWeight_BitOptimized(uint n)
+    {
+        var result = 0;
+        while (n != 0)
+        {
+            result += (int)(n & 1);
+            n >>= 1;
+        }
+        return result;
+    }
+
     public static int Ex200_NumIslands_WithAdjs(char[][] grid)
     {
         var m = grid.Length;

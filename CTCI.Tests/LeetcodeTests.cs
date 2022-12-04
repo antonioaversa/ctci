@@ -772,6 +772,33 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex191_HammingWeight_ViaString()
+    {
+        Assert.AreEqual(0, Leetcode.Ex191_HammingWeight_ViaString(0b00000000_00000000_00000000_00000000));
+        Assert.AreEqual(1, Leetcode.Ex191_HammingWeight_ViaString(0b00000000_00000000_00000000_00000001));
+        Assert.AreEqual(2, Leetcode.Ex191_HammingWeight_ViaString(0b10000000_00000000_00000000_00000001));
+        Assert.AreEqual(6, Leetcode.Ex191_HammingWeight_ViaString(0b11000001_00000001_00000001_00000001));
+    }
+
+    [TestMethod]
+    public void Ex191_HammingWeight_Bit()
+    {
+        Assert.AreEqual(0, Leetcode.Ex191_HammingWeight_Bit(0b00000000_00000000_00000000_00000000));
+        Assert.AreEqual(1, Leetcode.Ex191_HammingWeight_Bit(0b00000000_00000000_00000000_00000001));
+        Assert.AreEqual(2, Leetcode.Ex191_HammingWeight_Bit(0b10000000_00000000_00000000_00000001));
+        Assert.AreEqual(6, Leetcode.Ex191_HammingWeight_Bit(0b11000001_00000001_00000001_00000001));
+    }
+
+    [TestMethod]
+    public void Ex191_HammingWeight_BitOptimized()
+    {
+        Assert.AreEqual(0, Leetcode.Ex191_HammingWeight_BitOptimized(0b00000000_00000000_00000000_00000000));
+        Assert.AreEqual(1, Leetcode.Ex191_HammingWeight_BitOptimized(0b00000000_00000000_00000000_00000001));
+        Assert.AreEqual(2, Leetcode.Ex191_HammingWeight_BitOptimized(0b10000000_00000000_00000000_00000001));
+        Assert.AreEqual(6, Leetcode.Ex191_HammingWeight_BitOptimized(0b11000001_00000001_00000001_00000001));
+    }
+
+    [TestMethod]
     public void Ex200_NumIslands_WithAdjs()
     {
         Assert.AreEqual(1, Leetcode.Ex200_NumIslands_WithAdjs(
