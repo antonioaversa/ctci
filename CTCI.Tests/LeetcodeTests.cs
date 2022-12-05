@@ -1664,6 +1664,15 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex876_MiddleNode()
+    {
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(Leetcode.Ex876_MiddleNode(BuildListNode(1)).ToArray()));
+        Assert.IsTrue(new[] { 3, 4, 5 }.SequenceEqual(Leetcode.Ex876_MiddleNode(BuildListNode(1, 2, 3, 4, 5)).ToArray()));
+        Assert.IsTrue(new[] { 4, 5, 6 }.SequenceEqual(Leetcode.Ex876_MiddleNode(BuildListNode(1, 2, 3, 4, 5, 6)).ToArray()));
+        Assert.IsTrue(new[] { 4, 5, 6, 7 }.SequenceEqual(Leetcode.Ex876_MiddleNode(BuildListNode(1, 2, 3, 4, 5, 6, 7)).ToArray()));
+    }
+
+    [TestMethod]
     public void Ex907_SumSubarrayMins()
     {
         Assert.AreEqual(17, Leetcode.Ex907_SumSubarrayMins(new[] {3,1,2,4}));
@@ -2180,6 +2189,14 @@ public class LeetcodeTests
         Assert.AreEqual(4, Leetcode.Ex2171_MinimumRemoval(new[] { 4, 1, 6, 5 }));
         Assert.AreEqual(7, Leetcode.Ex2171_MinimumRemoval(new[] { 2, 10, 3, 2 }));
         Assert.AreEqual(13, Leetcode.Ex2171_MinimumRemoval(new[] { 4, 1, 6, 5, 2, 1, 1, 8, 5, 4 }));
+    }
+
+    [TestMethod]
+    public void Ex2171_MinimumRemoval_Optimized()
+    {
+        Assert.AreEqual(4, Leetcode.Ex2171_MinimumRemoval_Optimized(new[] { 4, 1, 6, 5 }));
+        Assert.AreEqual(7, Leetcode.Ex2171_MinimumRemoval_Optimized(new[] { 2, 10, 3, 2 }));
+        Assert.AreEqual(13, Leetcode.Ex2171_MinimumRemoval_Optimized(new[] { 4, 1, 6, 5, 2, 1, 1, 8, 5, 4 }));
     }
 
     [TestMethod]

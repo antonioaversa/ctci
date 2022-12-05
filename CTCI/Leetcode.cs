@@ -3604,6 +3604,20 @@ public static class Leetcode
         }
     }
 
+    public static ListNode Ex876_MiddleNode(ListNode head)
+    {
+        var slow = head;
+        var fast = head.next;
+
+        while (fast != null)
+        {
+            slow = slow.next;
+            fast = fast?.next?.next;
+        }
+
+        return slow;
+    }
+
     public static int Ex907_SumSubarrayMins(int[] arr)
     {
         var n = arr.Length;
@@ -5171,6 +5185,29 @@ public static class Leetcode
             }
             return prefixSum;
         }
+    }
+
+    public static long Ex2171_MinimumRemoval_Optimized(int[] beans)
+    {
+        var n = beans.Length;
+        Array.Sort(beans);
+
+        var sum = 0L;
+        for (var j = 0; j < n; j++) sum += beans[j];
+
+        var minBeans = long.MaxValue;
+
+        var i = 0;
+        while (i < n)
+        {
+            minBeans = Math.Min(minBeans, sum - (long)(n - i) * beans[i]);
+
+            i++;
+            while (i < n && beans[i] == beans[i - 1])
+                i++;
+        }
+
+        return minBeans;
     }
 
     public static int Ex2172_MaximumANDSum_DP(int[] nums, int numSlots)
