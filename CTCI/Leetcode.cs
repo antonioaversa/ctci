@@ -4949,6 +4949,98 @@ public static class Leetcode
         }
     }
 
+    public static IList<string> Ex2115_FindAllRecipes(
+        string[] recipes, IList<IList<string>> ingredients, string[] supplies)
+    {
+        var (adjs, reversedAdjs) = BuildAdjs();
+        var topoSort = TopoSort();
+
+        var available = supplies.ToHashSet();
+        var result = new List<string>();
+        for (var i = 0; i < topoSort.Length; i++)
+        {
+            var recipe = topoSort[i];
+            if (reversedAdjs.ContainsKey(recipe) && reversedAdjs[recipe].Count > 0 && reversedAdjs[recipe].IsSubsetOf(available))
+            {
+                available.Add(recipe);
+                result.Add(recipe);
+            }
+        }
+
+        return result;
+
+        (IDictionary<string, ISet<string>>, IDictionary<string, ISet<string>>) BuildAdjs()
+        {
+            var adjs = new Dictionary<string, ISet<string>>();
+            var reversedAdjs = new Dictionary<string, ISet<string>>();
+
+            for (var i = 0; i < supplies.Length; i++)
+            {
+                adjs[supplies[i]] = new HashSet<string>();
+                reversedAdjs[supplies[i]] = new HashSet<string>();
+            }
+
+            for (var i = 0; i < recipes.Length; i++)
+            {
+                var recipe = recipes[i];
+                if (!adjs.TryGetValue(recipe, out var adj1))
+                {
+                    adj1 = new HashSet<string>();
+                    adjs[recipe] = adj1;
+                }
+
+                if (!reversedAdjs.TryGetValue(recipe, out var reversedAdj1))
+                {
+                    reversedAdj1 = new HashSet<string>();
+                    reversedAdjs[recipe] = reversedAdj1;
+                }
+
+                foreach (var ingredient in ingredients[i])
+                {
+                    if (!adjs.TryGetValue(ingredient, out var adj))
+                    {
+                        adj = new HashSet<string>();
+                        adjs[ingredient] = adj;
+                    }
+                    adj.Add(recipe);
+
+                    if (!reversedAdjs.TryGetValue(recipe, out var reversedAdj))
+                    {
+                        reversedAdj = new HashSet<string>();
+                        reversedAdjs[recipe] = reversedAdj;
+                    }
+                    reversedAdj.Add(ingredient);
+                }
+            }
+            return (adjs, reversedAdjs);
+        }
+
+        string[] TopoSort()
+        {
+            var topoSort = new string[adjs.Count];
+            var currentTopoSort = adjs.Count - 1;
+            var visited = new HashSet<string>();
+
+            foreach (var vertex in adjs.Keys)
+                if (!visited.Contains(vertex))
+                    Dfs(vertex);
+
+            return topoSort;
+
+            void Dfs(string vertex)
+            {
+                if (visited.Contains(vertex)) return;
+
+                visited.Add(vertex);
+                if (adjs.TryGetValue(vertex, out var adj))
+                    foreach (var neighbor in adj)
+                        Dfs(neighbor);
+
+                topoSort[currentTopoSort--] = vertex;
+            }
+        }
+    }
+
     public static bool Ex2128_RemoveOnes(int[][] grid)
     {
         var m = grid.Length;
@@ -5044,6 +5136,75 @@ public static class Leetcode
         }
 
         return result;
+    }
+
+    public static int Ex2172_MaximumANDSum_DP(int[] nums, int numSlots)
+    {
+        var n = nums.Length;
+
+        var solutions = new Dictionary<(int, long), int>();
+        return Choice(0, 0L);
+
+        int Choice(int j, long slots)
+        {
+            if (j == n) return 0;
+            if (solutions.TryGetValue((j, slots), out var solution)) return solution;
+
+            solution = int.MinValue;
+            for (var i = 0; i < numSlots; i++)
+            {
+                var shiftCount = i * 2;
+                var slotCount = (slots >> shiftCount) & 0b11; // 00, 01, 10
+                if (slotCount == 2) continue;
+
+                var higherPart = (slots >> (shiftCount + 2)) << (shiftCount + 2);
+                var middlePart = (slotCount + 1) << shiftCount;
+                var lowerPart = slots & ((1 << shiftCount) - 1);
+                var newSlots = higherPart | middlePart | lowerPart;
+
+                //Console.WriteLine($"j = {j}, slots = {Convert.ToString(slots, 2)}, i = {i}, newSlots = {Convert.ToString(newSlots, 2)}");
+
+                solution = Math.Max(solution, (nums[j] & (i + 1)) + Choice(j + 1, newSlots));
+            }
+
+            //Console.WriteLine($"j = {j}, slots = {Convert.ToString(slots, 2)}, maxValue = {maxValue}");
+            solutions[(j, slots)] = solution;
+            return solution;
+        }
+    }
+
+    public static int Ex2172_MaximumANDSum_DPSpaceOptimized(int[] nums, int numSlots)
+    {
+        var n = nums.Length;
+
+        var solutions = new Dictionary<long, int>();
+        return Choice(0, 0L);
+
+        int Choice(int j, long slots)
+        {
+            if (j == n) return 0;
+            if (solutions.TryGetValue((j << 20) + slots, out var solution)) return solution;
+
+            solution = int.MinValue;
+            for (var i = 0; i < numSlots; i++)
+            {
+                var shiftCount = i * 2;
+                var slotCount = (slots >> shiftCount) & 0b11; // 00, 01, 10
+                if (slotCount == 2) continue;
+
+                var higherPart = (slots >> (shiftCount + 2)) << (shiftCount + 2);
+                var middlePart = (slotCount + 1) << shiftCount;
+                var lowerPart = slots & ((1 << shiftCount) - 1);
+                var newSlots = higherPart | middlePart | lowerPart;
+
+                //Console.WriteLine($"j = {j}, slots = {Convert.ToString(slots, 2)}, i = {i}, newSlots = {Convert.ToString(newSlots, 2)}");
+                solution = Math.Max(solution, (nums[j] & (i + 1)) + Choice(j + 1, newSlots));
+            }
+
+            //Console.WriteLine($"j = {j}, slots = {Convert.ToString(slots, 2)}, maxValue = {maxValue}");
+            solutions[(j << 20) + slots] = solution;
+            return solution;
+        }
     }
 
     public static int Ex2281_TotalStrength(int[] strength)

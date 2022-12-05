@@ -2123,6 +2123,21 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex2115_FindAllRecipes()
+    {
+        Assert.IsTrue(new[] { "bread" }.SequenceEqual(Leetcode.Ex2115_FindAllRecipes(
+            new[] { "bread" }, new[] { new[] { "yeast", "flour" } }, new[] { "yeast", "flour", "corn" })));
+        Assert.IsTrue(new[] { "bread", "sandwich" }.SequenceEqual(Leetcode.Ex2115_FindAllRecipes(
+            new[] { "bread", "sandwich" }, 
+            new[] { new[] { "yeast", "flour" }, new[] { "bread", "meat" } }, 
+            new[] { "yeast", "flour", "meat" })));
+        Assert.IsTrue(new[] { "bread", "sandwich", "burger" }.SequenceEqual(Leetcode.Ex2115_FindAllRecipes(
+            new[] { "bread", "sandwich", "burger" }, 
+            new[] { new[] { "yeast", "flour" }, new[] { "bread", "meat" }, new[] { "sandwich", "meat", "bread" } }, 
+            new[] { "yeast", "flour", "meat" })));
+    }
+
+    [TestMethod]
     public void Ex2128_RemoveOnes()
     {
         Assert.IsTrue(Leetcode.Ex2128_RemoveOnes(new[] { new[] { 0, 1, 0 }, new[] { 1, 0, 1 }, new[] { 0, 1, 0 } }));
@@ -2157,6 +2172,22 @@ public class LeetcodeTests
         Assert.IsTrue(new[] { 1, 3, 1, 1, 1, 0, 2, 3, 1 }.SequenceEqual(
             Leetcode.Ex2158_AmountPainted_JumpArray(new[] { new[] { 3, 4 }, new[] { 4, 7 }, new[] { 5, 8 }, new[] { 1, 2 },
                 new[] { 1, 4 }, new[] { 1, 5 }, new[] { 1, 10 }, new[] { 12, 15 }, new[] { 15, 16 } })));
+    }
+
+    [TestMethod]
+    public void Ex2172_MaximumANDSum_DP()
+    {
+        Assert.AreEqual(9, Leetcode.Ex2172_MaximumANDSum_DP(new[] { 1, 2, 3, 4, 5, 6 }, 3));
+        Assert.AreEqual(24, Leetcode.Ex2172_MaximumANDSum_DP(new[] { 1, 3, 10, 4, 7, 1 }, 9));
+        Assert.AreEqual(60, Leetcode.Ex2172_MaximumANDSum_DP(new[] { 8, 13, 3, 15, 3, 15, 2, 15, 5, 7, 6 }, 8));
+    }
+
+    [TestMethod]
+    public void Ex2172_MaximumANDSum_DPSpaceOptimized()
+    {
+        Assert.AreEqual(9, Leetcode.Ex2172_MaximumANDSum_DPSpaceOptimized(new[] { 1, 2, 3, 4, 5, 6 }, 3));
+        Assert.AreEqual(24, Leetcode.Ex2172_MaximumANDSum_DPSpaceOptimized(new[] { 1, 3, 10, 4, 7, 1 }, 9));
+        Assert.AreEqual(60, Leetcode.Ex2172_MaximumANDSum_DPSpaceOptimized(new[] { 8, 13, 3, 15, 3, 15, 2, 15, 5, 7, 6 }, 8));
     }
 
     [TestMethod]
