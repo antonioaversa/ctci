@@ -5138,6 +5138,41 @@ public static class Leetcode
         return result;
     }
 
+    public static long Ex2171_MinimumRemoval(int[] beans)
+    {
+        var n = beans.Length;
+        Array.Sort(beans);
+
+        var prefixSum = CalculatePrefixSum();
+        var minBeans = long.MaxValue;
+
+        var i = 0;
+        while (i < n)
+        {
+            var valuesStrictlyLess = prefixSum[i];
+            var valuesBiggerOrEqual = (prefixSum[n] - prefixSum[i] - (long)(n - i) * beans[i]);
+
+            minBeans = Math.Min(minBeans, valuesStrictlyLess + valuesBiggerOrEqual);
+
+            i++;
+            while (i < n && beans[i] == beans[i - 1])
+                i++;
+        }
+
+        return minBeans;
+
+        long[] CalculatePrefixSum()
+        {
+            var prefixSum = new long[n + 1];
+            prefixSum[0] = 0;
+            for (var i = 0; i < n; i++)
+            {
+                prefixSum[i + 1] = prefixSum[i] + beans[i];
+            }
+            return prefixSum;
+        }
+    }
+
     public static int Ex2172_MaximumANDSum_DP(int[] nums, int numSlots)
     {
         var n = nums.Length;

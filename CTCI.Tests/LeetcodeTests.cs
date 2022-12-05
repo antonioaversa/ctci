@@ -2175,6 +2175,14 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex2171_MinimumRemoval()
+    {
+        Assert.AreEqual(4, Leetcode.Ex2171_MinimumRemoval(new[] { 4, 1, 6, 5 }));
+        Assert.AreEqual(7, Leetcode.Ex2171_MinimumRemoval(new[] { 2, 10, 3, 2 }));
+        Assert.AreEqual(13, Leetcode.Ex2171_MinimumRemoval(new[] { 4, 1, 6, 5, 2, 1, 1, 8, 5, 4 }));
+    }
+
+    [TestMethod]
     public void Ex2172_MaximumANDSum_DP()
     {
         Assert.AreEqual(9, Leetcode.Ex2172_MaximumANDSum_DP(new[] { 1, 2, 3, 4, 5, 6 }, 3));
