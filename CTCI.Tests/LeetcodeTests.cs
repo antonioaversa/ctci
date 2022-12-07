@@ -245,6 +245,22 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex26_RemoveDuplicates()
+    {
+        var l1 = new[] { 1 };
+        Leetcode.Ex26_RemoveDuplicates(l1);
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(l1));
+
+        l1 = new[] { 1, 1, 1 };
+        Leetcode.Ex26_RemoveDuplicates(l1);
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(l1.Take(1)));
+
+        l1 = new[] { 0, 0, 1, 1, 1, 2, 2, 3, 3, 4 };
+        Leetcode.Ex26_RemoveDuplicates(l1);
+        Assert.IsTrue(new[] { 0, 1, 2, 3, 4 }.SequenceEqual(l1.Take(5)));
+    }
+
+    [TestMethod]
     public void Ex32_LongestValidParentheses()
     {
         Assert.AreEqual(2, Leetcode.Ex32_LongestValidParentheses("(()"));

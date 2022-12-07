@@ -360,6 +360,21 @@ public static class Leetcode
         return head;
     }
 
+    public static int Ex26_RemoveDuplicates(int[] nums)
+    {
+        var j = 0;
+        for (var i = 1; i < nums.Length; i++)
+        {
+            if (nums[j] != nums[i])
+            {
+                j++;
+                nums[j] = nums[i];
+            }
+        }
+
+        return j + 1;
+    }
+
     public static int Ex32_LongestValidParentheses(string s)
     {
         var stack = new Stack<int>();
