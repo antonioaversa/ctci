@@ -1134,6 +1134,17 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex278_FirstBadVersion()
+    {
+        Assert.AreEqual(5, Leetcode.Ex278_FirstBadVersion(10, n => n >= 5));
+        Assert.AreEqual(4, Leetcode.Ex278_FirstBadVersion(10, n => n > 3));
+        Assert.AreEqual(10, Leetcode.Ex278_FirstBadVersion(10, n => n >= 10));
+        Assert.AreEqual(1, Leetcode.Ex278_FirstBadVersion(10, n => n >= -1));
+        Assert.AreEqual(1, Leetcode.Ex278_FirstBadVersion(10, n => true));
+        Assert.AreEqual(11, Leetcode.Ex278_FirstBadVersion(10, n => false));
+    }
+
+    [TestMethod]
     public void Ex295_MedianFinder()
     {
         var finder = new Ex295_MedianFinder();

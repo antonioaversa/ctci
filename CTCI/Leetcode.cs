@@ -2208,6 +2208,22 @@ public static class Leetcode
         }
     }
 
+    public static int Ex278_FirstBadVersion(int n, Predicate<int> isBadVersion)
+    {
+        var left = 1;
+        var right = n;
+
+        while (left <= right)
+        {
+            var middle = left + (right - left) / 2;
+            if (isBadVersion(middle))
+                right = middle - 1;
+            else
+                left = middle + 1;
+        }
+        return left;
+    }
+
     public class Ex295_MedianFinder
     {
         private PriorityQueue<int, int> SmallerHalf { get; } = new PriorityQueue<int, int>();
