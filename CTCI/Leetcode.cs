@@ -465,6 +465,23 @@ public static class Leetcode
         return maxLength;
     }
 
+    public static int Ex35_SearchInsert(int[] nums, int target)
+    {
+        var left = 0;
+        var right = nums.Length - 1;
+        while (left <= right)
+        {
+            var middle = left + (right - left) / 2;
+            if (nums[middle] == target)
+                return middle;
+            if (nums[middle] < target)
+                left = middle + 1;
+            else
+                right = middle - 1;
+        }
+        return left;
+    }
+
     public static bool Ex36_ValidSudoku(char[][] board)
     {
         var n = board.Length;

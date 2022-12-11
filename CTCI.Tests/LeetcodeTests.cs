@@ -294,6 +294,16 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex35_SearchInsert()
+    {
+        Assert.AreEqual(0, Leetcode.Ex35_SearchInsert(new[] { 0, 1, 2, 3 }, 0));
+        Assert.AreEqual(3, Leetcode.Ex35_SearchInsert(new[] { 0, 1, 2, 3 }, 3));
+        Assert.AreEqual(2, Leetcode.Ex35_SearchInsert(new[] { 0, 1, 6, 7 }, 2));
+        Assert.AreEqual(4, Leetcode.Ex35_SearchInsert(new[] { 0, 1, 2, 3 }, 7));
+        Assert.AreEqual(0, Leetcode.Ex35_SearchInsert(new[] { 0, 1, 2, 3 }, -1));
+    }
+
+    [TestMethod]
     public void Ex36_ValidSudoku()
     {
         var board = new char[][]
