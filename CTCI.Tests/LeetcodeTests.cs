@@ -1320,6 +1320,16 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex374_GuessNumber()
+    {
+        Assert.AreEqual(1, Leetcode.Ex374_GuessNumber(10, n => 1 - n));
+        Assert.AreEqual(1, Leetcode.Ex374_GuessNumber(10, n => -n));
+        Assert.AreEqual(5, Leetcode.Ex374_GuessNumber(10, n => 5 - n));
+        Assert.AreEqual(10, Leetcode.Ex374_GuessNumber(10, n => 10 - n));
+        Assert.AreEqual(11, Leetcode.Ex374_GuessNumber(10, n => 11 - n));
+    }
+
+    [TestMethod]
     public void Ex395_LongestSubstring_Quadratic()
     {
         Assert.AreEqual(1, Leetcode.Ex395_LongestSubstring_Quadratic("a", 1));

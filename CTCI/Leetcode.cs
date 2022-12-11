@@ -2818,6 +2818,23 @@ public static class Leetcode
         }
     }
 
+    public static int Ex374_GuessNumber(int n, Func<int, int> guess)
+    {
+        var left = 1;
+        var right = n;
+        while (left <= right)
+        {
+            var middle = left + (right - left) / 2;
+            var guessOutput = guess(middle);
+            if (guessOutput == 0) return middle;
+            if (guessOutput > 0)
+                left = middle + 1;
+            else
+                right = middle - 1;
+        }
+        return left;
+    }
+
     public static int Ex395_LongestSubstring_Quadratic(string s, int k)
     {
         var n = s.Length;
