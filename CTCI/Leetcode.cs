@@ -92,6 +92,69 @@ public static class Leetcode
         return x <= 0 ? -result : result;
     }
 
+    public static int Ex8_MyAtoi(string s)
+    {
+        var n = s.Length;
+
+        int i = 0;
+        while (i < n && s[i] == ' ') i++;
+        if (i == n) return 0;
+
+        int sign = 1;
+        if (s[i] == '-') { sign = -1; i++; }
+        else if (s[i] == '+') i++;
+
+        long result = 0;
+        while (i < n && (s[i] - '0') is var digit && digit >= 0 && digit <= 9)
+        {
+            result *= 10;
+            result += digit;
+            if (result > int.MaxValue + 1L) return sign < 0 ? int.MinValue : int.MaxValue;
+            i++;
+        }
+
+        result *= sign;
+        if (result < int.MinValue) return int.MinValue;
+        if (result > int.MaxValue) return int.MaxValue;
+        return (int)result;
+    }
+
+    public static int Ex8_MyAtoiOptimized(string s)
+    {
+        var n = s.Length;
+
+        int i = 0;
+        while (i < n && s[i] == ' ') i++;
+        if (i == n) return 0;
+
+        int sign = 1;
+        if (s[i] == '-') { sign = -1; i++; }
+        else if (s[i] == '+') i++;
+
+        uint result = 0;
+        try
+        {
+            checked
+            {
+                while (i < n && (s[i] - '0') is var digit && digit >= 0 && digit <= 9)
+                {
+
+                    result *= 10;
+                    result += (uint)digit;
+                    if (result > int.MaxValue + (uint)1) return sign < 0 ? int.MinValue : int.MaxValue;
+                    i++;
+                }
+            }
+        }
+        catch (Exception)
+        {
+            return sign < 0 ? int.MinValue : int.MaxValue;
+        }
+
+        if (result == int.MaxValue + (uint)1) return sign < 0 ? int.MinValue : int.MaxValue;
+        return (int)(sign > 0 ? result : -result);
+    }
+
     public static bool Ex10_IsMatch(string s, string p)
     {
         var n = s.Length;

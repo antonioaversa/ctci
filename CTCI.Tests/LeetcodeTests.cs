@@ -121,6 +121,36 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex8_MyAtoi()
+    {
+        Assert.AreEqual(42, Leetcode.Ex8_MyAtoi("42"));
+        Assert.AreEqual(int.MaxValue, Leetcode.Ex8_MyAtoi("9223372036854775808"));
+        Assert.AreEqual(4193, Leetcode.Ex8_MyAtoi("4193 with words"));
+        Assert.AreEqual(42, Leetcode.Ex8_MyAtoi(" +0042-"));
+        Assert.AreEqual(0, Leetcode.Ex8_MyAtoi(" -"));
+        Assert.AreEqual(int.MaxValue, Leetcode.Ex8_MyAtoi("2147483647"));
+        Assert.AreEqual(int.MinValue + 1, Leetcode.Ex8_MyAtoi("-2147483647"));
+        Assert.AreEqual(int.MinValue, Leetcode.Ex8_MyAtoi("-2147483650"));
+        Assert.AreEqual(int.MinValue, Leetcode.Ex8_MyAtoi("-91283472332"));
+        Assert.AreEqual(int.MaxValue, Leetcode.Ex8_MyAtoi("2147483648"));
+    }
+
+    [TestMethod]
+    public void Ex8_MyAtoiOptimized()
+    {
+        Assert.AreEqual(42, Leetcode.Ex8_MyAtoiOptimized("42"));
+        Assert.AreEqual(int.MaxValue, Leetcode.Ex8_MyAtoiOptimized("9223372036854775808"));
+        Assert.AreEqual(4193, Leetcode.Ex8_MyAtoiOptimized("4193 with words"));
+        Assert.AreEqual(42, Leetcode.Ex8_MyAtoiOptimized(" +0042-"));
+        Assert.AreEqual(0, Leetcode.Ex8_MyAtoiOptimized(" -"));
+        Assert.AreEqual(int.MaxValue, Leetcode.Ex8_MyAtoiOptimized("2147483647"));
+        Assert.AreEqual(int.MinValue + 1, Leetcode.Ex8_MyAtoiOptimized("-2147483647"));
+        Assert.AreEqual(int.MinValue, Leetcode.Ex8_MyAtoiOptimized("-2147483650"));
+        Assert.AreEqual(int.MinValue, Leetcode.Ex8_MyAtoiOptimized("-91283472332"));
+        Assert.AreEqual(int.MaxValue, Leetcode.Ex8_MyAtoiOptimized("2147483648"));
+    }
+
+    [TestMethod]
     public void Ex10_IsMatch()
     {
         Assert.IsTrue(Leetcode.Ex10_IsMatch("a", "a"));
