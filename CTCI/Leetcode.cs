@@ -64,6 +64,34 @@ public static class Leetcode
         }
     }
 
+    public static int Ex7_Reverse(int x)
+    {
+        // 10 = 0b1010 => 01 = 0b0001
+        var xStr = x.ToString();
+        var i = x < 0 ? 1 : 0;
+        var result = xStr[i++] - '0';
+        var power = 1;
+        try
+        {
+            while (i < xStr.Length)
+            {
+                checked
+                {
+                    power *= 10;
+                    result += (xStr[i] - '0') * power;
+                }
+
+                i++;
+            }
+        }
+        catch (Exception)
+        {
+            return 0;
+        }
+
+        return x <= 0 ? -result : result;
+    }
+
     public static bool Ex10_IsMatch(string s, string p)
     {
         var n = s.Length;
@@ -164,6 +192,51 @@ public static class Leetcode
             num += delta;
         }
         return result.ToString();
+    }
+
+    public static int Ex13_RomanToInt(string s)
+    {
+        var n = s.Length;
+        return RomanToInt(0);
+
+        int RomanToInt(int i)
+        {
+            if (i == n) return 0;
+            if (s[i] == 'M') return 1000 + RomanToInt(i + 1);
+            if (s[i] == 'D') return 500 + RomanToInt(i + 1);
+            if (s[i] == 'L') return 50 + RomanToInt(i + 1);
+            if (s[i] == 'V') return 5 + RomanToInt(i + 1);
+
+            if (s[i] == 'C')
+            {
+                if (i < n - 1)
+                {
+                    if (s[i + 1] == 'M') return 900 + RomanToInt(i + 2);
+                    if (s[i + 1] == 'D') return 400 + RomanToInt(i + 2);
+                }
+
+                return 100 + RomanToInt(i + 1);
+            }
+
+            if (s[i] == 'X')
+            {
+                if (i < n - 1)
+                {
+                    if (s[i + 1] == 'C') return 90 + RomanToInt(i + 2);
+                    if (s[i + 1] == 'L') return 40 + RomanToInt(i + 2);
+                }
+
+                return 10 + RomanToInt(i + 1);
+            }
+
+            if (i < n - 1)
+            {
+                if (s[i + 1] == 'X') return 9 + RomanToInt(i + 2);
+                if (s[i + 1] == 'V') return 4 + RomanToInt(i + 2);
+            }
+
+            return 1 + RomanToInt(i + 1);
+        }
     }
 
     public static ListNode Ex19_RemoveNthFromEnd_TreePointers(ListNode head, int n)

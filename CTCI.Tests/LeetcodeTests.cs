@@ -107,6 +107,20 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex7_Reverse()
+    {
+        Assert.AreEqual(321, Leetcode.Ex7_Reverse(123));
+        Assert.AreEqual(-321, Leetcode.Ex7_Reverse(-123));
+        Assert.AreEqual(0, Leetcode.Ex7_Reverse(0));
+        Assert.AreEqual(21, Leetcode.Ex7_Reverse(120));
+        Assert.AreEqual(1, Leetcode.Ex7_Reverse(1000));
+        Assert.AreEqual(-11, Leetcode.Ex7_Reverse(-1100));
+        Assert.AreEqual(0, Leetcode.Ex7_Reverse(2147483647));
+        Assert.AreEqual(0, Leetcode.Ex7_Reverse(-2147483648));
+        Assert.AreEqual(-2143847412, Leetcode.Ex7_Reverse(-2147483412));
+    }
+
+    [TestMethod]
     public void Ex10_IsMatch()
     {
         Assert.IsTrue(Leetcode.Ex10_IsMatch("a", "a"));
@@ -158,6 +172,16 @@ public class LeetcodeTests
         Assert.AreEqual("MCMXCIV", Leetcode.Ex12_IntToRoman_Iterative(1994));
         Assert.AreEqual("DLXXXIX", Leetcode.Ex12_IntToRoman_Iterative(589));
         Assert.AreEqual("MMMCDXLIX", Leetcode.Ex12_IntToRoman_Iterative(3449));
+    }
+
+    [TestMethod]
+    public void Ex13_RomanToInt()
+    {
+        Assert.AreEqual(1, Leetcode.Ex13_RomanToInt("I"));
+        Assert.AreEqual(3, Leetcode.Ex13_RomanToInt("III"));
+        Assert.AreEqual(44, Leetcode.Ex13_RomanToInt("XLIV"));
+        Assert.AreEqual(3426, Leetcode.Ex13_RomanToInt("MMMCDXXVI"));
+        Assert.AreEqual(3999, Leetcode.Ex13_RomanToInt("MMMCMXCIX"));
     }
 
     [TestMethod]
