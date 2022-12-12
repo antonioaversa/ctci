@@ -215,6 +215,17 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex14_LongestCommonPrefix()
+    {
+        Assert.AreEqual("fl", Leetcode.Ex14_LongestCommonPrefix(new[] { "flower", "flow", "flight" }));
+        Assert.AreEqual("", Leetcode.Ex14_LongestCommonPrefix(new[] { "dog", "racecar", "car" }));
+        Assert.AreEqual("", Leetcode.Ex14_LongestCommonPrefix(new[] { "", "", "flight", "f" }));
+        Assert.AreEqual("", Leetcode.Ex14_LongestCommonPrefix(new[] { "fl", "", "flight", "fli" }));
+        Assert.AreEqual("a", Leetcode.Ex14_LongestCommonPrefix(new[] { "a", "aa", "aaa" }));
+        Assert.AreEqual("aaa", Leetcode.Ex14_LongestCommonPrefix(new[] { "aaa", "aaa", "aaa" }));
+    }
+
+    [TestMethod]
     public void Ex19_RemoveNthFromEnd_TreePointers()
     {
         Assert.IsTrue(new[] { 1, 2, 3, 4 }.SequenceEqual(

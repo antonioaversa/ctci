@@ -302,6 +302,23 @@ public static class Leetcode
         }
     }
 
+    public static string Ex14_LongestCommonPrefix(string[] strs)
+    {
+        var n = strs.Length;
+
+        var i = 0;
+        while (strs[0].Length > i)
+        {
+            var c = strs[0][i];
+            for (var j = 1; j < n; j++)
+                if (strs[j].Length <= i || strs[j][i] != c)
+                    return strs[0][0..i];
+
+            i++;
+        }
+        return strs[0][0..i];
+    }
+
     public static ListNode Ex19_RemoveNthFromEnd_TreePointers(ListNode head, int n)
     {
         var current = head;
