@@ -370,34 +370,42 @@ public static class Leetcode
 
     public static ListNode Ex21_MergeTwoLists(ListNode list1, ListNode list2)
     {
-        ListNode head = null;
-        ListNode current = null;
+        if (list1 == null) return list2;
+        if (list2 == null) return list1;
+
+        ListNode head;
+        if (list1.val <= list2.val)
+        {
+            head = list1;
+            list1 = list1.next;
+        }
+        else
+        {
+            head = list2;
+            list2 = list2.next;
+        }
+
+        ListNode current = head;
         while (list1 != null || list2 != null)
         {
             if (list1 == null)
             {
-                if (current != null)
-                    current.next = list2;
+                current.next = list2;
                 current = list2;
                 list2 = list2.next;
             }
             else if (list2 == null || list1.val <= list2.val)
             {
-                if (current != null)
-                    current.next = list1;
+                current.next = list1;
                 current = list1;
                 list1 = list1.next;
             }
             else
             {
-                if (current != null)
-                    current.next = list2;
+                current.next = list2;
                 current = list2;
                 list2 = list2.next;
             }
-
-            if (head == null)
-                head = current;
         }
 
         return head;
