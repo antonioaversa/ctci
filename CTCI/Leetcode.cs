@@ -368,6 +368,41 @@ public static class Leetcode
         return head;
     }
 
+    public static ListNode Ex21_MergeTwoLists(ListNode list1, ListNode list2)
+    {
+        ListNode head = null;
+        ListNode current = null;
+        while (list1 != null || list2 != null)
+        {
+            if (list1 == null)
+            {
+                if (current != null)
+                    current.next = list2;
+                current = list2;
+                list2 = list2.next;
+            }
+            else if (list2 == null || list1.val <= list2.val)
+            {
+                if (current != null)
+                    current.next = list1;
+                current = list1;
+                list1 = list1.next;
+            }
+            else
+            {
+                if (current != null)
+                    current.next = list2;
+                current = list2;
+                list2 = list2.next;
+            }
+
+            if (head == null)
+                head = current;
+        }
+
+        return head;
+    }
+
     public static IList<string> Ex22_GenerateParenthesis(int n)
     {
         return GenerateParenthesis(0, 0).ToList();

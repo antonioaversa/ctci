@@ -256,6 +256,21 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex21_MergeTwoLists()
+    {
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(
+            Leetcode.Ex21_MergeTwoLists(BuildListNode(1), BuildListNode()).ToArray()));
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(
+            Leetcode.Ex21_MergeTwoLists(BuildListNode(), BuildListNode(1)).ToArray()));
+        Assert.IsTrue(new[] { 1, 2, 3 }.SequenceEqual(
+            Leetcode.Ex21_MergeTwoLists(BuildListNode(1, 3), BuildListNode(2)).ToArray()));
+        Assert.IsTrue(new[] { 0, 1, 2, 4, 5, 6  }.SequenceEqual(
+            Leetcode.Ex21_MergeTwoLists(BuildListNode(1, 2, 5), BuildListNode(0, 4, 6)).ToArray()));
+        Assert.IsTrue(new[] { 1, 2, 3 }.SequenceEqual(
+            Leetcode.Ex21_MergeTwoLists(BuildListNode(), BuildListNode(1, 2, 3)).ToArray()));
+    }
+
+    [TestMethod]
     public void Ex22_GenerateParenthesis()
     {
         Assert.IsTrue(new HashSet<string> {
