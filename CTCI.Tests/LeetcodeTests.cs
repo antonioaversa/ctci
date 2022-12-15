@@ -874,6 +874,15 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex167_TwoSum()
+    {
+        Assert.IsTrue(new[] { 1, 2 }.SequenceEqual(Leetcode.Ex167_TwoSum(new[] { 2, 7, 11, 15 }, 9)));
+        Assert.IsTrue(new[] { 1, 3 }.SequenceEqual(Leetcode.Ex167_TwoSum(new[] { 2, 3, 4 }, 6)));
+        Assert.IsTrue(new[] { 1, 2 }.SequenceEqual(Leetcode.Ex167_TwoSum(new[] { -1, 0 }, -1)));
+        Assert.IsTrue(new[] { 2, 4 }.SequenceEqual(Leetcode.Ex167_TwoSum(new[] { -1, 2, 3, 4, 9, 10 }, 6)));
+    }
+
+    [TestMethod]
     public void Ex187_FindRepeatedDnaSequences_2Bits()
     {
         Assert.IsTrue(Array.Empty<string>().SequenceEqual(

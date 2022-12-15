@@ -1859,6 +1859,26 @@ public static class Leetcode
         return max;
     }
 
+    public static int[] Ex167_TwoSum(int[] numbers, int target)
+    {
+        var n = numbers.Length;
+        var i = 0;
+        var j = n - 1;
+
+        while (i < j)
+        {
+            var sum = numbers[i] + numbers[j];
+            if (sum == target)
+                return new[] { i + 1, j + 1 };
+            if (sum < target)
+                i++;
+            else
+                j--;
+        }
+
+        return Array.Empty<int>();
+    }
+
     public static IList<string> Ex187_FindRepeatedDnaSequences_2Bits(string s)
     {
         if (s.Length < 10)
