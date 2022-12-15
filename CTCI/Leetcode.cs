@@ -319,6 +319,37 @@ public static class Leetcode
         return strs[0][0..i];
     }
 
+    public static IList<string> Ex17_LetterCombinations(string digits)
+    {
+        if (digits.Length == 0) return Array.Empty<string>();
+
+        var combinations = new List<string>() { "" };
+
+        for (var i = 0; i < digits.Length; i++)
+        {
+            var possibleChars = Mappings(digits[i]);
+            var newCombinations = new List<string>(combinations.Count * possibleChars.Length);
+            foreach (var possibleChar in possibleChars)
+                foreach (var combination in combinations)
+                    newCombinations.Add(combination + possibleChar);
+            combinations = newCombinations;
+        }
+
+        return combinations;
+
+        static string Mappings(char c) => c switch
+        {
+            '2' => "abc",
+            '3' => "def",
+            '4' => "ghi",
+            '5' => "jkl",
+            '6' => "mno",
+            '7' => "pqrs",
+            '8' => "tuv",
+            '9' => "wxyz",
+        };
+    }
+
     public static ListNode Ex19_RemoveNthFromEnd_TreePointers(ListNode head, int n)
     {
         var current = head;

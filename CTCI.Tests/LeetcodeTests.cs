@@ -226,6 +226,19 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex17_LetterCombinations()
+    {
+        Assert.IsTrue(Array.Empty<string>().ToHashSet().SetEquals(
+            Leetcode.Ex17_LetterCombinations("")));
+        Assert.IsTrue(new[] { "w", "x", "y", "z" }.ToHashSet().SetEquals(
+            Leetcode.Ex17_LetterCombinations("9")));
+        Assert.IsTrue(new[] { "ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf" }.ToHashSet().SetEquals(
+            Leetcode.Ex17_LetterCombinations("23")));
+        Assert.IsTrue(new[] { "aa", "ab", "ac", "ba", "bb", "bc", "ca", "cb", "cc" }.ToHashSet().SetEquals(
+            Leetcode.Ex17_LetterCombinations("22")));
+    }
+
+    [TestMethod]
     public void Ex19_RemoveNthFromEnd_TreePointers()
     {
         Assert.IsTrue(new[] { 1, 2, 3, 4 }.SequenceEqual(
