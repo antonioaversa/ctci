@@ -239,6 +239,15 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex18_FourSum_DP()
+    {
+        Assert.IsTrue(new[] { (1, 0, -1, 0), (1, -1, -2, 2), (0, 0, -2, 2) }.ToHashSet().SetEquals(
+            Leetcode.Ex18_FourSum_DP(new[] { 1, 0, -1, 0, -2, 2 }, 0).Select(l => (l[0], l[1], l[2], l[3]))));
+        Assert.IsTrue(new[] { (2, 2, 2, 2) }.ToHashSet().SetEquals(
+            Leetcode.Ex18_FourSum_DP(new[] { 2, 2, 2, 2, 2 }, 8).Select(l => (l[0], l[1], l[2], l[3]))));
+    }
+
+    [TestMethod]
     public void Ex19_RemoveNthFromEnd_TreePointers()
     {
         Assert.IsTrue(new[] { 1, 2, 3, 4 }.SequenceEqual(

@@ -350,6 +350,45 @@ public static class Leetcode
         };
     }
 
+    private class ListComparer : IEqualityComparer<IList<int>>
+    {
+        public bool Equals(IList<int> first, IList<int> second) =>
+            first.ToHashSet().SetEquals(second.ToHashSet());
+        public int GetHashCode(IList<int> list) =>
+            list.Sum();
+    }
+
+    public static IList<IList<int>> Ex18_FourSum_DP(int[] nums, int target)
+    {
+        var n = nums.Length;
+        var solutions = new Dictionary<(int, int, int), IList<IList<int>>>();
+        return FourSum(0, 4, target).Distinct(new ListComparer()).ToList();
+
+        IList<IList<int>> FourSum(int i, int numberOfAddends, int subTarget)
+        {
+            if (numberOfAddends == 0)
+            {
+                if (subTarget == 0)
+                    return new List<IList<int>>() { Array.Empty<int>() };
+                return Array.Empty<IList<int>>();
+            }
+
+            if (solutions.TryGetValue((i, numberOfAddends, subTarget), out var solution))
+                return solution;
+
+            var result = new List<IList<int>>();
+            for (var j = i; j < n; j++)
+            {
+                result.AddRange(
+                    FourSum(j + 1, numberOfAddends - 1, subTarget - nums[j])
+                    .Select(l => l.Prepend(nums[j]).ToList()));
+            }
+
+            solutions[(i, numberOfAddends, subTarget)] = result;
+            return result;
+        }
+    }
+
     public static ListNode Ex19_RemoveNthFromEnd_TreePointers(ListNode head, int n)
     {
         var current = head;
