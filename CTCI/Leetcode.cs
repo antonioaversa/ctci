@@ -641,6 +641,22 @@ public static class Leetcode
         return j + 1;
     }
 
+    public static int Ex27_RemoveElement(int[] nums, int val)
+    {
+        var n = nums.Length;
+        var i = 0;
+        for (var j = 0; j < n; j++)
+        {
+            if (nums[j] != val)
+            {
+                nums[i] = nums[j];
+                i++;
+            }
+        }
+
+        return i;
+    }
+
     public static int Ex32_LongestValidParentheses(string s)
     {
         var stack = new Stack<int>();

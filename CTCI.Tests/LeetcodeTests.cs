@@ -363,6 +363,19 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex27_RemoveElement()
+    {
+        int[] input = new[] { 3, 2, 2, 3 };
+        Assert.IsTrue(new[] { 2, 2 }.SequenceEqual(input.Take(Leetcode.Ex27_RemoveElement(input, 3))));
+        input = new[] { 0, 1, 2, 2, 3, 0, 4, 2 };
+        Assert.IsTrue(new[] { 0, 1, 3, 0, 4 }.SequenceEqual(input.Take(Leetcode.Ex27_RemoveElement(input, 2))));
+        input = new[] { 2 };
+        Assert.IsTrue(Array.Empty<int>().SequenceEqual(input.Take(Leetcode.Ex27_RemoveElement(input, 2))));
+        input = Array.Empty<int>();
+        Assert.IsTrue(Array.Empty<int>().SequenceEqual(input.Take(Leetcode.Ex27_RemoveElement(input, 3))));
+    }
+
+    [TestMethod]
     public void Ex32_LongestValidParentheses()
     {
         Assert.AreEqual(2, Leetcode.Ex32_LongestValidParentheses("(()"));
