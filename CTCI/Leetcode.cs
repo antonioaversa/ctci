@@ -657,6 +657,42 @@ public static class Leetcode
         return i;
     }
 
+    public static int Ex28_StrStr(string haystack, string needle)
+    {
+        var n = haystack.Length;
+        var m = needle.Length;
+        var b = 31;
+
+        if (n < m) return -1;
+        int needleHash = 0, runningHash = 0, maxPower = 1;
+        for (var i = 0; i < m; i++)
+        {
+            needleHash = needleHash * b + (needle[i] - 'a');
+            runningHash = runningHash * b + (haystack[i] - 'a');
+            maxPower = maxPower * b;
+        }
+
+        if (needleHash == runningHash && haystack[0..m] == needle)
+            return 0;
+
+        Console.WriteLine($"maxPower = {maxPower}");
+        Console.WriteLine($"needleHash = {needleHash}");
+
+        for (var i = m; i < n; i++)
+        {
+            var maxTerm = maxPower * (haystack[i - m] - 'a');
+            var newTerm = haystack[i] - 'a';
+            runningHash = runningHash * b - maxTerm + newTerm;
+
+            Console.WriteLine($"runningHash = {runningHash}");
+
+            if (needleHash == runningHash && haystack[(i - m + 1)..(i + 1)] == needle)
+                return i - m + 1;
+        }
+
+        return -1;
+    }
+
     public static int Ex32_LongestValidParentheses(string s)
     {
         var stack = new Stack<int>();

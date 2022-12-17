@@ -374,6 +374,19 @@ public class LeetcodeTests
         input = Array.Empty<int>();
         Assert.IsTrue(Array.Empty<int>().SequenceEqual(input.Take(Leetcode.Ex27_RemoveElement(input, 3))));
     }
+    
+    [TestMethod]
+    public void Ex28_StrStr()
+    {
+        Assert.AreEqual(0, Leetcode.Ex28_StrStr("ababcaabc", "ababcaabc"));
+        Assert.AreEqual(0, Leetcode.Ex28_StrStr("sadbutsad", "sad"));
+        Assert.AreEqual(6, Leetcode.Ex28_StrStr("sidbutsad", "sad"));
+        Assert.AreEqual(-1, Leetcode.Ex28_StrStr("leetcode", "leeto"));
+        Assert.AreEqual(6, Leetcode.Ex28_StrStr("aaaaaaababcaabc", "ababcaabc"));
+        Assert.AreEqual(6, Leetcode.Ex28_StrStr("ccccccababcaabc", "ababcaabc"));
+        Assert.AreEqual(6, Leetcode.Ex28_StrStr("ababcaababcaabc", "ababcaabc"));
+        Assert.AreEqual(2, Leetcode.Ex28_StrStr("hello", "ll"));
+    }
 
     [TestMethod]
     public void Ex32_LongestValidParentheses()
