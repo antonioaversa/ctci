@@ -1262,6 +1262,15 @@ public static class Leetcode
         return results.ToArray();
     }
 
+    public static int Ex58_LengthOfLastWord(string s)
+    {
+        var i = s.Length - 1;
+        while (i >= 0 && s[i] == ' ') i--;
+        var j = i;
+        while (i >= 0 && s[i] != ' ') i--;
+        return j - i;
+    }
+
     public static IList<string> Ex68_FullJustify(string[] words, int maxWidth)
     {
         var result = new List<string>();

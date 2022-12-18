@@ -639,6 +639,14 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex58_LengthOfLastWord()
+    {
+        Assert.AreEqual(5, Leetcode.Ex58_LengthOfLastWord("Hello World"));
+        Assert.AreEqual(4, Leetcode.Ex58_LengthOfLastWord("   fly me   to   the moon  "));
+        Assert.AreEqual(6, Leetcode.Ex58_LengthOfLastWord("luffy is still joyboy"));
+    }
+
+    [TestMethod]
     public void Ex68_FullJustify()
     {
         Assert.IsTrue(
