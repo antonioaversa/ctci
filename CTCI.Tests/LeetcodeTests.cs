@@ -391,15 +391,15 @@ public class LeetcodeTests
     [TestMethod]
     public void Ex28_StrStr_KMP()
     {
-        //Assert.AreEqual(0, Leetcode.Ex28_StrStr_KMP("ababcaabc", "ababcaabc"));
-        //Assert.AreEqual(0, Leetcode.Ex28_StrStr_KMP("sadbutsad", "sad"));
-        //Assert.AreEqual(6, Leetcode.Ex28_StrStr_KMP("sidbutsad", "sad"));
-        //Assert.AreEqual(-1, Leetcode.Ex28_StrStr_KMP("leetcode", "leeto"));
-        //Assert.AreEqual(6, Leetcode.Ex28_StrStr_KMP("aaaaaaababcaabc", "ababcaabc"));
-        //Assert.AreEqual(6, Leetcode.Ex28_StrStr_KMP("ccccccababcaabc", "ababcaabc"));
-        //Assert.AreEqual(6, Leetcode.Ex28_StrStr_KMP("ababcaababcaabc", "ababcaabc"));
-        //Assert.AreEqual(2, Leetcode.Ex28_StrStr_KMP("hello", "ll"));
-        //Assert.AreEqual(4, Leetcode.Ex28_StrStr_KMP("aabaaabaaac", "aabaaac"));
+        Assert.AreEqual(0, Leetcode.Ex28_StrStr_KMP("ababcaabc", "ababcaabc"));
+        Assert.AreEqual(0, Leetcode.Ex28_StrStr_KMP("sadbutsad", "sad"));
+        Assert.AreEqual(6, Leetcode.Ex28_StrStr_KMP("sidbutsad", "sad"));
+        Assert.AreEqual(-1, Leetcode.Ex28_StrStr_KMP("leetcode", "leeto"));
+        Assert.AreEqual(6, Leetcode.Ex28_StrStr_KMP("aaaaaaababcaabc", "ababcaabc"));
+        Assert.AreEqual(6, Leetcode.Ex28_StrStr_KMP("ccccccababcaabc", "ababcaabc"));
+        Assert.AreEqual(6, Leetcode.Ex28_StrStr_KMP("ababcaababcaabc", "ababcaabc"));
+        Assert.AreEqual(2, Leetcode.Ex28_StrStr_KMP("hello", "ll"));
+        Assert.AreEqual(4, Leetcode.Ex28_StrStr_KMP("aabaaabaaac", "aabaaac"));
         Assert.AreEqual(4, Leetcode.Ex28_StrStr_KMP("mississippi", "issip"));
     }
 

@@ -729,22 +729,24 @@ public static class Leetcode
 
             lps[0] = -1;
 
-            int i = 1, j = 0;
+            int i = 1, j = -1;
             while (i < m)
             {
-                if (needle[i] == needle[j])
+                if (needle[i] == needle[j + 1])
                 {
-                    lps[i] = lps[j];
+                    lps[i] = j + 1;
+                    i++;
+                    j++;
+                }
+                else if (j >= 0)
+                {
+                    j = lps[j];
                 }
                 else
                 {
                     lps[i] = j;
-                    while (j >= 0 && needle[i] != needle[j])
-                        j = lps[j];
+                    i++;
                 }
-
-                i++;
-                j++;
             }
 
             return lps;
