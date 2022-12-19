@@ -657,7 +657,7 @@ public static class Leetcode
         return i;
     }
 
-    public static int Ex28_StrStr(string haystack, string needle)
+    public static int Ex28_StrStr_RabinKarp(string haystack, string needle)
     {
         var n = haystack.Length;
         var m = needle.Length;
@@ -691,6 +691,64 @@ public static class Leetcode
         }
 
         return -1;
+    }
+
+    public static int Ex28_StrStr_KMP(string haystack, string needle)
+    {
+        var n = haystack.Length;
+        var m = needle.Length;
+
+        if (n < m || m == 0) return -1;
+
+        var lps = BuildLPS();
+        Console.WriteLine($"lps = {string.Join(", ", lps)}");
+
+        int i = 0, j = -1;
+        while (i < n && j < m - 1)
+        {
+            if (haystack[i] == needle[j + 1])
+            {
+                i++;
+                j++;
+            }
+            else if (j >= 0)
+            {
+                j = lps[j];
+            }
+            else
+            {
+                i++;
+            }
+        }
+
+        return j == m - 1 ? i - m : -1;
+
+        int[] BuildLPS()
+        {
+            var lps = new int[m];
+
+            lps[0] = -1;
+
+            int i = 1, j = 0;
+            while (i < m)
+            {
+                if (needle[i] == needle[j])
+                {
+                    lps[i] = lps[j];
+                }
+                else
+                {
+                    lps[i] = j;
+                    while (j >= 0 && needle[i] != needle[j])
+                        j = lps[j];
+                }
+
+                i++;
+                j++;
+            }
+
+            return lps;
+        }
     }
 
     public static int Ex32_LongestValidParentheses(string s)
