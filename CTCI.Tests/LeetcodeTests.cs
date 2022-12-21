@@ -420,6 +420,23 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex29_Divide_BitShifting()
+    {
+        //Assert.AreEqual(3, Leetcode.Ex29_Divide_BitShifting(10, 3));
+        //Assert.AreEqual(0, Leetcode.Ex29_Divide_BitShifting(0, 124));
+        //Assert.AreEqual(0, Leetcode.Ex29_Divide_BitShifting(-1, 123));
+        //Assert.AreEqual(-2, Leetcode.Ex29_Divide_BitShifting(7, -3));
+        //Assert.AreEqual(2, Leetcode.Ex29_Divide_BitShifting(int.MaxValue, int.MaxValue >> 1));
+        //Assert.AreEqual(4, Leetcode.Ex29_Divide_BitShifting(int.MaxValue, int.MaxValue >> 2));
+        //Assert.AreEqual(int.MinValue + 1, Leetcode.Ex29_Divide_BitShifting(int.MaxValue, -1));
+        //Assert.AreEqual(0, Leetcode.Ex29_Divide_BitShifting(0, int.MinValue));
+        //Assert.AreEqual(int.MaxValue, Leetcode.Ex29_Divide_BitShifting(int.MinValue + 1, -1));
+        //Assert.AreEqual(int.MaxValue, Leetcode.Ex29_Divide_BitShifting(int.MinValue, -1));
+        //Assert.AreEqual(1, Leetcode.Ex29_Divide_BitShifting(int.MinValue, int.MinValue));
+        Assert.AreEqual(3, Leetcode.Ex29_Divide_BitShifting(int.MinValue, -3));
+    }
+
+    [TestMethod]
     public void Ex32_LongestValidParentheses()
     {
         Assert.AreEqual(2, Leetcode.Ex32_LongestValidParentheses("(()"));

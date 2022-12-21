@@ -797,6 +797,58 @@ public static class Leetcode
         return result > int.MaxValue ? int.MaxValue : (result < int.MinValue ? int.MinValue : (int)result);
     }
 
+    public static int Ex29_Divide_BitShifting(int dividend, int divisor)
+    {
+        bool negative = false;
+        uint dividendUnsigned, divisorUnsigned;
+
+        if (dividend < 0)
+        {
+            negative = !negative;
+            dividendUnsigned = (uint)(-(long)dividend);
+        }
+        else
+        {
+            dividendUnsigned = (uint)dividend;
+        }
+
+        if (divisor < 0)
+        {
+            negative = !negative;
+            divisorUnsigned = (uint)(-(long)divisor);
+        }
+        else
+        {
+            divisorUnsigned = (uint)divisor;
+        }
+
+        uint divisorMultiplier = divisorUnsigned;
+        uint twoPower = 1;
+
+        while (divisorMultiplier < dividendUnsigned)
+        {
+            divisorMultiplier <<= 1;
+            twoPower <<= 1;
+        }
+
+        uint result = 0;
+        while (divisorMultiplier != 0)
+        {
+            if (dividendUnsigned >= divisorMultiplier)
+            {
+                dividendUnsigned -= divisorMultiplier;
+                result += twoPower;
+            }
+
+            divisorMultiplier >>= 1;
+            twoPower >>= 1;
+        }
+
+        if (negative)
+            return result > int.MaxValue ? int.MinValue : -(int)result;
+        return result > int.MaxValue ? int.MaxValue : (int)result;
+    }
+
     public static int Ex32_LongestValidParentheses(string s)
     {
         var stack = new Stack<int>();
