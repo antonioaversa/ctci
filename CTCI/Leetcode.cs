@@ -996,6 +996,38 @@ public static class Leetcode
         return maxLength;
     }
 
+    public static int Ex33_Search(int[] nums, int target)
+    {
+        int l = 0, r = nums.Length - 1;
+        while (l <= r)
+        {
+            var m = l + (r - l) / 2;
+
+            if (nums[m] == target) return m;
+
+            if (nums[l] <= nums[r])
+            {
+                // l ..... m ..... r
+                if (target > nums[m]) l = m + 1;
+                else r = m - 1;
+            }
+            else if (nums[l] <= nums[m])
+            {
+                // l ..... m ..|.. r
+                if (target > nums[m] || target <= nums[r]) l = m + 1;
+                else r = m - 1;
+            }
+            else
+            {
+                // l ..|.. m ..... r
+                if (target < nums[m] || target >= nums[l]) r = m - 1;
+                else l = m + 1;
+            }
+        }
+
+        return -1;
+    }
+
     public static int Ex35_SearchInsert(int[] nums, int target)
     {
         var left = 0;

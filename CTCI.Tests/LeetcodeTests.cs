@@ -524,6 +524,16 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex33_Search()
+    {
+        Assert.AreEqual(0, Leetcode.Ex33_Search(new[] { 4, 5, 6, 7, 0, 1, 2 }, 4));
+        Assert.AreEqual(5, Leetcode.Ex33_Search(new[] { 4, 5, 6, 7, 0, 1, 2 }, 1));
+        Assert.AreEqual(4, Leetcode.Ex33_Search(new[] { 4, 5, 6, 7, 0, 1, 2 }, 0));
+        Assert.AreEqual(6, Leetcode.Ex33_Search(new[] { 4, 5, 6, 7, 0, 1, 2 }, 2));
+        Assert.AreEqual(-1, Leetcode.Ex33_Search(new[] { 1 }, 0));
+    }
+
+    [TestMethod]
     public void Ex35_SearchInsert()
     {
         Assert.AreEqual(0, Leetcode.Ex35_SearchInsert(new[] { 0, 1, 2, 3 }, 0));
