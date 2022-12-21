@@ -422,18 +422,45 @@ public class LeetcodeTests
     [TestMethod]
     public void Ex29_Divide_BitShifting()
     {
-        //Assert.AreEqual(3, Leetcode.Ex29_Divide_BitShifting(10, 3));
-        //Assert.AreEqual(0, Leetcode.Ex29_Divide_BitShifting(0, 124));
-        //Assert.AreEqual(0, Leetcode.Ex29_Divide_BitShifting(-1, 123));
-        //Assert.AreEqual(-2, Leetcode.Ex29_Divide_BitShifting(7, -3));
-        //Assert.AreEqual(2, Leetcode.Ex29_Divide_BitShifting(int.MaxValue, int.MaxValue >> 1));
-        //Assert.AreEqual(4, Leetcode.Ex29_Divide_BitShifting(int.MaxValue, int.MaxValue >> 2));
-        //Assert.AreEqual(int.MinValue + 1, Leetcode.Ex29_Divide_BitShifting(int.MaxValue, -1));
-        //Assert.AreEqual(0, Leetcode.Ex29_Divide_BitShifting(0, int.MinValue));
-        //Assert.AreEqual(int.MaxValue, Leetcode.Ex29_Divide_BitShifting(int.MinValue + 1, -1));
-        //Assert.AreEqual(int.MaxValue, Leetcode.Ex29_Divide_BitShifting(int.MinValue, -1));
-        //Assert.AreEqual(1, Leetcode.Ex29_Divide_BitShifting(int.MinValue, int.MinValue));
+        Assert.AreEqual(3, Leetcode.Ex29_Divide_BitShifting(10, 3));
+        Assert.AreEqual(0, Leetcode.Ex29_Divide_BitShifting(0, 124));
+        Assert.AreEqual(0, Leetcode.Ex29_Divide_BitShifting(-1, 123));
+        Assert.AreEqual(-2, Leetcode.Ex29_Divide_BitShifting(7, -3));
+        Assert.AreEqual(2, Leetcode.Ex29_Divide_BitShifting(int.MaxValue, int.MaxValue >> 1));
+        Assert.AreEqual(4, Leetcode.Ex29_Divide_BitShifting(int.MaxValue, int.MaxValue >> 2));
+        Assert.AreEqual(int.MinValue + 1, Leetcode.Ex29_Divide_BitShifting(int.MaxValue, -1));
+        Assert.AreEqual(0, Leetcode.Ex29_Divide_BitShifting(0, int.MinValue));
+        Assert.AreEqual(int.MaxValue, Leetcode.Ex29_Divide_BitShifting(int.MinValue + 1, -1));
+        Assert.AreEqual(int.MaxValue, Leetcode.Ex29_Divide_BitShifting(int.MinValue, -1));
+        Assert.AreEqual(1, Leetcode.Ex29_Divide_BitShifting(int.MinValue, int.MinValue));
         Assert.AreEqual(3, Leetcode.Ex29_Divide_BitShifting(int.MinValue, -3));
+    }
+
+    [TestMethod]
+    public void Ex31_NextPermutation()
+    {
+        int[] array;
+
+        Leetcode.Ex31_NextPermutation(array = Array.Empty<int>());
+        Assert.IsTrue(Array.Empty<int>().SequenceEqual(array));
+
+        Leetcode.Ex31_NextPermutation(array = new[] { 1 });
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(array));
+
+        Leetcode.Ex31_NextPermutation(array = new[] { 1, 2, 3 });
+        Assert.IsTrue(new[] { 1, 3, 2 }.SequenceEqual(array));
+
+        Leetcode.Ex31_NextPermutation(array = new[] { 3, 2, 1 });
+        Assert.IsTrue(new[] { 1, 2, 3 }.SequenceEqual(array));
+
+        Leetcode.Ex31_NextPermutation(array = new[] { 1, 1, 5 });
+        Assert.IsTrue(new[] { 1, 5, 1 }.SequenceEqual(array));
+
+        Leetcode.Ex31_NextPermutation(array = new[] { 1, 1, 5, 4, 3 });
+        Assert.IsTrue(new[] { 1, 3, 1, 4, 5 }.SequenceEqual(array));
+
+        Leetcode.Ex31_NextPermutation(array = new[] { 1, 2, 2 });
+        Assert.IsTrue(new[] { 2, 1, 2 }.SequenceEqual(array));
     }
 
     [TestMethod]
