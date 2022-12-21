@@ -753,6 +753,50 @@ public static class Leetcode
         }
     }
 
+    public static int Ex29_Divide_PowersOfTwo(int dividend, int divisor)
+    {
+        long dividendLong = dividend;
+        long divisorLong = divisor;
+        bool negative = false;
+
+        if (dividendLong < 0)
+        {
+            negative = !negative;
+            dividendLong = -dividendLong;
+        }
+        if (divisorLong < 0)
+        {
+            negative = !negative;
+            divisorLong = -divisorLong;
+        }
+
+        var twoPowers = new List<long>(33) { 1 };
+        var divisorMultipliers = new List<long>(33) { divisorLong };
+
+        while (divisorMultipliers[^1] < dividendLong)
+        {
+            twoPowers.Add(twoPowers[^1] + twoPowers[^1]);
+            divisorMultipliers.Add(divisorMultipliers[^1] + divisorMultipliers[^1]);
+        }
+
+        var result = 0L;
+        for (var i = divisorMultipliers.Count - 1; i >= 0; i--)
+        {
+            if (dividendLong >= divisorMultipliers[i])
+            {
+                dividendLong -= divisorMultipliers[i];
+                result += twoPowers[i];
+            }
+            if (dividendLong == 0)
+                break;
+        }
+
+        if (negative)
+            result = -result;
+
+        return result > int.MaxValue ? int.MaxValue : (result < int.MinValue ? int.MinValue : (int)result);
+    }
+
     public static int Ex32_LongestValidParentheses(string s)
     {
         var stack = new Stack<int>();

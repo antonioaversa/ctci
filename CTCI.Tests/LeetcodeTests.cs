@@ -404,6 +404,22 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex29_Divide_PowersOfTwo()
+    {
+        Assert.AreEqual(3, Leetcode.Ex29_Divide_PowersOfTwo(10, 3));
+        Assert.AreEqual(0, Leetcode.Ex29_Divide_PowersOfTwo(0, 124));
+        Assert.AreEqual(0, Leetcode.Ex29_Divide_PowersOfTwo(-1, 123));
+        Assert.AreEqual(-2, Leetcode.Ex29_Divide_PowersOfTwo(7, -3));
+        Assert.AreEqual(2, Leetcode.Ex29_Divide_PowersOfTwo(int.MaxValue, int.MaxValue >> 1));
+        Assert.AreEqual(4, Leetcode.Ex29_Divide_PowersOfTwo(int.MaxValue, int.MaxValue >> 2));
+        Assert.AreEqual(int.MinValue + 1, Leetcode.Ex29_Divide_PowersOfTwo(int.MaxValue, -1));
+        Assert.AreEqual(0, Leetcode.Ex29_Divide_PowersOfTwo(0, int.MinValue));
+        Assert.AreEqual(int.MaxValue, Leetcode.Ex29_Divide_PowersOfTwo(int.MinValue + 1, -1));
+        Assert.AreEqual(int.MaxValue, Leetcode.Ex29_Divide_PowersOfTwo(int.MinValue, -1));
+        Assert.AreEqual(1, Leetcode.Ex29_Divide_PowersOfTwo(int.MinValue, int.MinValue));
+    }
+
+    [TestMethod]
     public void Ex32_LongestValidParentheses()
     {
         Assert.AreEqual(2, Leetcode.Ex32_LongestValidParentheses("(()"));
