@@ -849,7 +849,7 @@ public static class Leetcode
         return result > int.MaxValue ? int.MaxValue : (int)result;
     }
 
-    public static void Ex31_NextPermutation(int[] nums)
+    public static void Ex31_NextPermutation_WithSorting(int[] nums)
     {
         var n = nums.Length;
 
@@ -877,6 +877,33 @@ public static class Leetcode
         (nums[i], nums[minIndex]) = (nums[minIndex], nums[i]);
 
         Array.Sort(nums, i + 1, n - i - 1);
+    }
+
+    public static void Ex31_NextPermutation_ReverseOnly(int[] nums)
+    {
+        var n = nums.Length;
+
+        if (n <= 1) return;
+
+        var maxIndex = -1;
+        var i = n - 1;
+        while (i >= 0)
+        {
+            if (maxIndex >= 0 && nums[i] < nums[maxIndex])
+                break;
+            maxIndex = i--;
+        }
+
+        if (i >= 0)
+        {
+            var minIndex = i + 1;
+            for (var k = i + 1; k < n; k++)
+                if (nums[k] > nums[i] && nums[k] <= nums[minIndex])
+                    minIndex = k;
+            (nums[i], nums[minIndex]) = (nums[minIndex], nums[i]);
+        }
+
+        Array.Reverse(nums, i + 1, n - i - 1);
     }
 
     public static int Ex32_LongestValidParentheses(string s)

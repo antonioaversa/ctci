@@ -433,33 +433,60 @@ public class LeetcodeTests
         Assert.AreEqual(int.MaxValue, Leetcode.Ex29_Divide_BitShifting(int.MinValue + 1, -1));
         Assert.AreEqual(int.MaxValue, Leetcode.Ex29_Divide_BitShifting(int.MinValue, -1));
         Assert.AreEqual(1, Leetcode.Ex29_Divide_BitShifting(int.MinValue, int.MinValue));
-        Assert.AreEqual(3, Leetcode.Ex29_Divide_BitShifting(int.MinValue, -3));
+        Assert.AreEqual(715827882, Leetcode.Ex29_Divide_BitShifting(int.MinValue, -3));
     }
 
     [TestMethod]
-    public void Ex31_NextPermutation()
+    public void Ex31_NextPermutation_WithSorting()
     {
         int[] array;
 
-        Leetcode.Ex31_NextPermutation(array = Array.Empty<int>());
+        Leetcode.Ex31_NextPermutation_WithSorting(array = Array.Empty<int>());
         Assert.IsTrue(Array.Empty<int>().SequenceEqual(array));
 
-        Leetcode.Ex31_NextPermutation(array = new[] { 1 });
+        Leetcode.Ex31_NextPermutation_WithSorting(array = new[] { 1 });
         Assert.IsTrue(new[] { 1 }.SequenceEqual(array));
 
-        Leetcode.Ex31_NextPermutation(array = new[] { 1, 2, 3 });
+        Leetcode.Ex31_NextPermutation_WithSorting(array = new[] { 1, 2, 3 });
         Assert.IsTrue(new[] { 1, 3, 2 }.SequenceEqual(array));
 
-        Leetcode.Ex31_NextPermutation(array = new[] { 3, 2, 1 });
+        Leetcode.Ex31_NextPermutation_WithSorting(array = new[] { 3, 2, 1 });
         Assert.IsTrue(new[] { 1, 2, 3 }.SequenceEqual(array));
 
-        Leetcode.Ex31_NextPermutation(array = new[] { 1, 1, 5 });
+        Leetcode.Ex31_NextPermutation_WithSorting(array = new[] { 1, 1, 5 });
         Assert.IsTrue(new[] { 1, 5, 1 }.SequenceEqual(array));
 
-        Leetcode.Ex31_NextPermutation(array = new[] { 1, 1, 5, 4, 3 });
+        Leetcode.Ex31_NextPermutation_WithSorting(array = new[] { 1, 1, 5, 4, 3 });
         Assert.IsTrue(new[] { 1, 3, 1, 4, 5 }.SequenceEqual(array));
 
-        Leetcode.Ex31_NextPermutation(array = new[] { 1, 2, 2 });
+        Leetcode.Ex31_NextPermutation_WithSorting(array = new[] { 1, 2, 2 });
+        Assert.IsTrue(new[] { 2, 1, 2 }.SequenceEqual(array));
+    }
+
+    [TestMethod]
+    public void Ex31_NextPermutation_ReverseOnly()
+    {
+        int[] array;
+
+        Leetcode.Ex31_NextPermutation_ReverseOnly(array = Array.Empty<int>());
+        Assert.IsTrue(Array.Empty<int>().SequenceEqual(array));
+
+        Leetcode.Ex31_NextPermutation_ReverseOnly(array = new[] { 1 });
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(array));
+
+        Leetcode.Ex31_NextPermutation_ReverseOnly(array = new[] { 1, 2, 3 });
+        Assert.IsTrue(new[] { 1, 3, 2 }.SequenceEqual(array));
+
+        Leetcode.Ex31_NextPermutation_ReverseOnly(array = new[] { 3, 2, 1 });
+        Assert.IsTrue(new[] { 1, 2, 3 }.SequenceEqual(array));
+
+        Leetcode.Ex31_NextPermutation_ReverseOnly(array = new[] { 1, 1, 5 });
+        Assert.IsTrue(new[] { 1, 5, 1 }.SequenceEqual(array));
+
+        Leetcode.Ex31_NextPermutation_ReverseOnly(array = new[] { 1, 1, 5, 4, 3 });
+        Assert.IsTrue(new[] { 1, 3, 1, 4, 5 }.SequenceEqual(array));
+
+        Leetcode.Ex31_NextPermutation_ReverseOnly(array = new[] { 1, 2, 2 });
         Assert.IsTrue(new[] { 2, 1, 2 }.SequenceEqual(array));
     }
 
