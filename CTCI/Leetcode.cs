@@ -1062,6 +1062,146 @@ public static class Leetcode
         return totalWater;
     }
 
+    public static string Ex43_Multiply_SumNum2Times(string num1, string num2)
+    {
+        if (num1 == "0" || num2 == "0") return "0";
+        if (num1 == "1") return num2;
+        if (num2 == "1") return num1;
+
+        var num1List = num1.Reverse().Select(c => (byte)(c - '0')).ToList();
+        var num2List = num2.Reverse().Select(c => (byte)(c - '0')).ToList();
+        var result = num1List.ToList();
+        var count = new List<byte> { 1 };
+        var one = new List<byte> { 1 };
+        while (!count.SequenceEqual(num2List))
+        {
+            Sum(result, num1List);
+            Sum(count, one);
+        }
+
+        result.Reverse();
+        return string.Join("", result.Select(b => (char)(b + '0')));
+
+        void Sum(IList<byte> num1, IList<byte> num2)
+        {
+            var n = num1.Count;
+            var m = num2.Count;
+
+            // Assuming num1 is longer or equal than num2
+            var minLength = m;
+            var maxLength = n;
+
+            byte reminder = 0;
+            int i = 0;
+            while (i < maxLength)
+            {
+                var digitSum = num1[i] + (i < minLength ? num2[i] : 0) + reminder;
+                reminder = (byte)(digitSum / 10);
+                num1[i] = (byte)(digitSum % 10);
+                i++;
+            }
+
+            if (reminder != 0)
+                num1.Add(reminder);
+        }
+    }
+
+    public static string Ex43_Multiply_LongMultiplication(string num1, string num2)
+    {
+        if (num1 == "0" || num2 == "0") return "0";
+        if (num1 == "1") return num2;
+        if (num2 == "1") return num1;
+
+        var num1List = num1.Reverse().Select(c => (byte)(c - '0')).ToList();
+        var num2List = num2.Reverse().Select(c => (byte)(c - '0')).ToList();
+        var result = new List<byte> { 0 };
+
+        var m = num2List.Count;
+        for (var i = 0; i < m; i++)
+        {
+            var digitProduct = Enumerable.Repeat((byte)0, i).Concat(DigitMultiply(num1List, num2List[i])).ToList();
+            result = Sum(result, digitProduct);
+        }
+
+        result.Reverse();
+        return string.Join("", result.Select(b => (char)(b + '0')));
+
+        List<byte> DigitMultiply(List<byte> num, byte digit)
+        {
+            var n = num.Count;
+
+            var result = new List<byte>(num.Count + 1);
+            byte reminder = 0;
+            int i = 0;
+            while (i < n)
+            {
+                var digitProduct = num[i] * digit + reminder;
+                result.Add((byte)(digitProduct % 10));
+                reminder = (byte)(digitProduct / 10);
+                i++;
+            }
+
+            if (reminder != 0)
+                result.Add(reminder);
+
+            return result;
+        }
+
+        List<byte> Sum(List<byte> num1, List<byte> num2)
+        {
+            var n = num1.Count;
+            var m = num2.Count;
+            var maxLength = Math.Max(n, m);
+
+            var result = new List<byte>(maxLength + 1);
+            byte reminder = 0;
+            int i = 0;
+            while (i < maxLength)
+            {
+                var digitSum = (i < n ? num1[i] : 0) + (i < m ? num2[i] : 0) + reminder;
+                reminder = (byte)(digitSum / 10);
+                result.Add((byte)(digitSum % 10));
+                i++;
+            }
+
+            if (reminder != 0)
+                result.Add(reminder);
+
+            return result;
+        }
+    }
+
+    public static string Ex43_Multiply_Grid(string num1, string num2)
+    {
+        if (num1 == "0" || num2 == "0") return "0";
+        if (num1 == "1") return num2;
+        if (num2 == "1") return num1;
+
+        var n = num1.Length;
+        var m = num2.Length;
+        var maxLength = Math.Max(n, m);
+
+        var sumOfProducts = 0;
+        var result = new char[n + m];
+        for (var i = 0; i < n + m; i++)
+        {
+            for (var j = 0; j <= i; j++)
+            {
+                var firstDigit = j < n ? num1[n - 1 - j] - '0' : 0;
+                var secondDigit = i - j < m ? num2[m - 1 - i + j] - '0' : 0;
+                sumOfProducts += firstDigit * secondDigit;
+            }
+            result[n + m - 1 - i] = (char)((sumOfProducts % 10) + '0');
+            sumOfProducts = sumOfProducts / 10;
+        }
+
+        var startIndex = 0;
+        while (result[startIndex] == '0')
+            startIndex++;
+
+        return new string(result, startIndex, n + m - startIndex);
+    }
+
     public static int Ex45_Jump(int[] nums)
     {
         var n = nums.Length;

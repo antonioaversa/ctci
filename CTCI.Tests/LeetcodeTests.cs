@@ -518,6 +518,42 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex43_Multiply_SumNum2Times()
+    {
+        Assert.AreEqual("0", Leetcode.Ex43_Multiply_SumNum2Times("0", "0"));
+        Assert.AreEqual("0", Leetcode.Ex43_Multiply_SumNum2Times("123", "0"));
+        Assert.AreEqual("0", Leetcode.Ex43_Multiply_SumNum2Times("0", "12"));
+        Assert.AreEqual("123", Leetcode.Ex43_Multiply_SumNum2Times("123", "1"));
+        Assert.AreEqual("6", Leetcode.Ex43_Multiply_SumNum2Times("2", "3"));
+        Assert.AreEqual("56088", Leetcode.Ex43_Multiply_SumNum2Times("123", "456"));
+        Assert.AreEqual("12546", Leetcode.Ex43_Multiply_SumNum2Times("123", "102"));
+    }
+
+    [TestMethod]
+    public void Ex43_Multiply_LongMultiplication()
+    {
+        Assert.AreEqual("0", Leetcode.Ex43_Multiply_LongMultiplication("0", "0"));
+        Assert.AreEqual("0", Leetcode.Ex43_Multiply_LongMultiplication("123", "0"));
+        Assert.AreEqual("0", Leetcode.Ex43_Multiply_LongMultiplication("0", "12"));
+        Assert.AreEqual("123", Leetcode.Ex43_Multiply_LongMultiplication("123", "1"));
+        Assert.AreEqual("6", Leetcode.Ex43_Multiply_LongMultiplication("2", "3"));
+        Assert.AreEqual("56088", Leetcode.Ex43_Multiply_LongMultiplication("123", "456"));
+        Assert.AreEqual("12546", Leetcode.Ex43_Multiply_LongMultiplication("123", "102"));
+    }
+
+    [TestMethod]
+    public void Ex43_Multiply_Grid()
+    {
+        Assert.AreEqual("0", Leetcode.Ex43_Multiply_Grid("0", "0"));
+        Assert.AreEqual("0", Leetcode.Ex43_Multiply_Grid("123", "0"));
+        Assert.AreEqual("0", Leetcode.Ex43_Multiply_Grid("0", "12"));
+        Assert.AreEqual("123", Leetcode.Ex43_Multiply_Grid("123", "1"));
+        Assert.AreEqual("6", Leetcode.Ex43_Multiply_Grid("2", "3"));
+        Assert.AreEqual("56088", Leetcode.Ex43_Multiply_Grid("123", "456"));
+        Assert.AreEqual("12546", Leetcode.Ex43_Multiply_Grid("123", "102"));
+    }
+
+    [TestMethod]
     public void Ex45_Jump()
     {
         Assert.AreEqual(2, Leetcode.Ex45_Jump(new int[] { 2, 3, 1, 9, 4 }));
