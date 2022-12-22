@@ -534,6 +534,18 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex34_SearchRange()
+    {
+        Assert.IsTrue(new[] { 3, 4 }.SequenceEqual(Leetcode.Ex34_SearchRange(new[] { 5, 7, 7, 8, 8, 10 }, 8)));
+        Assert.IsTrue(new[] { -1, -1 }.SequenceEqual(Leetcode.Ex34_SearchRange(new[] { 5, 7, 7, 8, 8, 10 }, 6)));
+        Assert.IsTrue(new[] { -1, -1 }.SequenceEqual(Leetcode.Ex34_SearchRange(Array.Empty<int>(), 0)));
+        Assert.IsTrue(new[] { 5, 5 }.SequenceEqual(Leetcode.Ex34_SearchRange(new[] { 5, 7, 7, 8, 8, 10 }, 10)));
+        Assert.IsTrue(new[] { 5, 7 }.SequenceEqual(Leetcode.Ex34_SearchRange(new[] { 5, 7, 7, 8, 8, 10, 10, 10 }, 10)));
+        Assert.IsTrue(new[] { 3, 4 }.SequenceEqual(Leetcode.Ex34_SearchRange(new[] { 7, 7, 7, 8, 8, 10 }, 8)));
+        Assert.IsTrue(new[] { -1, -1 }.SequenceEqual(Leetcode.Ex34_SearchRange(new[] { 2, 2 }, 3)));
+    }
+
+    [TestMethod]
     public void Ex35_SearchInsert()
     {
         Assert.AreEqual(0, Leetcode.Ex35_SearchInsert(new[] { 0, 1, 2, 3 }, 0));

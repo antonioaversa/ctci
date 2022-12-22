@@ -1028,6 +1028,38 @@ public static class Leetcode
         return -1;
     }
 
+    public static int[] Ex34_SearchRange(int[] nums, int target)
+    {
+        var n = nums.Length;
+
+        if (n == 0) return new[] { -1, -1 };
+
+        int l = 0, r = n - 1;
+        while (l <= r)
+        {
+            var m = l + (r - l) / 2;
+            if (target <= nums[m])
+                r = m - 1;
+            else
+                l = m + 1;
+        }
+
+        if (l >= n || nums[l] != target) return new[] { -1, -1 };
+
+        var first = l;
+        l = first; r = n - 1;
+        while (l <= r)
+        {
+            var m = l + (r - l) / 2;
+            if (target >= nums[m])
+                l = m + 1;
+            else
+                r = m - 1;
+        }
+
+        return new[] { first, r };
+    }
+
     public static int Ex35_SearchInsert(int[] nums, int target)
     {
         var left = 0;
