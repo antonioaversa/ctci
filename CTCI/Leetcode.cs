@@ -33,6 +33,41 @@ public static class Leetcode
         return max;
     }
 
+    public static double Ex4_FindMedianSortedArrays(int[] nums1, int[] nums2)
+    {
+        var n1 = nums1.Length;
+        var n2 = nums2.Length;
+        var nHalf = (n1 + n2 + 1) >> 1;
+
+        if (n1 > n2)
+            return Ex4_FindMedianSortedArrays(nums2, nums1);
+
+        // n1 <= n2. Binary search on the shorter.
+        int low = 0, high = n1;
+        while (low <= high)
+        {
+            var m1 = low + ((high - low) >> 1);
+            var m2 = nHalf - m1;
+
+            var l1 = m1 == 0 ? int.MinValue : nums1[m1 - 1];
+            var r1 = m1 == n1 ? int.MaxValue : nums1[m1];
+            var l2 = m2 == 0 ? int.MinValue : nums2[m2 - 1];
+            var r2 = m2 == n2 ? int.MaxValue : nums2[m2];
+
+            Console.WriteLine($"low = {low}, high = {high}, m1 = {m1}, m2 = {m2}");
+            Console.WriteLine($"l1 = {l1}, r1 = {r1}, l2 = {l2}, r2 = {r2}");
+
+            if (l1 <= r2 && l2 <= r1)
+                return (n1 + n2) % 2 == 0 ? (Math.Max(l1, l2) + Math.Min(r1, r2)) / 2.0 : Math.Max(l1, l2);
+            if (l1 > r2)
+                high = m1 - 1;
+            else
+                low = m1 + 1;
+        }
+
+        return -1;
+    }
+
     public static string Ex5_LongestPalindrome(string s)
     {
         var solutions = new Dictionary<(int, int), (int, int)> { };

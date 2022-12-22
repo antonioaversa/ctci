@@ -94,6 +94,29 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex4_FindMedianSortedArrays()
+    {
+        Assert.AreEqual(2.0, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3 }, new[] { 2 }));
+        Assert.AreEqual(1.0, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3 }, new[] { 0 }));
+        Assert.AreEqual(3.0, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3 }, new[] { 4 }));
+        Assert.AreEqual(2.0, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3 }, Array.Empty<int>()));
+        Assert.AreEqual(1.5, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3 }, new[] { 0, 2 }));
+        Assert.AreEqual(2.5, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3 }, new[] { 2, 4 }));
+        Assert.AreEqual(3.5, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3 }, new[] { 4, 5 }));
+        Assert.AreEqual(2.5, Leetcode.Ex4_FindMedianSortedArrays(new[] { 3 }, new[] { 2 }));
+        Assert.AreEqual(3.0, Leetcode.Ex4_FindMedianSortedArrays(new[] { 3 }, new[] { 3 }));
+        Assert.AreEqual(3.5, Leetcode.Ex4_FindMedianSortedArrays(new[] { 3 }, new[] { 4 }));
+        Assert.AreEqual(3.0, Leetcode.Ex4_FindMedianSortedArrays(new[] { 3 }, Array.Empty<int>()));
+        Assert.AreEqual(2.5, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3, 4 }, new[] { 2 }));
+        Assert.AreEqual(2.0, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3, 4 }, new[] { 0 }));
+        Assert.AreEqual(3.5, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3, 4 }, new[] { 4 }));
+        Assert.AreEqual(3.0, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3, 4 }, Array.Empty<int>()));
+        Assert.AreEqual(2.0, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3, 4 }, new[] { 0, 2 }));
+        Assert.AreEqual(3.0, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3, 4 }, new[] { 2, 4 }));
+        Assert.AreEqual(4.0, Leetcode.Ex4_FindMedianSortedArrays(new[] { 1, 3, 4 }, new[] { 4, 5 }));
+    }
+
+    [TestMethod]
     public void Ex5_LongestPalindrome()
     {
         Assert.AreEqual("bbb", Leetcode.Ex5_LongestPalindrome("bbb"));
