@@ -884,6 +884,65 @@ public static class Leetcode
         return result > int.MaxValue ? int.MaxValue : (int)result;
     }
 
+    public static IList<int> Ex30_FindSubstring(string s, string[] words)
+    {
+        var wordCount = words.Length;
+        var wordLength = words[0].Length;
+        var wordsLength = wordCount * wordLength;
+        var wordsInString = s.Length / wordLength;
+
+        Array.Sort(words);
+
+        if (s.Length < wordsLength) return Array.Empty<int>();
+
+        // Calculate hash of words
+        var wordsHash = 0;
+        for (var i = 0; i < wordCount; i++)
+        {
+            var wordHash = 0;
+            for (var j = 0; j < wordLength; j++)
+                wordHash = wordHash + (words[i][j] - '0');
+
+            Console.WriteLine($"Hash of {words[i]} = {wordHash}");
+            wordsHash += wordHash;
+        }
+
+        // Calculate first rolling hash
+        var rollingHash = 0;
+        for (var i = 0; i < wordCount; i++)
+        {
+            var wordHash = 0;
+            for (var j = 0; j < wordLength; j++)
+                wordHash = wordHash + (s[i * wordLength + j] - '0');
+
+            Console.WriteLine($"Hash of {s[(i * wordLength)..((i + 1) * wordLength)]} = {wordHash}");
+            rollingHash += wordHash;
+        }
+
+        var result = new List<int>();
+        if (wordsHash == rollingHash && ActualCheck(0))
+            result.Add(0);
+
+        // Calculate following rolling hashes
+        for (var i = wordsLength; i < s.Length; i++)
+        {
+            rollingHash = rollingHash - (s[i - wordsLength] - '0') + (s[i] - '0');
+
+            Console.WriteLine($"Hash of {s[(i - wordsLength + 1)..(i + 1)]} = {rollingHash}");
+
+            if (wordsHash == rollingHash && ActualCheck(i - wordsLength + 1))
+                result.Add(i - wordsLength + 1);
+        }
+
+        return result;
+
+        bool ActualCheck(int i) => s[i..(i + wordsLength)]
+            .Chunk(wordLength)
+            .Select(x => new string(x))
+            .OrderBy(x => x)
+            .SequenceEqual(words);
+    }
+
     public static void Ex31_NextPermutation_WithSorting(int[] nums)
     {
         var n = nums.Length;

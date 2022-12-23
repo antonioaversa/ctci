@@ -460,6 +460,16 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex30_FindSubstring()
+    {
+        Assert.IsTrue(new[] { 0, 9 }.SequenceEqual(Leetcode.Ex30_FindSubstring("barfoothefoobarman", new[] { "foo", "bar" })));
+        Assert.IsTrue(Array.Empty<int>().SequenceEqual(Leetcode.Ex30_FindSubstring("wordgoodgoodgoodbestword", new[] { "word", "good", "best", "word" })));
+        Assert.IsTrue(new[] { 6, 9, 12 }.SequenceEqual(Leetcode.Ex30_FindSubstring("barfoofoobarthefoobarman", new[] { "bar", "foo", "the" })));
+        Assert.IsTrue(new[] { 0, 9 }.SequenceEqual(Leetcode.Ex30_FindSubstring("barfoothefoobarmanfaobor", new[] { "foo", "bar" })));
+        Assert.IsTrue(new[] { 13 }.SequenceEqual(Leetcode.Ex30_FindSubstring("lingmindraboofooowingdingbarrwingmonkeypoundcake", new[] { "fooo", "barr", "wing", "ding", "wing" })));
+    }
+
+    [TestMethod]
     public void Ex31_NextPermutation_WithSorting()
     {
         int[] array;
