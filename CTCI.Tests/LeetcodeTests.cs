@@ -840,6 +840,15 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex66_PlusOne()
+    {
+        Assert.IsTrue(new[] { 1, 2, 4 }.SequenceEqual(Leetcode.Ex66_PlusOne(new[] { 1, 2, 3 })));
+        Assert.IsTrue(new[] { 4, 3, 2, 2 }.SequenceEqual(Leetcode.Ex66_PlusOne(new[] { 4, 3, 2, 1 })));
+        Assert.IsTrue(new[] { 1, 0 }.SequenceEqual(Leetcode.Ex66_PlusOne(new[] { 9 })));
+        Assert.IsTrue(new[] { 1, 0, 0, 0 }.SequenceEqual(Leetcode.Ex66_PlusOne(new[] { 9, 9, 9 })));
+    }
+
+    [TestMethod]
     public void Ex68_FullJustify()
     {
         Assert.IsTrue(

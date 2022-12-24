@@ -1782,6 +1782,23 @@ public static class Leetcode
         return j - i;
     }
 
+    public static int[] Ex66_PlusOne(int[] digits)
+    {
+        int reminder = 1, digitSum = 0;
+        for (var i = digits.Length - 1; i >= 0; i--)
+        {
+            digitSum = digits[i] + reminder;
+            digits[i] = digitSum % 10;
+            reminder = digitSum / 10;
+        }
+
+        if (reminder == 0) return digits;
+        var result = new int[digits.Length + 1];
+        result[0] = reminder;
+        Array.Copy(digits, 0, result, 1, digits.Length);
+        return result;
+    }
+
     public static IList<string> Ex68_FullJustify(string[] words, int maxWidth)
     {
         var result = new List<string>();
