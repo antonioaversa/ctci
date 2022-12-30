@@ -884,7 +884,7 @@ public static class Leetcode
         return result > int.MaxValue ? int.MaxValue : (int)result;
     }
 
-    public static IList<int> Ex30_FindSubstring(string s, string[] words)
+    public static IList<int> Ex30_FindSubstring_RollingHash(string s, string[] words)
     {
         var wordCount = words.Length;
         var wordLength = words[0].Length;
@@ -898,26 +898,13 @@ public static class Leetcode
         // Calculate hash of words
         var wordsHash = 0;
         for (var i = 0; i < wordCount; i++)
-        {
-            var wordHash = 0;
             for (var j = 0; j < wordLength; j++)
-                wordHash = wordHash + (words[i][j] - '0');
-
-            Console.WriteLine($"Hash of {words[i]} = {wordHash}");
-            wordsHash += wordHash;
-        }
+                wordsHash = wordsHash + (words[i][j] - '0');
 
         // Calculate first rolling hash
         var rollingHash = 0;
-        for (var i = 0; i < wordCount; i++)
-        {
-            var wordHash = 0;
-            for (var j = 0; j < wordLength; j++)
-                wordHash = wordHash + (s[i * wordLength + j] - '0');
-
-            Console.WriteLine($"Hash of {s[(i * wordLength)..((i + 1) * wordLength)]} = {wordHash}");
-            rollingHash += wordHash;
-        }
+        for (var i = 0; i < wordsLength; i++)
+            rollingHash = rollingHash + (s[i] - '0');
 
         var result = new List<int>();
         if (wordsHash == rollingHash && ActualCheck(0))
@@ -928,7 +915,7 @@ public static class Leetcode
         {
             rollingHash = rollingHash - (s[i - wordsLength] - '0') + (s[i] - '0');
 
-            Console.WriteLine($"Hash of {s[(i - wordsLength + 1)..(i + 1)]} = {rollingHash}");
+            //Console.WriteLine($"Hash of {s[(i - wordsLength + 1)..(i + 1)]} = {rollingHash}");
 
             if (wordsHash == rollingHash && ActualCheck(i - wordsLength + 1))
                 result.Add(i - wordsLength + 1);
@@ -1238,6 +1225,63 @@ public static class Leetcode
             result = next;
         }
         return result.ToString();
+    }
+
+    public static IList<IList<int>> Ex39_CombinationSum(int[] candidates, int target)
+    {
+        var n = candidates.Length;
+        return Combinations(0, target);
+
+        IList<IList<int>> Combinations(int i, int target)
+        {
+            if (i == n)
+            {
+                if (target == 0)
+                    return new List<IList<int>>() { new List<int>() };
+                return new List<IList<int>>() { };
+            }
+
+            var result = new List<IList<int>>();
+            var x = candidates[i];
+            for (var j = 0; j <= target / x; j++)
+            {
+                foreach (var subResult in Combinations(i + 1, target - j * x))
+                {
+                    ((List<int>)subResult).AddRange(Enumerable.Repeat(x, j));
+                    result.Add(subResult);
+                }
+            }
+
+            return result;
+        }
+    }
+
+    public static IList<IList<int>> Ex39_CombinationSum_Optimized(int[] candidates, int target)
+    {
+        var n = candidates.Length;
+        return Combinations(0, target);
+
+        IList<IList<int>> Combinations(int i, int target)
+        {
+            if (target == 0)
+                return new List<IList<int>>() { new List<int>() };
+
+            if (i == n)
+                return new List<IList<int>>() { };
+
+            var result = new List<IList<int>>();
+            var x = candidates[i];
+            for (var j = 0; j <= target / x; j++)
+            {
+                foreach (var subResult in Combinations(i + 1, target - j * x))
+                {
+                    (subResult as List<int>).AddRange(Enumerable.Repeat(x, j));
+                    result.Add(subResult);
+                }
+            }
+
+            return result;
+        }
     }
 
     public static int Ex41_FirstMissingPositive(int[] nums)

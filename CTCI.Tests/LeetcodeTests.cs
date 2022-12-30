@@ -460,13 +460,13 @@ public class LeetcodeTests
     }
 
     [TestMethod]
-    public void Ex30_FindSubstring()
+    public void Ex30_FindSubstring_RollingHash()
     {
-        Assert.IsTrue(new[] { 0, 9 }.SequenceEqual(Leetcode.Ex30_FindSubstring("barfoothefoobarman", new[] { "foo", "bar" })));
-        Assert.IsTrue(Array.Empty<int>().SequenceEqual(Leetcode.Ex30_FindSubstring("wordgoodgoodgoodbestword", new[] { "word", "good", "best", "word" })));
-        Assert.IsTrue(new[] { 6, 9, 12 }.SequenceEqual(Leetcode.Ex30_FindSubstring("barfoofoobarthefoobarman", new[] { "bar", "foo", "the" })));
-        Assert.IsTrue(new[] { 0, 9 }.SequenceEqual(Leetcode.Ex30_FindSubstring("barfoothefoobarmanfaobor", new[] { "foo", "bar" })));
-        Assert.IsTrue(new[] { 13 }.SequenceEqual(Leetcode.Ex30_FindSubstring("lingmindraboofooowingdingbarrwingmonkeypoundcake", new[] { "fooo", "barr", "wing", "ding", "wing" })));
+        Assert.IsTrue(new[] { 0, 9 }.SequenceEqual(Leetcode.Ex30_FindSubstring_RollingHash("barfoothefoobarman", new[] { "foo", "bar" })));
+        Assert.IsTrue(Array.Empty<int>().SequenceEqual(Leetcode.Ex30_FindSubstring_RollingHash("wordgoodgoodgoodbestword", new[] { "word", "good", "best", "word" })));
+        Assert.IsTrue(new[] { 6, 9, 12 }.SequenceEqual(Leetcode.Ex30_FindSubstring_RollingHash("barfoofoobarthefoobarman", new[] { "bar", "foo", "the" })));
+        Assert.IsTrue(new[] { 0, 9 }.SequenceEqual(Leetcode.Ex30_FindSubstring_RollingHash("barfoothefoobarmanfaobor", new[] { "foo", "bar" })));
+        Assert.IsTrue(new[] { 13 }.SequenceEqual(Leetcode.Ex30_FindSubstring_RollingHash("lingmindraboofooowingdingbarrwingmonkeypoundcake", new[] { "fooo", "barr", "wing", "ding", "wing" })));
     }
 
     [TestMethod]
@@ -615,6 +615,42 @@ public class LeetcodeTests
         Assert.AreEqual("21", Leetcode.Ex38_CountAndSay(3));
         Assert.AreEqual("1211", Leetcode.Ex38_CountAndSay(4));
         Assert.AreEqual("111221", Leetcode.Ex38_CountAndSay(5));
+    }
+
+    [TestMethod]
+    public void Ex39_CombinationSum()
+    {
+        static string Stringify(IList<IList<int>> list) => 
+            string.Join("  ", list.Select(l => string.Join(" ", l.OrderBy(v => v))).OrderBy(s => s));
+
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 3 }, new[] { 7 } }), 
+            Stringify(Leetcode.Ex39_CombinationSum(new[] { 2, 3, 6, 7 }, 7)));
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 2, 2 }, new[] { 2, 3, 3 },new[] { 3, 5 } }), 
+            Stringify(Leetcode.Ex39_CombinationSum(new[] { 2, 3, 5 }, 8)));
+        Assert.AreEqual(Stringify(Array.Empty<IList<int>>()), 
+            Stringify(Leetcode.Ex39_CombinationSum(new[] { 2 }, 1)));
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 2, 2, 2, 2 } , new[] { 2, 2, 2, 2, 4 }, new[] { 2, 2, 2, 3, 3 }, 
+            new[] { 2, 2, 2, 6 }, new[] {2, 2, 3, 5 },new[] {2, 2, 4, 4 },new[] {2, 3, 3, 4 },new[] {2, 4, 6 },
+            new[] {2, 5, 5 },new[] {3, 3, 3, 3 },new[] {3, 3, 6 },new[] {3, 4, 5 },new[] {4, 4, 4 },new[] {6, 6 } }), 
+            Stringify(Leetcode.Ex39_CombinationSum(new[] { 2, 3, 4, 5, 6 }, 12)));
+    }
+
+    [TestMethod]
+    public void Ex39_CombinationSum_Optimized()
+    {
+        static string Stringify(IList<IList<int>> list) =>
+    string.Join("  ", list.Select(l => string.Join(" ", l.OrderBy(v => v))).OrderBy(s => s));
+
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 3 }, new[] { 7 } }),
+            Stringify(Leetcode.Ex39_CombinationSum_Optimized(new[] { 2, 3, 6, 7 }, 7)));
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 2, 2 }, new[] { 2, 3, 3 }, new[] { 3, 5 } }),
+            Stringify(Leetcode.Ex39_CombinationSum_Optimized(new[] { 2, 3, 5 }, 8)));
+        Assert.AreEqual(Stringify(Array.Empty<IList<int>>()),
+            Stringify(Leetcode.Ex39_CombinationSum_Optimized(new[] { 2 }, 1)));
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 2, 2, 2, 2 } , new[] { 2, 2, 2, 2, 4 }, new[] { 2, 2, 2, 3, 3 },
+            new[] { 2, 2, 2, 6 }, new[] {2, 2, 3, 5 },new[] {2, 2, 4, 4 },new[] {2, 3, 3, 4 },new[] {2, 4, 6 },
+            new[] {2, 5, 5 },new[] {3, 3, 3, 3 },new[] {3, 3, 6 },new[] {3, 4, 5 },new[] {4, 4, 4 },new[] {6, 6 } }),
+            Stringify(Leetcode.Ex39_CombinationSum_Optimized(new[] { 2, 3, 4, 5, 6 }, 12)));
     }
 
     [TestMethod]
