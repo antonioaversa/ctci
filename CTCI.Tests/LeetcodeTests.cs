@@ -1474,6 +1474,22 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex216_CombinationSum3()
+    {
+        static string Stringify(IList<IList<int>> list) =>
+            string.Join("  ", list.Select(l => string.Join(" ", l.OrderBy(v => v))).OrderBy(s => s));
+
+        Assert.AreEqual(Stringify(new[] { new[] { 1, 2, 4 } }),
+            Stringify(Leetcode.Ex216_CombinationSum3(3, 7)));
+        Assert.AreEqual(Stringify(new[] { new[] { 1, 2, 6 }, new[] { 1, 3, 5 }, new[] { 2, 3, 4 } }),
+            Stringify(Leetcode.Ex216_CombinationSum3(3, 9)));
+        Assert.AreEqual(Stringify(Array.Empty<IList<int>>()),
+            Stringify(Leetcode.Ex216_CombinationSum3(4, 1)));
+        Assert.AreEqual(Stringify(Array.Empty<IList<int>>()),
+            Stringify(Leetcode.Ex216_CombinationSum3(6, 9)));
+    }
+
+    [TestMethod]
     public void Ex224_Calculate()
     {
         Assert.AreEqual(1 + 1, Leetcode.Ex224_Calculate("1 + 1"));

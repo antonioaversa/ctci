@@ -3037,6 +3037,33 @@ public static class Leetcode
         }
     }
 
+    public static IList<IList<int>> Ex216_CombinationSum3(int k, int n)
+    {
+        var results = new List<IList<int>>();
+        Combinations(k, n, 9, new List<int>());
+        return results;
+
+        void Combinations(int k, int n, int m, IList<int> current)
+        {
+            if (n == 0)
+            {
+                if (k == 0)
+                    results.Add(current.ToList());
+                return;
+            }
+
+            if (n < 0 || k == 0)
+                return;
+
+            for (var i = m; i >= 0; i--)
+            {
+                current.Add(i);
+                Combinations(k - 1, n - i, i - 1, current);
+                current.RemoveAt(current.Count - 1);
+            }
+        }
+    }
+
     public static int Ex224_Calculate(string s)
     {
         s = s.Replace(" ", "");
