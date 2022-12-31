@@ -1284,6 +1284,139 @@ public static class Leetcode
         }
     }
 
+    public static IList<IList<int>> Ex39_CombinationSum_Yield(int[] candidates, int target)
+    {
+        var n = candidates.Length;
+        return Combinations(0, target).ToList();
+
+        IEnumerable<IList<int>> Combinations(int i, int target)
+        {
+            if (target == 0)
+            {
+                yield return new List<int>();
+                yield break;
+            }
+
+            if (i == n || target < 0)
+                yield break;
+
+            for (var j = i; j < n; j++)
+            {
+                foreach (var subResult in Combinations(j, target - candidates[j]))
+                {
+                    subResult.Add(candidates[j]);
+                    yield return subResult;
+                }
+            }
+        }
+    }
+
+    public static IList<IList<int>> Ex39_CombinationSum_MutatingCurrent(int[] candidates, int target)
+    {
+        var n = candidates.Length;
+        var results = new List<IList<int>>();
+        Combinations(0, target, new List<int>());
+        return results;
+
+        void Combinations(int i, int target, IList<int> current)
+        {
+            if (target == 0)
+            {
+                results.Add(current.ToList());
+                return;
+            }
+
+            if (i == n || target < 0)
+                return;
+
+            for (var j = i; j < n; j++)
+            {
+                current.Add(candidates[j]);
+                Combinations(j, target - candidates[j], current);
+                current.RemoveAt(current.Count - 1);
+            }
+        }
+    }
+
+    public static IList<IList<int>> Ex39_CombinationSum_StackBased(int[] candidates, int target)
+    {
+        var n = candidates.Length;
+
+        var results = new List<IList<int>>();
+        var stack = new Stack<(int, int, IList<int>)>();
+        stack.Push((0, target, new List<int>()));
+
+        while (stack.Count > 0)
+        {
+            var (i, t, current) = stack.Pop();
+
+            if (i == -1)
+            {
+                current.RemoveAt(current.Count - 1);
+                continue;
+            }
+
+            current.Add(candidates[i]);
+
+            for (var j = i; j < n; j++)
+            {
+                if (t == candidates[j])
+                {
+                    results.Add(current.Append(candidates[j]).Skip(1).ToList());
+                    continue;
+                }
+                else if (t < candidates[j])
+                {
+                    continue;
+                }
+
+                stack.Push((-1, -1, current));
+                stack.Push((j, t - candidates[j], current));
+            }
+        }
+
+        return results;
+    }
+
+    public static IList<IList<int>> Ex40_CombinationSum2(int[] candidates, int target)
+    {
+        var n = candidates.Length;
+
+        Array.Sort(candidates);
+
+        var results = new List<IList<int>>();
+        Combinations(0, target, new List<int>());
+        return results;
+
+        void Combinations(int i, int target, IList<int> current)
+        {
+            if (target == 0)
+            {
+                results.Add(current.ToList());
+                return;
+            }
+
+            if (i == n || target < 0)
+                return;
+
+            var j = i;
+            while (j < n - 1 && candidates[j + 1] == candidates[i]) j++;
+
+            Combinations(j + 1, target, current);
+
+            for (var k = 0; k <= j - i; k++)
+            {
+                current.Add(candidates[i]);
+                Combinations(j + 1, target - candidates[i] * (k + 1), current);
+            }
+
+            for (var k = 0; k <= j - i; k++)
+            {
+                current.RemoveAt(current.Count - 1);
+            }
+        }
+    }
+
     public static int Ex41_FirstMissingPositive(int[] nums)
     {
         for (var i = 0; i < nums.Length; i++)

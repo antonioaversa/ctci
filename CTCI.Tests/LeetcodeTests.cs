@@ -639,7 +639,7 @@ public class LeetcodeTests
     public void Ex39_CombinationSum_Optimized()
     {
         static string Stringify(IList<IList<int>> list) =>
-    string.Join("  ", list.Select(l => string.Join(" ", l.OrderBy(v => v))).OrderBy(s => s));
+            string.Join("  ", list.Select(l => string.Join(" ", l.OrderBy(v => v))).OrderBy(s => s));
 
         Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 3 }, new[] { 7 } }),
             Stringify(Leetcode.Ex39_CombinationSum_Optimized(new[] { 2, 3, 6, 7 }, 7)));
@@ -651,6 +651,72 @@ public class LeetcodeTests
             new[] { 2, 2, 2, 6 }, new[] {2, 2, 3, 5 },new[] {2, 2, 4, 4 },new[] {2, 3, 3, 4 },new[] {2, 4, 6 },
             new[] {2, 5, 5 },new[] {3, 3, 3, 3 },new[] {3, 3, 6 },new[] {3, 4, 5 },new[] {4, 4, 4 },new[] {6, 6 } }),
             Stringify(Leetcode.Ex39_CombinationSum_Optimized(new[] { 2, 3, 4, 5, 6 }, 12)));
+    }
+
+    [TestMethod]
+    public void Ex39_CombinationSum_Yield()
+    {
+        static string Stringify(IList<IList<int>> list) =>
+            string.Join("  ", list.Select(l => string.Join(" ", l.OrderBy(v => v))).OrderBy(s => s));
+
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 3 }, new[] { 7 } }),
+            Stringify(Leetcode.Ex39_CombinationSum_Yield(new[] { 2, 3, 6, 7 }, 7)));
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 2, 2 }, new[] { 2, 3, 3 }, new[] { 3, 5 } }),
+            Stringify(Leetcode.Ex39_CombinationSum_Yield(new[] { 2, 3, 5 }, 8)));
+        Assert.AreEqual(Stringify(Array.Empty<IList<int>>()),
+            Stringify(Leetcode.Ex39_CombinationSum_Yield(new[] { 2 }, 1)));
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 2, 2, 2, 2 } , new[] { 2, 2, 2, 2, 4 }, new[] { 2, 2, 2, 3, 3 },
+            new[] { 2, 2, 2, 6 }, new[] {2, 2, 3, 5 },new[] {2, 2, 4, 4 },new[] {2, 3, 3, 4 },new[] {2, 4, 6 },
+            new[] {2, 5, 5 },new[] {3, 3, 3, 3 },new[] {3, 3, 6 },new[] {3, 4, 5 },new[] {4, 4, 4 },new[] {6, 6 } }),
+            Stringify(Leetcode.Ex39_CombinationSum_Yield(new[] { 2, 3, 4, 5, 6 }, 12)));
+    }
+
+    [TestMethod]
+    public void Ex39_CombinationSum_MutatingCurrent()
+    {
+        static string Stringify(IList<IList<int>> list) =>
+            string.Join("  ", list.Select(l => string.Join(" ", l.OrderBy(v => v))).OrderBy(s => s));
+
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 3 }, new[] { 7 } }),
+            Stringify(Leetcode.Ex39_CombinationSum_MutatingCurrent(new[] { 2, 3, 6, 7 }, 7)));
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 2, 2 }, new[] { 2, 3, 3 }, new[] { 3, 5 } }),
+            Stringify(Leetcode.Ex39_CombinationSum_MutatingCurrent(new[] { 2, 3, 5 }, 8)));
+        Assert.AreEqual(Stringify(Array.Empty<IList<int>>()),
+            Stringify(Leetcode.Ex39_CombinationSum_MutatingCurrent(new[] { 2 }, 1)));
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 2, 2, 2, 2 } , new[] { 2, 2, 2, 2, 4 }, new[] { 2, 2, 2, 3, 3 },
+            new[] { 2, 2, 2, 6 }, new[] {2, 2, 3, 5 },new[] {2, 2, 4, 4 },new[] {2, 3, 3, 4 },new[] {2, 4, 6 },
+            new[] {2, 5, 5 },new[] {3, 3, 3, 3 },new[] {3, 3, 6 },new[] {3, 4, 5 },new[] {4, 4, 4 },new[] {6, 6 } }),
+            Stringify(Leetcode.Ex39_CombinationSum_MutatingCurrent(new[] { 2, 3, 4, 5, 6 }, 12)));
+    }
+
+    [TestMethod]
+    public void Ex39_CombinationSum_StackBased()
+    {
+        static string Stringify(IList<IList<int>> list) =>
+            string.Join("  ", list.Select(l => string.Join(" ", l.OrderBy(v => v))).OrderBy(s => s));
+
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 3 }, new[] { 7 } }),
+            Stringify(Leetcode.Ex39_CombinationSum_StackBased(new[] { 2, 3, 6, 7 }, 7)));
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 2, 2 }, new[] { 2, 3, 3 }, new[] { 3, 5 } }),
+            Stringify(Leetcode.Ex39_CombinationSum_StackBased(new[] { 2, 3, 5 }, 8)));
+        Assert.AreEqual(Stringify(Array.Empty<IList<int>>()),
+            Stringify(Leetcode.Ex39_CombinationSum_StackBased(new[] { 2 }, 1)));
+        Assert.AreEqual(Stringify(new[] { new[] { 2, 2, 2, 2, 2, 2 } , new[] { 2, 2, 2, 2, 4 }, new[] { 2, 2, 2, 3, 3 },
+            new[] { 2, 2, 2, 6 }, new[] {2, 2, 3, 5 },new[] {2, 2, 4, 4 },new[] {2, 3, 3, 4 },new[] {2, 4, 6 },
+            new[] {2, 5, 5 },new[] {3, 3, 3, 3 },new[] {3, 3, 6 },new[] {3, 4, 5 },new[] {4, 4, 4 },new[] {6, 6 } }),
+            Stringify(Leetcode.Ex39_CombinationSum_StackBased(new[] { 2, 3, 4, 5, 6 }, 12)));
+    }
+
+    [TestMethod]
+    public void Ex40_CombinationSum2()
+    {
+        static string Stringify(IList<IList<int>> list) =>
+            string.Join("  ", list.Select(l => string.Join(" ", l.OrderBy(v => v))).OrderBy(s => s));
+
+        Assert.AreEqual(Stringify(new[] { new[] { 1, 1, 6 }, new[] { 1, 2, 5 }, new[] { 1, 7 }, new[] { 2, 6 } }),
+            Stringify(Leetcode.Ex40_CombinationSum2(new[] { 10, 1, 2, 7, 6, 1, 5 }, 8)));
+        Assert.AreEqual(Stringify(new[] { new[] { 5 }, new[] { 1, 2, 2 } }),
+            Stringify(Leetcode.Ex40_CombinationSum2(new[] { 2, 5, 2, 1, 2 }, 5)));
     }
 
     [TestMethod]
