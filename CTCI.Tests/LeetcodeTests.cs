@@ -951,6 +951,17 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex67_AddBinary()
+    {
+        Assert.AreEqual("0", Leetcode.Ex67_AddBinary("0", "0"));
+        Assert.AreEqual("1", Leetcode.Ex67_AddBinary("0", "1"));
+        Assert.AreEqual("11", Leetcode.Ex67_AddBinary("10", "1"));
+        Assert.AreEqual("100", Leetcode.Ex67_AddBinary("11", "1"));
+        Assert.AreEqual("100", Leetcode.Ex67_AddBinary("1", "11"));
+        Assert.AreEqual("100000", Leetcode.Ex67_AddBinary("111", "11001"));
+    }
+
+    [TestMethod]
     public void Ex68_FullJustify()
     {
         Assert.IsTrue(

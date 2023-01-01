@@ -1976,6 +1976,25 @@ public static class Leetcode
         return result;
     }
 
+    public static string Ex67_AddBinary(string a, string b)
+    {
+        var i = a.Length - 1;
+        var j = b.Length - 1;
+
+        var reminder = 0;
+        var result = new char[Math.Max(i + 1, j + 1) + 1];
+        var k = result.Length - 1;
+        while (i >= 0 || j >= 0 || reminder > 0)
+        {
+            //Console.WriteLine($"i = {i}, j = {j}, k = {k}, reminder = {reminder}");
+            var digitSum = (i >= 0 ? a[i--] - '0' : 0) + (j >= 0 ? b[j--] - '0' : 0) + reminder;
+            result[k--] = (char)('0' + (digitSum & 1));
+            reminder = digitSum >> 1;
+        }
+
+        return new string(result, k + 1, result.Length - k - 1);
+    }
+
     public static IList<string> Ex68_FullJustify(string[] words, int maxWidth)
     {
         var result = new List<string>();
