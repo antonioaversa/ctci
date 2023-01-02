@@ -1759,6 +1759,33 @@ public static class Leetcode
         return breath;
     }
 
+    public static IList<IList<int>> Ex46_Permute(int[] nums)
+    {
+        var n = nums.Length;
+
+        return Permute(0).ToList();
+
+        IEnumerable<IList<int>> Permute(int i)
+        {
+            if (i == n) yield break;
+            if (i == n - 1)
+            {
+                yield return new List<int> { nums[^1] };
+                yield break;
+            }
+
+            var subPermutations = Permute(i + 1).ToList();
+
+            for (var j = 0; j <= n - i - 1; j++)
+                foreach (var subPermutation in subPermutations)
+                    yield return subPermutation
+                        .Take(j)
+                        .Append(nums[i])
+                        .Concat(subPermutation.Skip(j))
+                        .ToList();
+        }
+    }
+
     public static IList<IList<string>> Ex51_SolveNQueens_Recursive(int n)
     {
         var solutions = SolveNQueens(n - 1);

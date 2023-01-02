@@ -5,6 +5,10 @@ using static CTCI.Leetcode;
 namespace CTCI.Tests;
 internal static class Extensions
 {
+    public static bool SetEqual2d(this IList<IList<int>> list1, IList<IList<int>> list2) =>
+            string.Join("  ", list1.Select(l => string.Join(" ", l)).OrderBy(s => s)) ==
+            string.Join("  ", list2.Select(l => string.Join(" ", l)).OrderBy(s => s));
+
     public static bool SequenceEqual2d<T>(this IList<T[]> first, IList<T[]> second)
     {
         return first.Count == second.Count && Enumerable.Zip(first, second).All(c => c.First.SequenceEqual(c.Second));
@@ -819,6 +823,20 @@ public class LeetcodeTests
         Assert.AreEqual(2, Leetcode.Ex45_JumpFastest(new int[] { 2, 3, 1, 9, 4 }));
         Assert.AreEqual(4, Leetcode.Ex45_JumpFastest(new int[] { 2, 3, 1, 1, 1, 9, 4 }));
         Assert.AreEqual(2, Leetcode.Ex45_JumpFastest(new int[] { 2, 3, 0, 1, 4 }));
+    }
+
+    [TestMethod]
+    public void Ex46_Permute()
+    {
+        Assert.IsTrue(new List<IList<int>> { Array.Empty<int>() }.SetEqual2d(
+            Leetcode.Ex46_Permute(Array.Empty<int>())));
+        Assert.IsTrue(new List<IList<int>> { new[] { 1 } }.SetEqual2d(
+            Leetcode.Ex46_Permute(new[] { 1 })));
+        Assert.IsTrue(new List<IList<int>> { new[] { 1, 2 }, new[] { 2, 1 } }.SetEqual2d(
+            Leetcode.Ex46_Permute(new[] { 1, 2 })));
+        Assert.IsTrue(new List<IList<int>> { new[] { 1, 2, 3}, new[] { 1, 3, 2 }, new[] { 2, 1, 3 }, new[] { 2, 3, 1 },
+            new[] { 3, 1, 2 }, new[] { 3, 2, 1 } }.SetEqual2d(
+            Leetcode.Ex46_Permute(new[] { 1, 2, 3 })));
     }
 
     [TestMethod]
