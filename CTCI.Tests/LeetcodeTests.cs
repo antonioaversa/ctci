@@ -826,17 +826,31 @@ public class LeetcodeTests
     }
 
     [TestMethod]
-    public void Ex46_Permute()
+    public void Ex46_Permute_Intersperse()
     {
         Assert.IsTrue(new List<IList<int>> { Array.Empty<int>() }.SetEqual2d(
-            Leetcode.Ex46_Permute(Array.Empty<int>())));
+            Leetcode.Ex46_Permute_Intersperse(Array.Empty<int>())));
         Assert.IsTrue(new List<IList<int>> { new[] { 1 } }.SetEqual2d(
-            Leetcode.Ex46_Permute(new[] { 1 })));
+            Leetcode.Ex46_Permute_Intersperse(new[] { 1 })));
         Assert.IsTrue(new List<IList<int>> { new[] { 1, 2 }, new[] { 2, 1 } }.SetEqual2d(
-            Leetcode.Ex46_Permute(new[] { 1, 2 })));
+            Leetcode.Ex46_Permute_Intersperse(new[] { 1, 2 })));
         Assert.IsTrue(new List<IList<int>> { new[] { 1, 2, 3}, new[] { 1, 3, 2 }, new[] { 2, 1, 3 }, new[] { 2, 3, 1 },
             new[] { 3, 1, 2 }, new[] { 3, 2, 1 } }.SetEqual2d(
-            Leetcode.Ex46_Permute(new[] { 1, 2, 3 })));
+            Leetcode.Ex46_Permute_Intersperse(new[] { 1, 2, 3 })));
+    }
+
+    [TestMethod]
+    public void Ex46_Permute_Swapping()
+    {
+        Assert.IsTrue(new List<IList<int>> { Array.Empty<int>() }.SetEqual2d(
+            Leetcode.Ex46_Permute_Swapping(Array.Empty<int>())));
+        Assert.IsTrue(new List<IList<int>> { new[] { 1 } }.SetEqual2d(
+            Leetcode.Ex46_Permute_Swapping(new[] { 1 })));
+        Assert.IsTrue(new List<IList<int>> { new[] { 1, 2 }, new[] { 2, 1 } }.SetEqual2d(
+            Leetcode.Ex46_Permute_Swapping(new[] { 1, 2 })));
+        Assert.IsTrue(new List<IList<int>> { new[] { 1, 2, 3}, new[] { 1, 3, 2 }, new[] { 2, 1, 3 }, new[] { 2, 3, 1 },
+            new[] { 3, 1, 2 }, new[] { 3, 2, 1 } }.SetEqual2d(
+            Leetcode.Ex46_Permute_Swapping(new[] { 1, 2, 3 })));
     }
 
     [TestMethod]

@@ -1759,7 +1759,7 @@ public static class Leetcode
         return breath;
     }
 
-    public static IList<IList<int>> Ex46_Permute(int[] nums)
+    public static IList<IList<int>> Ex46_Permute_Intersperse(int[] nums)
     {
         var n = nums.Length;
 
@@ -1783,6 +1783,30 @@ public static class Leetcode
                         .Append(nums[i])
                         .Concat(subPermutation.Skip(j))
                         .ToList();
+        }
+    }
+
+    public static IList<IList<int>> Ex46_Permute_Swapping(int[] nums)
+    {
+        var n = nums.Length;
+        var permutations = new List<IList<int>>();
+        Permute(0);
+        return permutations;
+
+        void Permute(int i)
+        {
+            if (i == n - 1)
+            {
+                permutations.Add(nums.ToList());
+                return;
+            }
+
+            for (var j = i; j < n; j++)
+            {
+                (nums[i], nums[j]) = (nums[j], nums[i]);
+                Permute(i + 1);
+                (nums[i], nums[j]) = (nums[j], nums[i]);
+            }
         }
     }
 
