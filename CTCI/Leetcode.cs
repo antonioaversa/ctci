@@ -1819,7 +1819,11 @@ public static class Leetcode
 
         void PermuteUnique(int i)
         {
-            if (i == n - 1) permutations.Add(nums.ToList());
+            if (i == n - 1)
+            {
+                permutations.Add(nums.ToList());
+                return;
+            }
 
             var values = new HashSet<int>();
 
@@ -1828,6 +1832,37 @@ public static class Leetcode
                 if (values.Contains(nums[k]))
                     continue;
                 values.Add(nums[k]);
+
+                (nums[i], nums[k]) = (nums[k], nums[i]);
+                PermuteUnique(i + 1);
+                (nums[i], nums[k]) = (nums[k], nums[i]);
+            }
+        }
+    }
+
+    public static IList<IList<int>> Ex47_PermuteUnique_Optimized(int[] nums)
+    {
+        var n = nums.Length;
+        var permutations = new List<IList<int>>();
+        PermuteUnique(0);
+        return permutations;
+
+        void PermuteUnique(int i)
+        {
+            if (i == n - 1)
+            {
+                permutations.Add(nums.ToList());
+                return;
+            }
+
+            PermuteUnique(i + 1);
+
+            var values = 1 << (nums[i] + 10);
+            for (var k = i + 1; k < n; k++)
+            {
+                if (((values >> (nums[k] + 10)) & 1) != 0)
+                    continue;
+                values |= 1 << (nums[k] + 10);
 
                 (nums[i], nums[k]) = (nums[k], nums[i]);
                 PermuteUnique(i + 1);

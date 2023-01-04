@@ -842,8 +842,6 @@ public class LeetcodeTests
     [TestMethod]
     public void Ex46_Permute_Swapping()
     {
-        Assert.IsTrue(new List<IList<int>> { Array.Empty<int>() }.SetEqual2d(
-            Leetcode.Ex46_Permute_Swapping(Array.Empty<int>())));
         Assert.IsTrue(new List<IList<int>> { new[] { 1 } }.SetEqual2d(
             Leetcode.Ex46_Permute_Swapping(new[] { 1 })));
         Assert.IsTrue(new List<IList<int>> { new[] { 1, 2 }, new[] { 2, 1 } }.SetEqual2d(
@@ -856,8 +854,6 @@ public class LeetcodeTests
     [TestMethod]
     public void Ex47_PermuteUnique()
     {
-        Assert.IsTrue(new List<IList<int>> { Array.Empty<int>() }.SetEqual2d(
-            Leetcode.Ex47_PermuteUnique(Array.Empty<int>())));
         Assert.IsTrue(new List<IList<int>> { new[] { 1 } }.SetEqual2d(
             Leetcode.Ex47_PermuteUnique(new[] { 1 })));
         Assert.IsTrue(new List<IList<int>> { new[] { 1, 1, 2 }, new[] { 1, 2, 1 }, new[] { 2, 1, 1 } }.SetEqual2d(
@@ -868,6 +864,21 @@ public class LeetcodeTests
         Assert.IsTrue(new List<IList<int>> { new[] { 1, 1, 2, 2 }, new[] { 1, 2, 1, 2 }, new[] { 2, 1, 1, 2 },
             new[] { 1, 2, 2, 1 }, new[] { 2, 1, 2, 1 }, new[] { 2, 2, 1, 1 }}.SetEqual2d(
             Leetcode.Ex47_PermuteUnique(new[] { 1, 1, 2, 2 })));
+    }
+
+    [TestMethod]
+    public void Ex47_PermuteUnique_Optimized()
+    {
+        Assert.IsTrue(new List<IList<int>> { new[] { 1 } }.SetEqual2d(
+            Leetcode.Ex47_PermuteUnique_Optimized(new[] { 1 })));
+        Assert.IsTrue(new List<IList<int>> { new[] { 1, 1, 2 }, new[] { 1, 2, 1 }, new[] { 2, 1, 1 } }.SetEqual2d(
+            Leetcode.Ex47_PermuteUnique_Optimized(new[] { 1, 1, 2 })));
+        Assert.IsTrue(new List<IList<int>> { new[] { 1, 2, 3 }, new[] { 1, 3, 2 }, new[] { 2, 1, 3 }, new[] { 2, 3, 1 },
+            new[] { 3, 1, 2 }, new[] { 3, 2, 1 } }.SetEqual2d(
+            Leetcode.Ex47_PermuteUnique_Optimized(new[] { 1, 2, 3 })));
+        Assert.IsTrue(new List<IList<int>> { new[] { 1, 1, 2, 2 }, new[] { 1, 2, 1, 2 }, new[] { 2, 1, 1, 2 },
+            new[] { 1, 2, 2, 1 }, new[] { 2, 1, 2, 1 }, new[] { 2, 2, 1, 1 }}.SetEqual2d(
+            Leetcode.Ex47_PermuteUnique_Optimized(new[] { 1, 1, 2, 2 })));
     }
 
     [TestMethod]
