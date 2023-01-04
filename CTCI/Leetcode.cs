@@ -1810,6 +1810,32 @@ public static class Leetcode
         }
     }
 
+    public static IList<IList<int>> Ex47_PermuteUnique(int[] nums)
+    {
+        var n = nums.Length;
+        var permutations = new List<IList<int>>();
+        PermuteUnique(0);
+        return permutations;
+
+        void PermuteUnique(int i)
+        {
+            if (i == n - 1) permutations.Add(nums.ToList());
+
+            var values = new HashSet<int>();
+
+            for (var k = i; k < n; k++)
+            {
+                if (values.Contains(nums[k]))
+                    continue;
+                values.Add(nums[k]);
+
+                (nums[i], nums[k]) = (nums[k], nums[i]);
+                PermuteUnique(i + 1);
+                (nums[i], nums[k]) = (nums[k], nums[i]);
+            }
+        }
+    }
+
     public static IList<IList<string>> Ex51_SolveNQueens_Recursive(int n)
     {
         var solutions = SolveNQueens(n - 1);
