@@ -882,6 +882,18 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex48_Rotate()
+    {
+        var input = new[] { new[] { 1, 2, 3 }, new[] { 4, 5, 6 }, new[] { 7, 8, 9 } };
+        Leetcode.Ex48_Rotate(input);
+        Assert.IsTrue(new[] { new[] { 7, 4, 1 }, new[] { 8, 5, 2 }, new[] { 9, 6, 3 } }.SequenceEqual2d(input));
+
+        input = new[] { new[] { 5, 1, 9, 11 }, new[] { 2, 4, 8, 10 }, new[] { 13, 3, 6, 7 }, new[] { 15, 14, 12, 16 } };
+        Leetcode.Ex48_Rotate(input);
+        Assert.IsTrue(new[] { new[] { 15, 13, 2, 5 }, new[] { 14, 3, 4, 1 }, new[] { 12, 6, 8, 9 }, new[] { 16, 7, 10, 11 } }.SequenceEqual2d(input));
+    }
+
+    [TestMethod]
     public void Ex51_SolveNQueens_Recursive()
     {
         Assert.AreEqual(
