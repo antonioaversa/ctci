@@ -1871,6 +1871,19 @@ public static class Leetcode
         }
     }
 
+    public static void Ex48_Rotate(int[][] matrix)
+    {
+        var m = matrix;
+        var n = matrix.Length;
+        for (var i = 0; i < n / 2 + n % 2; i++)
+            for (var j = 0; j < n / 2; j++)
+            {
+                (m[i][j], m[j][n - 1 - i], m[n - 1 - i][n - 1 - j], m[n - 1 - j][i]) =
+                (m[n - 1 - j][i], m[i][j], m[j][n - 1 - i], m[n - 1 - i][n - 1 - j]);
+            }
+    }
+
+
     public static IList<IList<string>> Ex51_SolveNQueens_Recursive(int n)
     {
         var solutions = SolveNQueens(n - 1);
