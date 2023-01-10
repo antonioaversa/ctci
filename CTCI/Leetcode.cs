@@ -2431,6 +2431,14 @@ public static class Leetcode
         }
     }
 
+    public static bool Ex100_IsSameTree_Recursive(TreeNode p, TreeNode q) =>
+        (p == null && q == null) ||
+        (p != null && q != null && 
+            p.val == q.val && 
+            Ex100_IsSameTree_Recursive(p.left, q.left) && 
+            Ex100_IsSameTree_Recursive(p.right, q.right));
+
+
     public static int Ex115_NumDistinct_DPTopDown(string s, string t)
     {
         var solutions = new Dictionary<(int, int), int>();

@@ -1146,6 +1146,19 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex100_IsSameTree_Recursive()
+    {
+        Assert.IsTrue(Leetcode.Ex100_IsSameTree_Recursive(BuildTree(1), BuildTree(1)));
+        Assert.IsFalse(Leetcode.Ex100_IsSameTree_Recursive(BuildTree(2), BuildTree(1)));
+        Assert.IsFalse(Leetcode.Ex100_IsSameTree_Recursive(BuildTree(1, 2), BuildTree(1, 3)));
+        Assert.IsTrue(Leetcode.Ex100_IsSameTree_Recursive(BuildTree(1, 2), BuildTree(1, 2)));
+        Assert.IsTrue(Leetcode.Ex100_IsSameTree_Recursive(BuildTree(1, 2, 3), BuildTree(1, 2, 3)));
+        Assert.IsFalse(Leetcode.Ex100_IsSameTree_Recursive(BuildTree(1, null, 3), BuildTree(1, 2, 3)));
+        Assert.IsFalse(Leetcode.Ex100_IsSameTree_Recursive(BuildTree(1, 2, 3), BuildTree(1, 2, null)));
+        Assert.IsFalse(Leetcode.Ex100_IsSameTree_Recursive(BuildTree(1, 2, 3, 4, 5), BuildTree(1, 2, 3, 4, 4)));
+    }
+
+    [TestMethod]
     public void Ex115_NumDistinct_DPTopDown()
     {
         Assert.AreEqual(3, Leetcode.Ex115_NumDistinct_DPTopDown("rabbbit", "rabbit"));
