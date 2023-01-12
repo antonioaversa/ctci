@@ -1883,6 +1883,20 @@ public static class Leetcode
             }
     }
 
+    public static IList<IList<string>> Ex49_GroupAnagrams(string[] strs)
+    {
+        var result = new Dictionary<string, IList<string>>();
+
+        foreach (var str in strs)
+        {
+            var key = string.Join("", str.OrderBy(c => c));
+            if (!result.TryGetValue(key, out var value))
+                result[key] = value = new List<string>();
+            value.Add(str);
+        }
+
+        return result.Select(kvp => kvp.Value).ToList();
+    }
 
     public static IList<IList<string>> Ex51_SolveNQueens_Recursive(int n)
     {

@@ -5,7 +5,7 @@ using static CTCI.Leetcode;
 namespace CTCI.Tests;
 internal static class Extensions
 {
-    public static bool SetEqual2d(this IList<IList<int>> list1, IList<IList<int>> list2) =>
+    public static bool SetEqual2d<T>(this IList<IList<T>> list1, IList<IList<T>> list2) =>
             string.Join("  ", list1.Select(l => string.Join(" ", l)).OrderBy(s => s)) ==
             string.Join("  ", list2.Select(l => string.Join(" ", l)).OrderBy(s => s));
 
@@ -891,6 +891,32 @@ public class LeetcodeTests
         input = new[] { new[] { 5, 1, 9, 11 }, new[] { 2, 4, 8, 10 }, new[] { 13, 3, 6, 7 }, new[] { 15, 14, 12, 16 } };
         Leetcode.Ex48_Rotate(input);
         Assert.IsTrue(new[] { new[] { 15, 13, 2, 5 }, new[] { 14, 3, 4, 1 }, new[] { 12, 6, 8, 9 }, new[] { 16, 7, 10, 11 } }.SequenceEqual2d(input));
+    }
+
+    [TestMethod]
+    public void Ex49_GroupAnagrams()
+    {
+        Assert.IsTrue(
+            new List<IList<string>> 
+            { 
+                new List<string> { "bat" }, 
+                new List<string> { "nat", "tan" }, 
+                new List<string> { "ate", "eat", "tea" } 
+            }.SetEqual2d(Leetcode.Ex49_GroupAnagrams(new string[] { "bat", "nat", "tan", "ate", "eat", "tea" })));
+        Assert.IsTrue(
+            new List<IList<string>>
+            {
+            }.SetEqual2d(Leetcode.Ex49_GroupAnagrams(new string[] { })));
+        Assert.IsTrue(
+            new List<IList<string>>
+            {
+                new List<string> { "a" },
+            }.SetEqual2d(Leetcode.Ex49_GroupAnagrams(new string[] { "a" })));
+        Assert.IsTrue(
+            new List<IList<string>>
+            {
+                new List<string> { "aab", "aba", "baa" },
+            }.SetEqual2d(Leetcode.Ex49_GroupAnagrams(new string[] { "aab", "aba", "baa" })));
     }
 
     [TestMethod]
