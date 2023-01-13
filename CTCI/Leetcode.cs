@@ -1898,6 +1898,43 @@ public static class Leetcode
         return result.Select(kvp => kvp.Value).ToList();
     }
 
+    public static double Ex50_MyPow(double x, int n)
+    {
+        if (n == 0) return 1.0;
+
+        bool overflow = false;
+        if (n == int.MinValue)
+        {
+            overflow = true;
+            n++;
+        }
+
+        bool negative = false;
+        if (n < 0)
+        {
+            negative = true;
+            n = -n;
+        }
+
+        var powers = new double[(int)Math.Ceiling(Math.Log(n, 2)) + 1];
+        powers[0] = x;
+
+        for (int i = 1; i < powers.Length; i++)
+            powers[i] = powers[i - 1] * powers[i - 1];
+
+        int j = 0;
+        double result = 1.0;
+        while (n != 0)
+        {
+            if ((n & 1) != 0)
+                result *= powers[j];
+            n >>= 1;
+            j++;
+        }
+
+        return (negative ? 1 / result : result) * (overflow ? 1.0 / x : 1.0);
+    }
+
     public static IList<IList<string>> Ex51_SolveNQueens_Recursive(int n)
     {
         var solutions = SolveNQueens(n - 1);

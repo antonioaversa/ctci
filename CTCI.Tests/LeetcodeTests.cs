@@ -920,6 +920,15 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex50_MyPow()
+    {
+        Assert.AreEqual(1024.0, Leetcode.Ex50_MyPow(2.0, 10), 0.00001);
+        Assert.AreEqual(9.261, Leetcode.Ex50_MyPow(2.10, 3), 0.00001);
+        Assert.AreEqual(0.25, Leetcode.Ex50_MyPow(2.0, -2), 0.00001);
+        Assert.AreEqual(1.0, Leetcode.Ex50_MyPow(1.0, int.MinValue), 0.00001);
+    }
+
+    [TestMethod]
     public void Ex51_SolveNQueens_Recursive()
     {
         Assert.AreEqual(
