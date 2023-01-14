@@ -1011,6 +1011,55 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex54_SpiralOrder()
+    {
+        Assert.IsTrue(
+            new[] { 1, 2, 3, 6, 9, 8, 7, 4, 5 }.SequenceEqual(Leetcode.Ex54_SpiralOrder(
+            new[] 
+            {
+                new[] { 1, 2, 3 },
+                new[] { 4, 5, 6 },
+                new[] { 7, 8, 9 },
+            })));
+        Assert.IsTrue(
+            new[] { 1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7 }.SequenceEqual(Leetcode.Ex54_SpiralOrder(
+            new[]
+            {
+                new[] { 1, 2, 3, 4 },
+                new[] { 5, 6, 7, 8 },
+                new[] { 9, 10, 11, 12 },
+            })));
+        Assert.IsTrue(
+            new[] { 1, 2, 3, 4, 8, 12, 16, 15, 14, 13, 9, 5, 6, 7, 11, 10 }.SequenceEqual(Leetcode.Ex54_SpiralOrder(
+            new[]
+            {
+                new[] { 1, 2, 3, 4 },
+                new[] { 5, 6, 7, 8 },
+                new[] { 9, 10, 11, 12 },
+                new[] { 13, 14, 15, 16 },
+            })));
+        Assert.IsTrue(
+            new[] { 1, 2, 3, 4, 8, 12, 16, 20, 19, 18, 17, 13, 9, 5, 6, 7, 11, 15, 14, 10 }.SequenceEqual(Leetcode.Ex54_SpiralOrder(
+            new[]
+            {
+                new[] { 1, 2, 3, 4 },
+                new[] { 5, 6, 7, 8 },
+                new[] { 9, 10, 11, 12 },
+                new[] { 13, 14, 15, 16 },
+                new[] { 17, 18, 19, 20 },
+            })));
+        Assert.IsTrue(new[] { 1, 2, 3, 7, 11, 15, 19, 18, 17, 13, 9, 5, 6, 10, 14 }.SequenceEqual(Leetcode.Ex54_SpiralOrder(
+            new[]
+            {
+                new[] { 1, 2, 3 },
+                new[] { 5, 6, 7 },
+                new[] { 9, 10, 11 },
+                new[] { 13, 14, 15 },
+                new[] { 17, 18, 19 },
+            })));
+    }
+
+    [TestMethod]
     public void Ex56_Merge()
     {
         Assert.IsTrue(new[] { new[] { 1, 6 }, new[] { 8, 10 }, new[] { 15, 18 } }

@@ -2069,6 +2069,28 @@ public static class Leetcode
         return max > 0 ? maxSum : max;
     }
 
+    public static IList<int> Ex54_SpiralOrder(int[][] matrix)
+    {
+        int n = matrix.Length, m = matrix[0].Length;
+
+        var result = new List<int>(n * m);
+        for (var r = 0; result.Count < n * m; r++)
+        {
+            for (var j = r; j < m - r; j++)
+                result.Add(matrix[r][j]);
+            if (result.Count == n * m) break;
+            for (var i = r + 1; i < n - r; i++)
+                result.Add(matrix[i][m - r - 1]);
+            if (result.Count == n * m) break;
+            for (var j = m - r - 2; j > r; j--)
+                result.Add(matrix[n - r - 1][j]);
+            if (result.Count == n * m) break;
+            for (var i = n - r - 1; i > r; i--)
+                result.Add(matrix[i][r]);
+        }
+        return result;
+    }
+
     public static int[][] Ex56_Merge(int[][] intervals)
     {
         var events = intervals
