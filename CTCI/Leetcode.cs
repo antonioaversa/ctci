@@ -2053,6 +2053,32 @@ public static class Leetcode
         return result;
     }
 
+    public static bool Ex55_CanJump_DPMemoized(int[] nums)
+    {
+        var n = nums.Length;
+        var solutions = new Dictionary<int, bool>();
+        return CanJump(0);
+
+        bool CanJump(int i)
+        {
+            if (i == n - 1) return true;
+            if (solutions.TryGetValue(i, out var solution)) return solution;
+
+            solution = false;
+            for (var j = 1; j <= nums[i]; j++)
+            {
+                if (CanJump(i + j))
+                {
+                    solution = true;
+                    break;
+                }
+            }
+
+            solutions[i] = solution;
+            return solution;
+        }
+    }
+
     public static long Ex53_MaximumSubarray_Kadane(int[] nums)
     {
         long max = long.MinValue;

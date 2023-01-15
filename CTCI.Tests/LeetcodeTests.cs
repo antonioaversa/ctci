@@ -1015,7 +1015,7 @@ public class LeetcodeTests
     {
         Assert.IsTrue(
             new[] { 1, 2, 3, 6, 9, 8, 7, 4, 5 }.SequenceEqual(Leetcode.Ex54_SpiralOrder(
-            new[] 
+            new[]
             {
                 new[] { 1, 2, 3 },
                 new[] { 4, 5, 6 },
@@ -1057,6 +1057,14 @@ public class LeetcodeTests
                 new[] { 13, 14, 15 },
                 new[] { 17, 18, 19 },
             })));
+    }
+
+    [TestMethod]
+    public void Ex55_CanJump_DPMemoized()
+    {
+        Assert.IsTrue(Leetcode.Ex55_CanJump_DPMemoized(new[] { 2, 3, 1, 1, 4 }));
+        Assert.IsFalse(Leetcode.Ex55_CanJump_DPMemoized(new[] { 3, 2, 1, 0, 4 }));
+        Assert.IsTrue(Leetcode.Ex55_CanJump_DPMemoized(new[] { 0 }));
     }
 
     [TestMethod]
