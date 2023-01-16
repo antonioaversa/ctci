@@ -1098,38 +1098,75 @@ public class LeetcodeTests
     }
 
     [TestMethod]
-    public void Ex57_Insert()
+    public void Ex57_Insert_WithSortedSet()
     {
         Assert.IsTrue(new[] { new[] { 1, 2 }, new[] { 10, 20 }, new[] { 30, 40 } }.SequenceEqual2d(
-            Leetcode.Ex57_Insert(
+            Leetcode.Ex57_Insert_WithSortedSet(
                 new[] { new[] { 10, 20 }, new[] { 30, 40 } }, 
                 new[] { 1, 2 })));
         Assert.IsTrue(new[] { new[] { 1, 20 }, new[] { 30, 40 } }.SequenceEqual2d(
-            Leetcode.Ex57_Insert(
+            Leetcode.Ex57_Insert_WithSortedSet(
                 new[] { new[] { 10, 20 }, new[] { 30, 40 } },
                 new[] { 1, 10 })));
         Assert.IsTrue(new[] { new[] { 1, 20 }, new[] { 30, 40 } }.SequenceEqual2d(
-            Leetcode.Ex57_Insert(
+            Leetcode.Ex57_Insert_WithSortedSet(
                 new[] { new[] { 10, 20 }, new[] { 30, 40 } },
                 new[] { 1, 15 })));
         Assert.IsTrue(new[] { new[] { 1, 25 }, new[] { 30, 40 } }.SequenceEqual2d(
-            Leetcode.Ex57_Insert(
+            Leetcode.Ex57_Insert_WithSortedSet(
                 new[] { new[] { 10, 20 }, new[] { 30, 40 } },
                 new[] { 1, 25 })));
         Assert.IsTrue(new[] { new[] { 10, 25 }, new[] { 30, 40 } }.SequenceEqual2d(
-            Leetcode.Ex57_Insert(
+            Leetcode.Ex57_Insert_WithSortedSet(
                 new[] { new[] { 10, 20 }, new[] { 30, 40 } },
                 new[] { 15, 25 })));
         Assert.IsTrue(new[] { new[] { 10, 20 }, new[] { 22, 28 }, new[] { 30, 40 } }.SequenceEqual2d(
-            Leetcode.Ex57_Insert(
+            Leetcode.Ex57_Insert_WithSortedSet(
                 new[] { new[] { 10, 20 }, new[] { 30, 40 } },
                 new[] { 22, 28 })));
         Assert.IsTrue(new[] { new[] { 10, 20 }, new[] { 30, 45 } }.SequenceEqual2d(
-            Leetcode.Ex57_Insert(
+            Leetcode.Ex57_Insert_WithSortedSet(
                 new[] { new[] { 10, 20 }, new[] { 30, 40 } },
                 new[] { 35, 45 })));
         Assert.IsTrue(new[] { new[] { 5, 45 } }.SequenceEqual2d(
-            Leetcode.Ex57_Insert(
+            Leetcode.Ex57_Insert_WithSortedSet(
+                new[] { new[] { 10, 20 }, new[] { 30, 45 } },
+                new[] { 5, 45 })));
+    }
+
+    [TestMethod]
+    public void Ex57_Insert_WithSortedSetAndBinarySearchCuts()
+    {
+        Assert.IsTrue(new[] { new[] { 1, 2 }, new[] { 10, 20 }, new[] { 30, 40 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert_WithSortedSetAndBinarySearchCuts(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } },
+                new[] { 1, 2 })));
+        Assert.IsTrue(new[] { new[] { 1, 20 }, new[] { 30, 40 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert_WithSortedSetAndBinarySearchCuts(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } },
+                new[] { 1, 10 })));
+        Assert.IsTrue(new[] { new[] { 1, 20 }, new[] { 30, 40 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert_WithSortedSetAndBinarySearchCuts(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } },
+                new[] { 1, 15 })));
+        Assert.IsTrue(new[] { new[] { 1, 25 }, new[] { 30, 40 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert_WithSortedSetAndBinarySearchCuts(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } },
+                new[] { 1, 25 })));
+        Assert.IsTrue(new[] { new[] { 10, 25 }, new[] { 30, 40 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert_WithSortedSetAndBinarySearchCuts(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } },
+                new[] { 15, 25 })));
+        Assert.IsTrue(new[] { new[] { 10, 20 }, new[] { 22, 28 }, new[] { 30, 40 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert_WithSortedSetAndBinarySearchCuts(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } },
+                new[] { 22, 28 })));
+        Assert.IsTrue(new[] { new[] { 10, 20 }, new[] { 30, 45 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert_WithSortedSetAndBinarySearchCuts(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } },
+                new[] { 35, 45 })));
+        Assert.IsTrue(new[] { new[] { 5, 45 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert_WithSortedSetAndBinarySearchCuts(
                 new[] { new[] { 10, 20 }, new[] { 30, 45 } },
                 new[] { 5, 45 })));
     }

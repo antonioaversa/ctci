@@ -2174,7 +2174,7 @@ public static class Leetcode
         return results.ToArray();
     }
 
-    public static int[][] Ex57_Insert(int[][] intervals, int[] newInterval)
+    public static int[][] Ex57_Insert_WithSortedSet(int[][] intervals, int[] newInterval)
     {
         var n = intervals.Length;
 
@@ -2205,6 +2205,69 @@ public static class Leetcode
         }
 
         return result.ToArray();
+    }
+
+    public static int[][] Ex57_Insert_WithSortedSetAndBinarySearchCuts(int[][] intervals, int[] newInterval)
+    {
+        var n = intervals.Length;
+
+        int a = FindInterval(newInterval[0]);
+        int b = FindInterval(newInterval[1]);
+
+        //Console.WriteLine($"a = {a}, b = {b}");
+
+        var result = new List<int[]>(n + 1);
+
+        for (var i = 0; i < a; i++)
+            result.Add(intervals[i]);
+
+        var events = new SortedSet<(int, int)>();
+        events.Add((newInterval[0], -2));
+        events.Add((newInterval[1], +2));
+        for (var i = Math.Max(a, 0); i <= b; i++)
+        {
+            events.Add((intervals[i][0], -1));
+            events.Add((intervals[i][1], +1));
+        }
+
+        var numberOfIntervals = 0;
+        var start = -1;
+        foreach (var (value, type) in events)
+        {
+            numberOfIntervals -= type;
+            if (numberOfIntervals == 0)
+            {
+                result.Add(new[] { start, value });
+                start = -1;
+            }
+            else if (start < 0)
+            {
+                start = value;
+            }
+        }
+
+        for (var i = b + 1; i < n; i++)
+            result.Add(intervals[i]);
+
+        return result.ToArray();
+
+        int FindInterval(int value)
+        {
+            int left = 0, right = intervals.Length - 1;
+            while (left <= right)
+            {
+                var middle = left + (right - left) / 2;
+                if (intervals[middle][0] <= value && intervals[middle][1] >= value)
+                    return middle;
+
+                if (intervals[middle][0] < value)
+                    left = middle + 1;
+                else
+                    right = middle - 1;
+            }
+
+            return right;
+        }
     }
 
     public static int Ex58_LengthOfLastWord(string s)
