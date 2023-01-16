@@ -1098,6 +1098,43 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex57_Insert()
+    {
+        Assert.IsTrue(new[] { new[] { 1, 2 }, new[] { 10, 20 }, new[] { 30, 40 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } }, 
+                new[] { 1, 2 })));
+        Assert.IsTrue(new[] { new[] { 1, 20 }, new[] { 30, 40 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } },
+                new[] { 1, 10 })));
+        Assert.IsTrue(new[] { new[] { 1, 20 }, new[] { 30, 40 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } },
+                new[] { 1, 15 })));
+        Assert.IsTrue(new[] { new[] { 1, 25 }, new[] { 30, 40 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } },
+                new[] { 1, 25 })));
+        Assert.IsTrue(new[] { new[] { 10, 25 }, new[] { 30, 40 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } },
+                new[] { 15, 25 })));
+        Assert.IsTrue(new[] { new[] { 10, 20 }, new[] { 22, 28 }, new[] { 30, 40 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } },
+                new[] { 22, 28 })));
+        Assert.IsTrue(new[] { new[] { 10, 20 }, new[] { 30, 45 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert(
+                new[] { new[] { 10, 20 }, new[] { 30, 40 } },
+                new[] { 35, 45 })));
+        Assert.IsTrue(new[] { new[] { 5, 45 } }.SequenceEqual2d(
+            Leetcode.Ex57_Insert(
+                new[] { new[] { 10, 20 }, new[] { 30, 45 } },
+                new[] { 5, 45 })));
+    }
+
+    [TestMethod]
     public void Ex58_LengthOfLastWord()
     {
         Assert.AreEqual(5, Leetcode.Ex58_LengthOfLastWord("Hello World"));
