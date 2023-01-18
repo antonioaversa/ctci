@@ -1226,6 +1226,15 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex70_ClimbStairs()
+    {
+        Assert.AreEqual(2, Leetcode.Ex70_ClimbStairs(2));
+        Assert.AreEqual(3, Leetcode.Ex70_ClimbStairs(3));
+        Assert.AreEqual(8, Leetcode.Ex70_ClimbStairs(5));
+        Assert.AreEqual(34, Leetcode.Ex70_ClimbStairs(8));
+    }
+
+    [TestMethod]
     public void Ex72_MinDistance_DP()
     {
         Assert.AreEqual(3, Leetcode.Ex72_MinDistance_DP("horse", "ros"));

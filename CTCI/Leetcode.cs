@@ -2374,6 +2374,21 @@ public static class Leetcode
         return hi;
     }
 
+    public static int Ex70_ClimbStairs(int n)
+    {
+        var solutions = new Dictionary<int, int>();
+        return ClimbStairsMemoized(n);
+
+        int ClimbStairsMemoized(int n)
+        {
+            if (n <= 1) return 1;
+            if (solutions.TryGetValue(n, out var solution)) return solution;
+            solution = ClimbStairsMemoized(n - 1) + ClimbStairsMemoized(n - 2);
+            solutions[n] = solution;
+            return solution;
+        }
+    }
+
     public static int Ex72_MinDistance_DP(string word1, string word2)
     {
         var solutions = new Dictionary<(int, int), int> { };
