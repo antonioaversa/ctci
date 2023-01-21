@@ -2520,6 +2520,18 @@ public static class Leetcode
         }
     }
 
+    public static ListNode Ex83_DeleteDuplicates(ListNode head)
+    {
+        var current = head;
+        while (current != null)
+        {
+            while (current.next != null && current.val == current.next.val)
+                current.next = current.next.next;
+            current = current.next;
+        }
+        return head;
+    }
+
     public static int Ex84_LargestRectangleArea(int[] heights)
     {
         var n = heights.Length;

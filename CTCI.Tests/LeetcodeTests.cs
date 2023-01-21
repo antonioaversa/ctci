@@ -1286,6 +1286,17 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex83_DeleteDuplicates()
+    {
+        Assert.IsTrue(new[] { 1, 2 }.SequenceEqual(
+            Leetcode.Ex83_DeleteDuplicates(BuildListNode(1, 2, 2)).ToArray()));
+        Assert.IsTrue(new[] { 1 }.SequenceEqual(
+            Leetcode.Ex83_DeleteDuplicates(BuildListNode(1, 1, 1)).ToArray()));
+        Assert.IsTrue(new[] { 1, 2, 3, 4 }.SequenceEqual(
+            Leetcode.Ex83_DeleteDuplicates(BuildListNode(1, 2, 2, 3, 3, 3, 4)).ToArray()));
+    }
+
+    [TestMethod]
     public void Ex84_LargestRectangleArea()
     {
         Assert.AreEqual(10, Leetcode.Ex84_LargestRectangleArea(new[] { 2, 1, 5, 6, 2, 3 }));
