@@ -2389,6 +2389,54 @@ public static class Leetcode
         }
     }
 
+    public static string Ex71_SimplifyPath(string path)
+    {
+        var n = path.Length;
+
+        var result = new char[n];
+        result[0] = '/';
+
+        int j = 1, previousSlash = 0;
+        for (int i = 1; i <= n; i++)
+        {
+            if (i < n && path[i] != '/')
+                continue;
+
+            if (i - previousSlash > 1)
+            {
+                bool skip;
+                if (i - previousSlash == 2 && path[i - 1] == '.')
+                {
+                    skip = true;
+                }
+                else if (i - previousSlash == 3 && path[i - 1] == '.' && path[i - 2] == '.')
+                {
+                    skip = true;
+                    if (j > 0)
+                    {
+                        do j--; while (result[j] != '/');
+                    }
+                }
+                else
+                {
+                    skip = false;
+                }
+
+                if (!skip)
+                {
+                    if (j == 0 || result[j - 1] != '/')
+                        result[j++] = '/';
+                    for (var k = previousSlash + 1; k < i; k++)
+                        result[j++] = path[k];
+                }
+            }
+
+            previousSlash = i;
+        }
+
+        return new string(result, 0, j > 0 ? j : 1);
+    }
+
     public static int Ex72_MinDistance_DP(string word1, string word2)
     {
         var solutions = new Dictionary<(int, int), int> { };

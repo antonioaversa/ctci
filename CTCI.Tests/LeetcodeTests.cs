@@ -1235,6 +1235,19 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex71_SimplifyPath()
+    {
+        Assert.AreEqual("/home", Leetcode.Ex71_SimplifyPath("/home/"));
+        Assert.AreEqual("/", Leetcode.Ex71_SimplifyPath("/../"));
+        Assert.AreEqual("/home/foo", Leetcode.Ex71_SimplifyPath("/home//foo/"));
+        Assert.AreEqual("/home/foo/a/b/c", Leetcode.Ex71_SimplifyPath("/home//foo/././a/./b/c"));
+        Assert.AreEqual("/home/foo/a", Leetcode.Ex71_SimplifyPath("/home//foo/././a/./b/c/../../../a"));
+        Assert.AreEqual("/", Leetcode.Ex71_SimplifyPath("/home/a/../../.././."));
+        Assert.AreEqual("/", Leetcode.Ex71_SimplifyPath("/../.././../."));
+        Assert.AreEqual("/c", Leetcode.Ex71_SimplifyPath("/a/./b/../../c/"));
+    }
+
+    [TestMethod]
     public void Ex72_MinDistance_DP()
     {
         Assert.AreEqual(3, Leetcode.Ex72_MinDistance_DP("horse", "ros"));
