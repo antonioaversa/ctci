@@ -1345,6 +1345,36 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex88_Merge()
+    {
+        var nums1 = new[] { 2, 4, 0, 0};
+        var nums2 = new[] { 1, 3 };
+
+        Leetcode.Ex88_Merge(nums1, 2, nums2, 2);
+        Assert.IsTrue(new[] { 1, 2, 3, 4 }.SequenceEqual(nums1));
+
+        nums1 = new[] { 1, 4, 0, 0 };
+        nums2 = new[] { 2, 3 };
+        Leetcode.Ex88_Merge(nums1, 2, nums2, 2);
+        Assert.IsTrue(new[] { 1, 2, 3, 4 }.SequenceEqual(nums1));
+
+        nums1 = new[] { 1, 4 };
+        nums2 = Array.Empty<int>();
+        Leetcode.Ex88_Merge(nums1, 2, nums2, 0);
+        Assert.IsTrue(new[] { 1, 4 }.SequenceEqual(nums1));
+
+        nums1 = new[] { 0, 0 };
+        nums2 = new[] { 2, 3 };
+        Leetcode.Ex88_Merge(nums1, 0, nums2, 2);
+        Assert.IsTrue(new[] { 2, 3 }.SequenceEqual(nums1));
+
+        nums1 = Array.Empty<int>();
+        nums2 = Array.Empty<int>();
+        Leetcode.Ex88_Merge(nums1, 0, nums2, 0);
+        Assert.IsTrue(Array.Empty<int>().SequenceEqual(nums1));
+    }
+
+    [TestMethod]
     public void Ex100_IsSameTree_Recursive()
     {
         Assert.IsTrue(Leetcode.Ex100_IsSameTree_Recursive(BuildTree(1), BuildTree(1)));
