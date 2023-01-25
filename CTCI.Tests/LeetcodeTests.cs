@@ -1375,6 +1375,16 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex94_InorderTraversal()
+    {
+        Assert.IsTrue(new[] { 2, 1 }.SequenceEqual(Leetcode.Ex94_InorderTraversal(BuildTree(1, 2))));
+        Assert.IsTrue(new[] { 1, 2 }.SequenceEqual(Leetcode.Ex94_InorderTraversal(BuildTree(1, null, 2))));
+        Assert.IsTrue(new[] { 1, 3, 2 }.SequenceEqual(Leetcode.Ex94_InorderTraversal(BuildTree(1, null, 2, 3))));
+        Assert.IsTrue(new[] { 1, 2, 3 }.SequenceEqual(Leetcode.Ex94_InorderTraversal(BuildTree(1, null, 2, null, 3))));
+        Assert.IsTrue(new[] { 4, 2, 5, 1, 3 }.SequenceEqual(Leetcode.Ex94_InorderTraversal(BuildTree(1, 2, 3, 4, 5))));
+    }
+
+    [TestMethod]
     public void Ex100_IsSameTree_Recursive()
     {
         Assert.IsTrue(Leetcode.Ex100_IsSameTree_Recursive(BuildTree(1), BuildTree(1)));

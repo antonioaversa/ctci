@@ -2718,6 +2718,21 @@ public static class Leetcode
         }
     }
 
+    public static IList<int> Ex94_InorderTraversal(TreeNode root)
+    {
+        var result = new List<int>();
+        Inorder(root);
+        return result;
+
+        void Inorder(TreeNode root)
+        {
+            if (root == null) return;
+            Inorder(root.left);
+            result.Add(root.val);
+            Inorder(root.right);
+        }
+    }
+
     public static bool Ex100_IsSameTree_Recursive(TreeNode p, TreeNode q) =>
         (p == null && q == null) ||
         (p != null && q != null && 
