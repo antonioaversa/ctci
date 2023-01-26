@@ -2482,6 +2482,27 @@ public static class Leetcode
         return solutions[0, 0];
     }
 
+    public static void Ex73_SetZeroes(int[][] matrix)
+    {
+        var n = matrix.Length;
+        var m = matrix[0].Length;
+        var row = new bool[n];
+        var col = new bool[m];
+        for (var i = 0; i < n; i++)
+            for (var j = 0; j < m; j++)
+                if (matrix[i][j] == 0)
+                {
+                    row[i] = true;
+                    col[j] = true;
+                }
+
+        for (var i = 0; i < n; i++)
+            for (var j = 0; j < m; j++)
+                if (row[i] || col[j])
+                    matrix[i][j] = 0;
+
+    }
+
     public static bool Ex74_SearchMatrix(int[][] matrix, int target)
     {
         var m = matrix.Length;
