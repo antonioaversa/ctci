@@ -1262,26 +1262,51 @@ public class LeetcodeTests
     }
 
     [TestMethod]
-    public void Ex73_SetZeroes()
+    public void Ex73_SetZeroes_LinearSpace()
     {
         {
             var m1 = new[] { new[] { 1, 1 }, new[] { 1, 1 }, new[] { 1, 1 } };
-            Leetcode.Ex73_SetZeroes(m1);
+            Leetcode.Ex73_SetZeroes_LinearSpace(m1);
             Assert.IsTrue(m1.SequenceEqual2d(new[] { new[] { 1, 1 }, new[] { 1, 1 }, new[] { 1, 1 } }));
         }
         {
             var m1 = new[] { new[] { 1, 1, 1 }, new[] { 1, 0, 1 }, new[] { 1, 1, 1 } };
-            Leetcode.Ex73_SetZeroes(m1);
+            Leetcode.Ex73_SetZeroes_LinearSpace(m1);
             Assert.IsTrue(m1.SequenceEqual2d(new[] { new[] { 1, 0, 1 }, new[] { 0, 0, 0 }, new[] { 1, 0, 1 } }));
         }
         {
             var m1 = new[] { new[] { 0, 1, 1 }, new[] { 1, 0, 1 }, new[] { 1, 1, 1 } };
-            Leetcode.Ex73_SetZeroes(m1);
+            Leetcode.Ex73_SetZeroes_LinearSpace(m1);
             Assert.IsTrue(m1.SequenceEqual2d(new[] { new[] { 0, 0, 0 }, new[] { 0, 0, 0 }, new[] { 0, 0, 1 } }));
         }
         {
             var m1 = new[] { new[] { 0, 1, 1, 0 }, new[] { 1, 1, 1, 1 }, new[] { 1, 1, 1, 1 } };
-            Leetcode.Ex73_SetZeroes(m1);
+            Leetcode.Ex73_SetZeroes_LinearSpace(m1);
+            Assert.IsTrue(m1.SequenceEqual2d(new[] { new[] { 0, 0, 0, 0 }, new[] { 0, 1, 1, 0 }, new[] { 0, 1, 1, 0 } }));
+        }
+    }
+
+    [TestMethod]
+    public void Ex73_SetZeroes_ConstantSpace()
+    {
+        {
+            var m1 = new[] { new[] { 1, 1 }, new[] { 1, 1 }, new[] { 1, 1 } };
+            Leetcode.Ex73_SetZeroes_ConstantSpace(m1);
+            Assert.IsTrue(m1.SequenceEqual2d(new[] { new[] { 1, 1 }, new[] { 1, 1 }, new[] { 1, 1 } }));
+        }
+        {
+            var m1 = new[] { new[] { 1, 1, 1 }, new[] { 1, 0, 1 }, new[] { 1, 1, 1 } };
+            Leetcode.Ex73_SetZeroes_ConstantSpace(m1);
+            Assert.IsTrue(m1.SequenceEqual2d(new[] { new[] { 1, 0, 1 }, new[] { 0, 0, 0 }, new[] { 1, 0, 1 } }));
+        }
+        {
+            var m1 = new[] { new[] { 0, 1, 1 }, new[] { 1, 0, 1 }, new[] { 1, 1, 1 } };
+            Leetcode.Ex73_SetZeroes_ConstantSpace(m1);
+            Assert.IsTrue(m1.SequenceEqual2d(new[] { new[] { 0, 0, 0 }, new[] { 0, 0, 0 }, new[] { 0, 0, 1 } }));
+        }
+        {
+            var m1 = new[] { new[] { 0, 1, 1, 0 }, new[] { 1, 1, 1, 1 }, new[] { 1, 1, 1, 1 } };
+            Leetcode.Ex73_SetZeroes_ConstantSpace(m1);
             Assert.IsTrue(m1.SequenceEqual2d(new[] { new[] { 0, 0, 0, 0 }, new[] { 0, 1, 1, 0 }, new[] { 0, 1, 1, 0 } }));
         }
     }

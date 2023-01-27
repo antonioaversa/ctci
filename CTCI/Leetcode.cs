@@ -2482,7 +2482,7 @@ public static class Leetcode
         return solutions[0, 0];
     }
 
-    public static void Ex73_SetZeroes(int[][] matrix)
+    public static void Ex73_SetZeroes_LinearSpace(int[][] matrix)
     {
         var n = matrix.Length;
         var m = matrix[0].Length;
@@ -2501,6 +2501,49 @@ public static class Leetcode
                 if (row[i] || col[j])
                     matrix[i][j] = 0;
 
+    }
+
+    public static void Ex73_SetZeroes_ConstantSpace(int[][] matrix)
+    {
+        var n = matrix.Length;
+        var m = matrix[0].Length;
+
+        var firstRowNeedZeros = false;
+        for (var j = 0; j < m; j++)
+            if (matrix[0][j] == 0)
+            {
+                firstRowNeedZeros = true;
+                break;
+            }
+
+        var firstColNeedZeros = false;
+        for (var i = 0; i < n; i++)
+            if (matrix[i][0] == 0)
+            {
+                firstColNeedZeros = true;
+                break;
+            }
+
+        for (var i = 1; i < n; i++)
+            for (var j = 1; j < m; j++)
+                if (matrix[i][j] == 0)
+                {
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+
+        for (var i = 1; i < n; i++)
+            for (var j = 1; j < m; j++)
+                if (matrix[i][0] == 0 || matrix[0][j] == 0)
+                    matrix[i][j] = 0;
+
+        if (firstRowNeedZeros)
+            for (var j = 0; j < m; j++)
+                matrix[0][j] = 0;
+
+        if (firstColNeedZeros)
+            for (var i = 0; i < n; i++)
+                matrix[i][0] = 0;
     }
 
     public static bool Ex74_SearchMatrix(int[][] matrix, int target)
