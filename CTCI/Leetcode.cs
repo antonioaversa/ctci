@@ -2964,6 +2964,21 @@ public static class Leetcode
         }
     }
 
+    public static IList<int> Ex144_PreorderTraversal(TreeNode root)
+    {
+        var result = new List<int>();
+        Preorder(root);
+        return result;
+
+        void Preorder(TreeNode node)
+        {
+            if (node == null) return;
+            result.Add(node.val);
+            Preorder(node.left);
+            Preorder(node.right);
+        }
+    }
+
     public static int Ex149_MaxPoints(int[][] points)
     {
         var X = 0;

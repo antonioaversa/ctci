@@ -1509,6 +1509,16 @@ public class LeetcodeTests
     }
 
     [TestMethod]
+    public void Ex144_PreorderTraversal()
+    {
+        Assert.IsTrue(new[] { 1, 2 }.SequenceEqual(Leetcode.Ex144_PreorderTraversal(BuildTree(1, 2))));
+        Assert.IsTrue(new[] { 1, 2 }.SequenceEqual(Leetcode.Ex144_PreorderTraversal(BuildTree(1, null, 2))));
+        Assert.IsTrue(new[] { 1, 2, 3 }.SequenceEqual(Leetcode.Ex144_PreorderTraversal(BuildTree(1, null, 2, 3))));
+        Assert.IsTrue(new[] { 1, 2, 3 }.SequenceEqual(Leetcode.Ex144_PreorderTraversal(BuildTree(1, null, 2, null, 3))));
+        Assert.IsTrue(new[] { 1, 2, 4, 5, 3 }.SequenceEqual(Leetcode.Ex144_PreorderTraversal(BuildTree(1, 2, 3, 4, 5))));
+    }
+
+    [TestMethod]
     public void Ex149_MaxPoints()
     {
         Assert.AreEqual(0, Leetcode.Ex149_MaxPoints(
